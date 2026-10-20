@@ -1,0 +1,23 @@
+# ─── Grafana — dashboard provider (provisionamento automático) ─────────────────
+# Este arquivo é montado em /etc/grafana/provisioning/dashboards/ e instrui o
+# Grafana a carregar todos os dashboards (JSON) encontrados em "path" na
+# inicialização. Novos dashboards colocados nesse diretório são detectados
+# automaticamente a cada "updateIntervalSeconds".
+
+apiVersion: 1
+
+providers:
+  - name: orderhub
+    orgId: 1
+    folder: OrderHub
+    type: file
+    disableDeletion: false
+    editable: true
+    updateIntervalSeconds: 30
+    allowUiUpdates: true
+    options:
+      # Caminho dentro do container: o diretório deste provisionamento é montado
+      # em /etc/grafana/provisioning/dashboards e os arquivos .json ficam na
+      # subpasta "json".
+      path: /etc/grafana/provisioning/dashboards/json
+      foldersFromFilesStructure: false
