@@ -34,6 +34,9 @@ public class CatalogArchitectureTests
     private const string InfrastructureNs = "OrderHub.Catalog.Infrastructure";
     private const string ApiNs            = "OrderHub.Catalog.Api";
 
+    // Shared technical contracts/utilities — the only permitted cross-project dependency.
+    private const string BuildingBlocksNs = "OrderHub.BuildingBlocks";
+
     // ─── Tests ─────────────────────────────────────────────────────────────────
 
     /// <summary>
@@ -89,13 +92,16 @@ public class CatalogArchitectureTests
     /// <summary>
     /// No Catalog layer may reference another service's namespace.
     /// Catches accidental cross-service coupling (violates the no-ProjectReference-between-services rule).
+    /// Shared BuildingBlocks are explicitly allowed — they are the only permitted
+    /// cross-project dependency per structure.md.
     /// </summary>
     [Fact]
     public void AllCatalogLayers_ShouldNot_DependOnOtherServices()
     {
-        // Any OrderHub namespace that is NOT Catalog is a foreign service.
+        // Any OrderHub namespace that is NOT Catalog and NOT BuildingBlocks is a foreign service.
         const string foreignServicePrefix = "OrderHub.";
-        string[] allowedPrefixes = [DomainNs, ApplicationNs, InfrastructureNs, ApiNs];
+        string[] allowedPrefixes =
+            [DomainNs, ApplicationNs, InfrastructureNs, ApiNs, BuildingBlocksNs];
 
         foreach (var (name, assembly) in new[]
         {
@@ -113,7 +119,8 @@ public class CatalogArchitectureTests
                          && !allowedPrefixes.Any(p => n.StartsWith(p, StringComparison.Ordinal)))
                 .ToList();
 
-            Assert.Empty(referencedNamespaces);
+            Assert.True(referencedNamespaces.Count == 0,
+                $"{name} references foreign services: {string.Join(", ", referencedNamespaces)}");
         }
     }
 }
