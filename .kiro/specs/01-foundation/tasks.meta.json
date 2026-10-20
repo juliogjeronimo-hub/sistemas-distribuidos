@@ -1,0 +1,108 @@
+{
+  "pbtResults": {},
+  "executionHistory": {
+    "1. Criar estrutura de pastas, `.editorconfig`, `Directory.Build.props` (Nullable, TreatWarningsAsErrors) _(Req. 6)_": [
+      {
+        "executionId": "cdf44277-bfc5-4bd7-aba3-9f418c83e4ff",
+        "chatSessionId": "sess_540f5391-0c68-4cc4-b0e1-8b57092264e5",
+        "timestamp": 1792464866602
+      },
+      {
+        "executionId": "cdf44277-bfc5-4bd7-aba3-9f418c83e4ff",
+        "chatSessionId": "sess_540f5391-0c68-4cc4-b0e1-8b57092264e5",
+        "timestamp": 1792464873520
+      }
+    ],
+    "2.1 Testes de arquitetura (NetArchTest) para as regras de dependência": [
+      {
+        "executionId": "cdf44277-bfc5-4bd7-aba3-9f418c83e4ff",
+        "chatSessionId": "sess_540f5391-0c68-4cc4-b0e1-8b57092264e5",
+        "timestamp": 1792464866734
+      }
+    ],
+    "3. Implementar composition root, `Result`, `ICommandHandler`/`IQueryHandler` e decorators base": [
+      {
+        "executionId": "cdf44277-bfc5-4bd7-aba3-9f418c83e4ff",
+        "chatSessionId": "sess_540f5391-0c68-4cc4-b0e1-8b57092264e5",
+        "timestamp": 1792464866845
+      }
+    ],
+    "4.1 Teste de integração com Testcontainers": [
+      {
+        "executionId": "cdf44277-bfc5-4bd7-aba3-9f418c83e4ff",
+        "chatSessionId": "sess_540f5391-0c68-4cc4-b0e1-8b57092264e5",
+        "timestamp": 1792464866956
+      }
+    ],
+    "5. Configurar logging estruturado e `CorrelationId` (middleware) _(Req. 4)_": [
+      {
+        "executionId": "cdf44277-bfc5-4bd7-aba3-9f418c83e4ff",
+        "chatSessionId": "sess_540f5391-0c68-4cc4-b0e1-8b57092264e5",
+        "timestamp": 1792464867061
+      }
+    ],
+    "6. Configurar OpenTelemetry e endpoint de métricas _(Req. 5)_": [
+      {
+        "executionId": "cdf44277-bfc5-4bd7-aba3-9f418c83e4ff",
+        "chatSessionId": "sess_540f5391-0c68-4cc4-b0e1-8b57092264e5",
+        "timestamp": 1792464867163
+      }
+    ],
+    "7. Escrever `Dockerfile` do Catalog (multi-stage, não-root)": [
+      {
+        "executionId": "cdf44277-bfc5-4bd7-aba3-9f418c83e4ff",
+        "chatSessionId": "sess_540f5391-0c68-4cc4-b0e1-8b57092264e5",
+        "timestamp": 1792464867262
+      }
+    ],
+    "8. Criar `deploy/docker-compose*.yml` com redes, healthchecks e limites de recursos _(Req. 1)_": [
+      {
+        "executionId": "cdf44277-bfc5-4bd7-aba3-9f418c83e4ff",
+        "chatSessionId": "sess_540f5391-0c68-4cc4-b0e1-8b57092264e5",
+        "timestamp": 1792464867373
+      }
+    ],
+    "9. Exportar realm `orderhub` para `deploy/keycloak/` e importar no boot _(Req. 2, 3)_": [
+      {
+        "executionId": "cdf44277-bfc5-4bd7-aba3-9f418c83e4ff",
+        "chatSessionId": "sess_540f5391-0c68-4cc4-b0e1-8b57092264e5",
+        "timestamp": 1792464867524
+      }
+    ],
+    "10. Criar Gateway (YARP) com validação de JWT e propagação de `X-Correlation-Id` _(Req. 2, 3)_": [
+      {
+        "executionId": "cdf44277-bfc5-4bd7-aba3-9f418c83e4ff",
+        "chatSessionId": "sess_540f5391-0c68-4cc4-b0e1-8b57092264e5",
+        "timestamp": 1792464867681
+      }
+    ],
+    "11. Criar dashboard do Grafana e config do Prometheus": [
+      {
+        "executionId": "cdf44277-bfc5-4bd7-aba3-9f418c83e4ff",
+        "chatSessionId": "sess_540f5391-0c68-4cc4-b0e1-8b57092264e5",
+        "timestamp": 1792464867772
+      }
+    ],
+    "12. Criar workflow do GitHub Actions (build, testes, arquitetura) _(Req. 6)_": [
+      {
+        "executionId": "cdf44277-bfc5-4bd7-aba3-9f418c83e4ff",
+        "chatSessionId": "sess_540f5391-0c68-4cc4-b0e1-8b57092264e5",
+        "timestamp": 1792464867874
+      }
+    ],
+    "13. Executar o experimento e registrar `docs/experimentos/01-fundacao.md`": [
+      {
+        "executionId": "cdf44277-bfc5-4bd7-aba3-9f418c83e4ff",
+        "chatSessionId": "sess_540f5391-0c68-4cc4-b0e1-8b57092264e5",
+        "timestamp": 1792464867996
+      }
+    ],
+    "14. Atualizar README e docs": [
+      {
+        "executionId": "cdf44277-bfc5-4bd7-aba3-9f418c83e4ff",
+        "chatSessionId": "sess_540f5391-0c68-4cc4-b0e1-8b57092264e5",
+        "timestamp": 1792464868113
+      }
+    ]
+  }
+}
