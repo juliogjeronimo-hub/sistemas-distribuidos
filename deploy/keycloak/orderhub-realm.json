@@ -1,0 +1,154 @@
+{
+  "realm": "orderhub",
+  "displayName": "OrderHub",
+  "enabled": true,
+  "sslRequired": "external",
+  "registrationAllowed": false,
+  "loginWithEmailAllowed": true,
+  "duplicateEmailsAllowed": false,
+  "resetPasswordAllowed": false,
+  "editUsernameAllowed": false,
+  "bruteForceProtected": true,
+
+  "clients": [
+    {
+      "clientId": "orderhub-spa",
+      "name": "OrderHub SPA (test client)",
+      "description": "Authorization Code + PKCE — used for manual testing and the experiment.",
+      "enabled": true,
+      "publicClient": true,
+      "standardFlowEnabled": true,
+      "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": false,
+      "serviceAccountsEnabled": false,
+      "redirectUris": [
+        "http://localhost:5000/*",
+        "http://localhost:3000/*"
+      ],
+      "webOrigins": [
+        "http://localhost:5000",
+        "http://localhost:3000"
+      ],
+      "defaultClientScopes": [
+        "openid",
+        "profile",
+        "email",
+        "catalog.read",
+        "catalog.write"
+      ],
+      "optionalClientScopes": []
+    },
+    {
+      "clientId": "catalog-service",
+      "name": "Catalog Service",
+      "description": "Service-to-service client — client_credentials grant.",
+      "enabled": true,
+      "publicClient": false,
+      "standardFlowEnabled": false,
+      "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": false,
+      "serviceAccountsEnabled": true,
+      "secret": "${KEYCLOAK_CATALOG_CLIENT_SECRET:-changeme_dev_catalog}",
+      "defaultClientScopes": [
+        "openid"
+      ],
+      "optionalClientScopes": []
+    },
+    {
+      "clientId": "gateway-service",
+      "name": "Gateway Service",
+      "description": "YARP gateway — validates tokens on behalf of all services.",
+      "enabled": true,
+      "publicClient": false,
+      "standardFlowEnabled": false,
+      "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": false,
+      "serviceAccountsEnabled": false,
+      "secret": "${KEYCLOAK_GATEWAY_CLIENT_SECRET:-changeme_dev_gateway}",
+      "defaultClientScopes": [
+        "openid"
+      ],
+      "optionalClientScopes": []
+    }
+  ],
+
+  "clientScopes": [
+    {
+      "name": "catalog.read",
+      "description": "Read access to the Catalog service",
+      "protocol": "openid-connect",
+      "attributes": {
+        "include.in.token.scope": "true",
+        "consent.screen.text": "Read products from the catalog"
+      }
+    },
+    {
+      "name": "catalog.write",
+      "description": "Write access to the Catalog service",
+      "protocol": "openid-connect",
+      "attributes": {
+        "include.in.token.scope": "true",
+        "consent.screen.text": "Create and update products in the catalog"
+      }
+    },
+    {
+      "name": "orders.read",
+      "description": "Read access to the Orders service",
+      "protocol": "openid-connect",
+      "attributes": {
+        "include.in.token.scope": "true"
+      }
+    },
+    {
+      "name": "orders.write",
+      "description": "Write access to the Orders service",
+      "protocol": "openid-connect",
+      "attributes": {
+        "include.in.token.scope": "true"
+      }
+    },
+    {
+      "name": "inventory.write",
+      "description": "Write access to the Inventory service",
+      "protocol": "openid-connect",
+      "attributes": {
+        "include.in.token.scope": "true"
+      }
+    }
+  ],
+
+  "users": [
+    {
+      "username": "testuser",
+      "email": "testuser@orderhub.local",
+      "firstName": "Test",
+      "lastName": "User",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "Test@1234",
+          "temporary": false
+        }
+      ],
+      "clientRoles": {},
+      "realmRoles": ["default-roles-orderhub"]
+    }
+  ],
+
+  "roles": {
+    "realm": [
+      {
+        "name": "admin",
+        "description": "OrderHub administrator"
+      }
+    ]
+  },
+
+  "defaultDefaultClientScopes": [
+    "openid",
+    "profile",
+    "email"
+  ]
+}

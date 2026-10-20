@@ -1,0 +1,170 @@
+# ─── Infraestrutura: Keycloak, RabbitMQ, PostgreSQL (catalog), Redis, Prometheus, Grafana ──
+# Não sobe os serviços .NET — use docker-compose.services.yml para isso.
+#
+# Conceito de SD exercitado: gerenciamento de componentes e processos em containers;
+# isolamento de rede por responsabilidade (edge / internal / data).
+
+name: orderhub
+
+networks:
+  edge:
+    driver: bridge
+  internal:
+    driver: bridge
+  data:
+    driver: bridge
+
+volumes:
+  postgres-catalog-data:
+  redis-data:
+  rabbitmq-data:
+  keycloak-data:
+  prometheus-data:
+  grafana-data:
+
+services:
+
+  # ─── PostgreSQL (catalog) ─────────────────────────────────────────────────
+  postgres-catalog:
+    image: postgres:16-alpine
+    container_name: orderhub-postgres-catalog
+    environment:
+      POSTGRES_DB: catalog
+      POSTGRES_USER: catalog
+      POSTGRES_PASSWORD: ${POSTGRES_CATALOG_PASSWORD:-changeme_dev}
+    volumes:
+      - postgres-catalog-data:/var/lib/postgresql/data
+    networks:
+      - data
+      - internal
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U catalog -d catalog"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    cpus: "0.5"
+    mem_limit: 256m
+    restart: unless-stopped
+
+  # ─── Redis ────────────────────────────────────────────────────────────────
+  redis:
+    image: redis:7-alpine
+    container_name: orderhub-redis
+    volumes:
+      - redis-data:/data
+    networks:
+      - data
+      - internal
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
+    cpus: "0.25"
+    mem_limit: 64m
+    restart: unless-stopped
+
+  # ─── RabbitMQ ─────────────────────────────────────────────────────────────
+  rabbitmq:
+    image: rabbitmq:3.13-management-alpine
+    container_name: orderhub-rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER:-orderhub}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASSWORD:-changeme_dev}
+    volumes:
+      - rabbitmq-data:/var/lib/rabbitmq
+    networks:
+      - internal
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
+      interval: 15s
+      timeout: 10s
+      retries: 5
+      start_period: 20s
+    cpus: "0.5"
+    mem_limit: 256m
+    restart: unless-stopped
+
+  # ─── Keycloak ─────────────────────────────────────────────────────────────
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.2
+    container_name: orderhub-keycloak
+    command: start-dev --import-realm
+    environment:
+      KC_BOOTSTRAP_ADMIN_USERNAME: ${KEYCLOAK_ADMIN:-admin}
+      KC_BOOTSTRAP_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD:-changeme_dev}
+      KC_DB: dev-mem
+      KC_HEALTH_ENABLED: "true"
+    volumes:
+      # Realm exportado será criado na tarefa 9.
+      # O mount é opcional: se o diretório estiver vazio, o Keycloak sobe sem realm customizado.
+      - ./keycloak:/opt/keycloak/data/import
+    networks:
+      - internal
+      - edge
+    healthcheck:
+      test:
+        - "CMD-SHELL"
+        - |
+          exec 3<>/dev/tcp/localhost/9000 &&
+          echo -e 'GET /health/ready HTTP/1.1\r\nHost: localhost\r\nConnection: close\r\n\r\n' >&3 &&
+          grep -q '\"status\": \"UP\"' <&3
+      interval: 20s
+      timeout: 10s
+      retries: 6
+      start_period: 40s
+    cpus: "1.0"
+    mem_limit: 512m
+    restart: unless-stopped
+
+  # ─── Prometheus ───────────────────────────────────────────────────────────
+  prometheus:
+    image: prom/prometheus:v2.53.0
+    container_name: orderhub-prometheus
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+      - "--storage.tsdb.path=/prometheus"
+      - "--web.enable-lifecycle"
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus-data:/prometheus
+    networks:
+      - internal
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:9090/-/healthy | grep -q Healthy"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    cpus: "0.25"
+    mem_limit: 128m
+    restart: unless-stopped
+
+  # ─── Grafana ──────────────────────────────────────────────────────────────
+  grafana:
+    image: grafana/grafana:11.2.0
+    container_name: orderhub-grafana
+    environment:
+      GF_SECURITY_ADMIN_USER: ${GRAFANA_ADMIN_USER:-admin}
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_ADMIN_PASSWORD:-changeme_dev}
+      GF_USERS_ALLOW_SIGN_UP: "false"
+    volumes:
+      - grafana-data:/var/lib/grafana
+      # Provisioning criado na tarefa 11; mount opcional via diretório possivelmente vazio.
+      - ./grafana/provisioning:/etc/grafana/provisioning:ro
+    networks:
+      - internal
+    depends_on:
+      prometheus:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:3000/api/health | grep -q ok"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 15s
+    cpus: "0.25"
+    mem_limit: 128m
+    restart: unless-stopped

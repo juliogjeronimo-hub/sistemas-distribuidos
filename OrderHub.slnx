@@ -1,2 +1,26 @@
 <Solution>
+  <Folder Name="/src/">
+    <Folder Name="/src/Catalog/">
+      <Project Path="src/Catalog/OrderHub.Catalog.Domain/OrderHub.Catalog.Domain.csproj" />
+      <Project Path="src/Catalog/OrderHub.Catalog.Application/OrderHub.Catalog.Application.csproj" />
+      <Project Path="src/Catalog/OrderHub.Catalog.Infrastructure/OrderHub.Catalog.Infrastructure.csproj" />
+      <Project Path="src/Catalog/OrderHub.Catalog.Api/OrderHub.Catalog.Api.csproj" />
+    </Folder>
+    <Folder Name="/src/Gateway/">
+      <Project Path="src/Gateway/OrderHub.Gateway/OrderHub.Gateway.csproj" />
+    </Folder>
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/OrderHub.Catalog.Architecture.Tests/OrderHub.Catalog.Architecture.Tests.csproj" />
+    <Folder Name="/tests/catalog/">
+      <Project Path="tests/catalog/OrderHub.Catalog.Api.IntegrationTests/OrderHub.Catalog.Api.IntegrationTests.csproj" />
+    </Folder>
+  </Folder>
+  <Folder Name="/tests/catalog/">
+    <Project Path="src/Catalog/OrderHub.Catalog.Api/OrderHub.Catalog.Api.csproj" />
+    <Project Path="src/Catalog/OrderHub.Catalog.Application/OrderHub.Catalog.Application.csproj" />
+    <Project Path="src/Catalog/OrderHub.Catalog.Domain/OrderHub.Catalog.Domain.csproj" />
+    <Project Path="src/Catalog/OrderHub.Catalog.Infrastructure/OrderHub.Catalog.Infrastructure.csproj" />
+    <Project Path="tests/catalog/OrderHub.Catalog.Api.IntegrationTests/OrderHub.Catalog.Api.IntegrationTests.csproj" />
+  </Folder>
 </Solution>

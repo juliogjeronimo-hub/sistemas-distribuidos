@@ -1,0 +1,33 @@
+# ─── Prometheus — configuração de scraping ────────────────────────────────────
+# Todos os targets usam o nome de serviço Docker (resolução DNS interna).
+# Intervalo global de 15 s; sobrescrito por job quando necessário.
+
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+  external_labels:
+    environment: local
+
+# ─── Jobs de scraping ─────────────────────────────────────────────────────────
+scrape_configs:
+
+  # Self-monitoring do Prometheus
+  - job_name: prometheus
+    static_configs:
+      - targets: ["localhost:9090"]
+
+  # Catalog — expõe métricas OpenTelemetry/Prometheus em /metrics
+  - job_name: catalog
+    metrics_path: /metrics
+    static_configs:
+      - targets: ["catalog:8080"]
+        labels:
+          service: catalog
+
+  # Gateway — métricas do proxy YARP
+  - job_name: gateway
+    metrics_path: /metrics
+    static_configs:
+      - targets: ["gateway:8080"]
+        labels:
+          service: gateway

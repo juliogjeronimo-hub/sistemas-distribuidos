@@ -1,0 +1,67 @@
+# ─── Overrides de desenvolvimento ─────────────────────────────────────────────
+# Expõe portas ao host para facilitar o desenvolvimento local e o acesso direto
+# às ferramentas de observabilidade.
+#
+# Aplicado automaticamente pelo Compose quando presente no mesmo diretório.
+# NÃO usar em produção.
+#
+# Exemplo de uso:
+#   docker compose -f docker-compose.yml -f docker-compose.services.yml up
+#   (este arquivo é incluído automaticamente)
+#
+# Profile "debug": expõe PostgreSQL na porta 5432 para acesso direto
+# (ex.: DBeaver, pgAdmin).
+
+name: orderhub
+
+services:
+
+  # ─── Keycloak ─────────────────────────────────────────────────────────────
+  keycloak:
+    ports:
+      - "8080:8080"
+      - "9000:9000"   # Management / health endpoint
+
+  # ─── RabbitMQ management ──────────────────────────────────────────────────
+  rabbitmq:
+    ports:
+      - "15672:15672"  # Management UI
+      - "5672:5672"    # AMQP
+
+  # ─── Prometheus ───────────────────────────────────────────────────────────
+  prometheus:
+    ports:
+      - "9090:9090"
+
+  # ─── Grafana ──────────────────────────────────────────────────────────────
+  grafana:
+    ports:
+      - "3000:3000"
+
+  # ─── Redis (acesso direto em dev) ─────────────────────────────────────────
+  redis:
+    ports:
+      - "6379:6379"
+
+  # ─── Gateway ──────────────────────────────────────────────────────────────
+  gateway:
+    ports:
+      - "5000:8080"
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+
+  # ─── Catalog ──────────────────────────────────────────────────────────────
+  catalog:
+    ports:
+      - "5001:8080"
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+
+  # ─── PostgreSQL (profile debug) ───────────────────────────────────────────
+  # Expõe o banco diretamente ao host somente quando o profile "debug" está
+  # ativo:  docker compose --profile debug up
+  postgres-catalog:
+    profiles:
+      - debug
+    ports:
+      - "5432:5432"

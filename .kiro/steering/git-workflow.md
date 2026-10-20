@@ -12,19 +12,9 @@ inclusion: manual
 - `hotfix/<english-kebab>`: parte de `main`, volta para `main` e `develop`.
 - `main` e `develop` protegidas: PR obrigatório, revisão, CI verde.
 
-## Commits (Conventional Commits, descrição em português)
+## Commits
 
-Formato: `tipo(escopo): descrição no imperativo, em português`
-
-Tipos: `feat`, `fix`, `docs`, `refactor`, `test`, `chore`, `ci`, `perf`. Quebra de compatibilidade: `feat!:` ou rodapé `BREAKING CHANGE:`.
-Escopos: `catalog`, `inventory`, `orders`, `payments`, `notifications`, `gateway`, `contracts`, `infra`, `auth`, `docs`, `labs`.
-
-Exemplos:
-```
-feat(orders): adiciona orquestração da saga de pedido
-fix(auth): corrige validação da audience do token
-docs(adr): registra decisão sobre handlers sem mediator
-```
+Seguem Conventional Commits 1.0.0 com descrição em português. A convenção completa (formato, tipos, escopos, breaking changes e exemplos) está em `git-commits.md`.
 
 ## Versionamento
 

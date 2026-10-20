@@ -11,6 +11,11 @@
         "executionId": "cdf44277-bfc5-4bd7-aba3-9f418c83e4ff",
         "chatSessionId": "sess_540f5391-0c68-4cc4-b0e1-8b57092264e5",
         "timestamp": 1792464873520
+      },
+      {
+        "executionId": "cdf44277-bfc5-4bd7-aba3-9f418c83e4ff",
+        "chatSessionId": "sess_540f5391-0c68-4cc4-b0e1-8b57092264e5",
+        "timestamp": 1792465431544
       }
     ],
     "2.1 Testes de arquitetura (NetArchTest) para as regras de dependência": [
@@ -18,6 +23,21 @@
         "executionId": "cdf44277-bfc5-4bd7-aba3-9f418c83e4ff",
         "chatSessionId": "sess_540f5391-0c68-4cc4-b0e1-8b57092264e5",
         "timestamp": 1792464866734
+      },
+      {
+        "executionId": "cdf44277-bfc5-4bd7-aba3-9f418c83e4ff",
+        "chatSessionId": "sess_540f5391-0c68-4cc4-b0e1-8b57092264e5",
+        "timestamp": 1792465439523
+      },
+      {
+        "executionId": "4527caa5-b165-4d5d-acd1-a44f4f4bc4a7",
+        "chatSessionId": "sess_52674d78-8da0-4441-b893-306a8e61e3fe",
+        "timestamp": 1792468555615
+      },
+      {
+        "executionId": "4527caa5-b165-4d5d-acd1-a44f4f4bc4a7",
+        "chatSessionId": "sess_52674d78-8da0-4441-b893-306a8e61e3fe",
+        "timestamp": 1792468591301
       }
     ],
     "3. Implementar composition root, `Result`, `ICommandHandler`/`IQueryHandler` e decorators base": [
@@ -25,6 +45,21 @@
         "executionId": "cdf44277-bfc5-4bd7-aba3-9f418c83e4ff",
         "chatSessionId": "sess_540f5391-0c68-4cc4-b0e1-8b57092264e5",
         "timestamp": 1792464866845
+      },
+      {
+        "executionId": "4527caa5-b165-4d5d-acd1-a44f4f4bc4a7",
+        "chatSessionId": "sess_52674d78-8da0-4441-b893-306a8e61e3fe",
+        "timestamp": 1792468558394
+      },
+      {
+        "executionId": "ed3fc5fd-374e-4c4e-86fc-d67a454af6d4",
+        "chatSessionId": "sess_3fc47026-60d2-43ee-a3b6-196f4ede735d",
+        "timestamp": 1792499425475
+      },
+      {
+        "executionId": "ed3fc5fd-374e-4c4e-86fc-d67a454af6d4",
+        "chatSessionId": "sess_3fc47026-60d2-43ee-a3b6-196f4ede735d",
+        "timestamp": 1792500102618
       }
     ],
     "4.1 Teste de integração com Testcontainers": [
@@ -32,6 +67,21 @@
         "executionId": "cdf44277-bfc5-4bd7-aba3-9f418c83e4ff",
         "chatSessionId": "sess_540f5391-0c68-4cc4-b0e1-8b57092264e5",
         "timestamp": 1792464866956
+      },
+      {
+        "executionId": "4527caa5-b165-4d5d-acd1-a44f4f4bc4a7",
+        "chatSessionId": "sess_52674d78-8da0-4441-b893-306a8e61e3fe",
+        "timestamp": 1792468558663
+      },
+      {
+        "executionId": "ed3fc5fd-374e-4c4e-86fc-d67a454af6d4",
+        "chatSessionId": "sess_3fc47026-60d2-43ee-a3b6-196f4ede735d",
+        "timestamp": 1792500108246
+      },
+      {
+        "executionId": "ed3fc5fd-374e-4c4e-86fc-d67a454af6d4",
+        "chatSessionId": "sess_3fc47026-60d2-43ee-a3b6-196f4ede735d",
+        "timestamp": 1792500765618
       }
     ],
     "5. Configurar logging estruturado e `CorrelationId` (middleware) _(Req. 4)_": [
@@ -39,6 +89,21 @@
         "executionId": "cdf44277-bfc5-4bd7-aba3-9f418c83e4ff",
         "chatSessionId": "sess_540f5391-0c68-4cc4-b0e1-8b57092264e5",
         "timestamp": 1792464867061
+      },
+      {
+        "executionId": "4527caa5-b165-4d5d-acd1-a44f4f4bc4a7",
+        "chatSessionId": "sess_52674d78-8da0-4441-b893-306a8e61e3fe",
+        "timestamp": 1792468558911
+      },
+      {
+        "executionId": "ed3fc5fd-374e-4c4e-86fc-d67a454af6d4",
+        "chatSessionId": "sess_3fc47026-60d2-43ee-a3b6-196f4ede735d",
+        "timestamp": 1792500772473
+      },
+      {
+        "executionId": "ed3fc5fd-374e-4c4e-86fc-d67a454af6d4",
+        "chatSessionId": "sess_3fc47026-60d2-43ee-a3b6-196f4ede735d",
+        "timestamp": 1792501244234
       }
     ],
     "6. Configurar OpenTelemetry e endpoint de métricas _(Req. 5)_": [
@@ -46,6 +111,21 @@
         "executionId": "cdf44277-bfc5-4bd7-aba3-9f418c83e4ff",
         "chatSessionId": "sess_540f5391-0c68-4cc4-b0e1-8b57092264e5",
         "timestamp": 1792464867163
+      },
+      {
+        "executionId": "4527caa5-b165-4d5d-acd1-a44f4f4bc4a7",
+        "chatSessionId": "sess_52674d78-8da0-4441-b893-306a8e61e3fe",
+        "timestamp": 1792468559032
+      },
+      {
+        "executionId": "ed3fc5fd-374e-4c4e-86fc-d67a454af6d4",
+        "chatSessionId": "sess_3fc47026-60d2-43ee-a3b6-196f4ede735d",
+        "timestamp": 1792501249588
+      },
+      {
+        "executionId": "ed3fc5fd-374e-4c4e-86fc-d67a454af6d4",
+        "chatSessionId": "sess_3fc47026-60d2-43ee-a3b6-196f4ede735d",
+        "timestamp": 1792501803460
       }
     ],
     "7. Escrever `Dockerfile` do Catalog (multi-stage, não-root)": [
@@ -53,6 +133,21 @@
         "executionId": "cdf44277-bfc5-4bd7-aba3-9f418c83e4ff",
         "chatSessionId": "sess_540f5391-0c68-4cc4-b0e1-8b57092264e5",
         "timestamp": 1792464867262
+      },
+      {
+        "executionId": "4527caa5-b165-4d5d-acd1-a44f4f4bc4a7",
+        "chatSessionId": "sess_52674d78-8da0-4441-b893-306a8e61e3fe",
+        "timestamp": 1792468559132
+      },
+      {
+        "executionId": "ed3fc5fd-374e-4c4e-86fc-d67a454af6d4",
+        "chatSessionId": "sess_3fc47026-60d2-43ee-a3b6-196f4ede735d",
+        "timestamp": 1792501809012
+      },
+      {
+        "executionId": "ed3fc5fd-374e-4c4e-86fc-d67a454af6d4",
+        "chatSessionId": "sess_3fc47026-60d2-43ee-a3b6-196f4ede735d",
+        "timestamp": 1792501919498
       }
     ],
     "8. Criar `deploy/docker-compose*.yml` com redes, healthchecks e limites de recursos _(Req. 1)_": [
@@ -60,6 +155,21 @@
         "executionId": "cdf44277-bfc5-4bd7-aba3-9f418c83e4ff",
         "chatSessionId": "sess_540f5391-0c68-4cc4-b0e1-8b57092264e5",
         "timestamp": 1792464867373
+      },
+      {
+        "executionId": "4527caa5-b165-4d5d-acd1-a44f4f4bc4a7",
+        "chatSessionId": "sess_52674d78-8da0-4441-b893-306a8e61e3fe",
+        "timestamp": 1792468559319
+      },
+      {
+        "executionId": "ed3fc5fd-374e-4c4e-86fc-d67a454af6d4",
+        "chatSessionId": "sess_3fc47026-60d2-43ee-a3b6-196f4ede735d",
+        "timestamp": 1792501923674
+      },
+      {
+        "executionId": "ed3fc5fd-374e-4c4e-86fc-d67a454af6d4",
+        "chatSessionId": "sess_3fc47026-60d2-43ee-a3b6-196f4ede735d",
+        "timestamp": 1792502669553
       }
     ],
     "9. Exportar realm `orderhub` para `deploy/keycloak/` e importar no boot _(Req. 2, 3)_": [
@@ -67,6 +177,21 @@
         "executionId": "cdf44277-bfc5-4bd7-aba3-9f418c83e4ff",
         "chatSessionId": "sess_540f5391-0c68-4cc4-b0e1-8b57092264e5",
         "timestamp": 1792464867524
+      },
+      {
+        "executionId": "4527caa5-b165-4d5d-acd1-a44f4f4bc4a7",
+        "chatSessionId": "sess_52674d78-8da0-4441-b893-306a8e61e3fe",
+        "timestamp": 1792468559517
+      },
+      {
+        "executionId": "ed3fc5fd-374e-4c4e-86fc-d67a454af6d4",
+        "chatSessionId": "sess_3fc47026-60d2-43ee-a3b6-196f4ede735d",
+        "timestamp": 1792502673372
+      },
+      {
+        "executionId": "ed3fc5fd-374e-4c4e-86fc-d67a454af6d4",
+        "chatSessionId": "sess_3fc47026-60d2-43ee-a3b6-196f4ede735d",
+        "timestamp": 1792502677462
       }
     ],
     "10. Criar Gateway (YARP) com validação de JWT e propagação de `X-Correlation-Id` _(Req. 2, 3)_": [
@@ -74,6 +199,26 @@
         "executionId": "cdf44277-bfc5-4bd7-aba3-9f418c83e4ff",
         "chatSessionId": "sess_540f5391-0c68-4cc4-b0e1-8b57092264e5",
         "timestamp": 1792464867681
+      },
+      {
+        "executionId": "4527caa5-b165-4d5d-acd1-a44f4f4bc4a7",
+        "chatSessionId": "sess_52674d78-8da0-4441-b893-306a8e61e3fe",
+        "timestamp": 1792468559631
+      },
+      {
+        "executionId": "ed3fc5fd-374e-4c4e-86fc-d67a454af6d4",
+        "chatSessionId": "sess_3fc47026-60d2-43ee-a3b6-196f4ede735d",
+        "timestamp": 1792502681031
+      },
+      {
+        "executionId": "1ff64778-c814-4c10-aeb4-720224c52895",
+        "chatSessionId": "sess_cc84ebdd-aa7b-4479-9ce4-d5d3a1ef3e15",
+        "timestamp": 1792503649445
+      },
+      {
+        "executionId": "1ff64778-c814-4c10-aeb4-720224c52895",
+        "chatSessionId": "sess_cc84ebdd-aa7b-4479-9ce4-d5d3a1ef3e15",
+        "timestamp": 1792503653336
       }
     ],
     "11. Criar dashboard do Grafana e config do Prometheus": [
@@ -81,6 +226,11 @@
         "executionId": "cdf44277-bfc5-4bd7-aba3-9f418c83e4ff",
         "chatSessionId": "sess_540f5391-0c68-4cc4-b0e1-8b57092264e5",
         "timestamp": 1792464867772
+      },
+      {
+        "executionId": "4527caa5-b165-4d5d-acd1-a44f4f4bc4a7",
+        "chatSessionId": "sess_52674d78-8da0-4441-b893-306a8e61e3fe",
+        "timestamp": 1792468559735
       }
     ],
     "12. Criar workflow do GitHub Actions (build, testes, arquitetura) _(Req. 6)_": [
@@ -88,6 +238,11 @@
         "executionId": "cdf44277-bfc5-4bd7-aba3-9f418c83e4ff",
         "chatSessionId": "sess_540f5391-0c68-4cc4-b0e1-8b57092264e5",
         "timestamp": 1792464867874
+      },
+      {
+        "executionId": "4527caa5-b165-4d5d-acd1-a44f4f4bc4a7",
+        "chatSessionId": "sess_52674d78-8da0-4441-b893-306a8e61e3fe",
+        "timestamp": 1792468559869
       }
     ],
     "13. Executar o experimento e registrar `docs/experimentos/01-fundacao.md`": [
@@ -95,6 +250,11 @@
         "executionId": "cdf44277-bfc5-4bd7-aba3-9f418c83e4ff",
         "chatSessionId": "sess_540f5391-0c68-4cc4-b0e1-8b57092264e5",
         "timestamp": 1792464867996
+      },
+      {
+        "executionId": "4527caa5-b165-4d5d-acd1-a44f4f4bc4a7",
+        "chatSessionId": "sess_52674d78-8da0-4441-b893-306a8e61e3fe",
+        "timestamp": 1792468559980
       }
     ],
     "14. Atualizar README e docs": [
@@ -102,6 +262,25 @@
         "executionId": "cdf44277-bfc5-4bd7-aba3-9f418c83e4ff",
         "chatSessionId": "sess_540f5391-0c68-4cc4-b0e1-8b57092264e5",
         "timestamp": 1792464868113
+      },
+      {
+        "executionId": "4527caa5-b165-4d5d-acd1-a44f4f4bc4a7",
+        "chatSessionId": "sess_52674d78-8da0-4441-b893-306a8e61e3fe",
+        "timestamp": 1792468560084
+      }
+    ],
+    "2. Criar projetos `OrderHub.Catalog.{Domain,Application,Infrastructure,Api}` com referências corretas": [
+      {
+        "executionId": "4527caa5-b165-4d5d-acd1-a44f4f4bc4a7",
+        "chatSessionId": "sess_52674d78-8da0-4441-b893-306a8e61e3fe",
+        "timestamp": 1792468586483
+      }
+    ],
+    "4. Implementar health checks `/health/live` e `/health/ready` _(Req. 5, 7)_": [
+      {
+        "executionId": "ed3fc5fd-374e-4c4e-86fc-d67a454af6d4",
+        "chatSessionId": "sess_3fc47026-60d2-43ee-a3b6-196f4ede735d",
+        "timestamp": 1792500765776
       }
     ]
   }

@@ -1,0 +1,13 @@
+<Project>
+  <!-- Inherit global settings -->
+  <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)../'))" />
+
+  <PropertyGroup>
+    <!--
+      CA1707: test methods use the Method_Scenario_Expected naming convention
+      which intentionally contains underscores. Suppressed globally for all test
+      projects rather than per-file to keep test code clean.
+    -->
+    <NoWarn>$(NoWarn);CA1707</NoWarn>
+  </PropertyGroup>
+</Project>

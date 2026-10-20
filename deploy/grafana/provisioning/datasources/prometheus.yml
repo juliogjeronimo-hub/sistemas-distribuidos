@@ -1,0 +1,17 @@
+# ─── Grafana — datasource Prometheus (provisionamento automático) ──────────────
+# Este arquivo é montado em /etc/grafana/provisioning/datasources/
+# e aplicado na inicialização do Grafana.
+
+apiVersion: 1
+
+datasources:
+  - name: Prometheus
+    type: prometheus
+    uid: prometheus-orderhub
+    access: proxy
+    url: http://prometheus:9090
+    isDefault: true
+    editable: false
+    jsonData:
+      timeInterval: "15s"
+      httpMethod: POST
