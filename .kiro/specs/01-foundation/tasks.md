@@ -2,7 +2,7 @@
 
 - [x] 1. Criar estrutura de pastas, `.editorconfig`, `Directory.Build.props` (Nullable, TreatWarningsAsErrors) _(Req. 6)_
 - [x] 2. Criar projetos `OrderHub.Catalog.{Domain,Application,Infrastructure,Api}` com referências corretas
-  - [ ] 2.1 Testes de arquitetura (NetArchTest) para as regras de dependência
+  - [x] 2.1 Testes de arquitetura (NetArchTest) para as regras de dependência
 - [x] 3. Implementar composition root, `Result`, `ICommandHandler`/`IQueryHandler` e decorators base
 - [x] 4. Implementar health checks `/health/live` e `/health/ready` _(Req. 5, 7)_
   - [x] 4.1 Teste de integração com Testcontainers
@@ -11,8 +11,8 @@
 - [x] 7. Escrever `Dockerfile` do Catalog (multi-stage, não-root)
 - [x] 8. Criar `deploy/docker-compose*.yml` com redes, healthchecks e limites de recursos _(Req. 1)_
 - [x] 9. Exportar realm `orderhub` para `deploy/keycloak/` e importar no boot _(Req. 2, 3)_
-- [ ] 10. Criar Gateway (YARP) com validação de JWT e propagação de `X-Correlation-Id` _(Req. 2, 3)_
-- [ ] 11. Criar dashboard do Grafana e config do Prometheus
-- [ ] 12. Criar workflow do GitHub Actions (build, testes, arquitetura) _(Req. 6)_
-- [ ] 13. Executar o experimento e registrar `docs/experimentos/01-fundacao.md`
-- [ ] 14. Atualizar README e docs
+- [x] 10. Criar Gateway (YARP) com validação de JWT e propagação de `X-Correlation-Id` _(Req. 2, 3)_
+- [x] 11. Criar dashboard do Grafana e config do Prometheus
+- [x] 12. Criar workflow do GitHub Actions (build, testes, arquitetura) _(Req. 6)_
+- [x] 13. Executar o experimento e registrar `docs/experimentos/01-fundacao.md`
+- [x] 14. Atualizar README e docs

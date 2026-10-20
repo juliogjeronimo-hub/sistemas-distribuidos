@@ -38,6 +38,21 @@
         "executionId": "4527caa5-b165-4d5d-acd1-a44f4f4bc4a7",
         "chatSessionId": "sess_52674d78-8da0-4441-b893-306a8e61e3fe",
         "timestamp": 1792468591301
+      },
+      {
+        "executionId": "b96ad768-4ede-4b78-96bc-2998c9730d01",
+        "chatSessionId": "sess_eda74afa-da8d-4e96-b400-14916057c653",
+        "timestamp": 1792523496096
+      },
+      {
+        "executionId": "b96ad768-4ede-4b78-96bc-2998c9730d01",
+        "chatSessionId": "sess_eda74afa-da8d-4e96-b400-14916057c653",
+        "timestamp": 1792523504420
+      },
+      {
+        "executionId": "b96ad768-4ede-4b78-96bc-2998c9730d01",
+        "chatSessionId": "sess_eda74afa-da8d-4e96-b400-14916057c653",
+        "timestamp": 1792525969003
       }
     ],
     "3. Implementar composition root, `Result`, `ICommandHandler`/`IQueryHandler` e decorators base": [
@@ -219,6 +234,21 @@
         "executionId": "1ff64778-c814-4c10-aeb4-720224c52895",
         "chatSessionId": "sess_cc84ebdd-aa7b-4479-9ce4-d5d3a1ef3e15",
         "timestamp": 1792503653336
+      },
+      {
+        "executionId": "b96ad768-4ede-4b78-96bc-2998c9730d01",
+        "chatSessionId": "sess_eda74afa-da8d-4e96-b400-14916057c653",
+        "timestamp": 1792523497105
+      },
+      {
+        "executionId": "38960eff-012f-462f-a780-d9b6ff8e0306",
+        "chatSessionId": "sess_6b530c92-ad42-4d0b-bb8d-bba6cd536f54",
+        "timestamp": 1792527053187
+      },
+      {
+        "executionId": "38960eff-012f-462f-a780-d9b6ff8e0306",
+        "chatSessionId": "sess_6b530c92-ad42-4d0b-bb8d-bba6cd536f54",
+        "timestamp": 1792527532129
       }
     ],
     "11. Criar dashboard do Grafana e config do Prometheus": [
@@ -231,6 +261,31 @@
         "executionId": "4527caa5-b165-4d5d-acd1-a44f4f4bc4a7",
         "chatSessionId": "sess_52674d78-8da0-4441-b893-306a8e61e3fe",
         "timestamp": 1792468559735
+      },
+      {
+        "executionId": "b96ad768-4ede-4b78-96bc-2998c9730d01",
+        "chatSessionId": "sess_eda74afa-da8d-4e96-b400-14916057c653",
+        "timestamp": 1792523497364
+      },
+      {
+        "executionId": "38960eff-012f-462f-a780-d9b6ff8e0306",
+        "chatSessionId": "sess_6b530c92-ad42-4d0b-bb8d-bba6cd536f54",
+        "timestamp": 1792527538271
+      },
+      {
+        "executionId": "1e087c01-30d9-4ff8-8c9d-148f47308bc8",
+        "chatSessionId": "sess_1433e8ea-979f-4e6f-a3f1-545cadb41ebb",
+        "timestamp": 1792527766730
+      },
+      {
+        "executionId": "1e087c01-30d9-4ff8-8c9d-148f47308bc8",
+        "chatSessionId": "sess_1433e8ea-979f-4e6f-a3f1-545cadb41ebb",
+        "timestamp": 1792527774600
+      },
+      {
+        "executionId": "1e087c01-30d9-4ff8-8c9d-148f47308bc8",
+        "chatSessionId": "sess_1433e8ea-979f-4e6f-a3f1-545cadb41ebb",
+        "timestamp": 1792528498503
       }
     ],
     "12. Criar workflow do GitHub Actions (build, testes, arquitetura) _(Req. 6)_": [
@@ -243,6 +298,26 @@
         "executionId": "4527caa5-b165-4d5d-acd1-a44f4f4bc4a7",
         "chatSessionId": "sess_52674d78-8da0-4441-b893-306a8e61e3fe",
         "timestamp": 1792468559869
+      },
+      {
+        "executionId": "b96ad768-4ede-4b78-96bc-2998c9730d01",
+        "chatSessionId": "sess_eda74afa-da8d-4e96-b400-14916057c653",
+        "timestamp": 1792523497722
+      },
+      {
+        "executionId": "1e087c01-30d9-4ff8-8c9d-148f47308bc8",
+        "chatSessionId": "sess_1433e8ea-979f-4e6f-a3f1-545cadb41ebb",
+        "timestamp": 1792527767165
+      },
+      {
+        "executionId": "1e087c01-30d9-4ff8-8c9d-148f47308bc8",
+        "chatSessionId": "sess_1433e8ea-979f-4e6f-a3f1-545cadb41ebb",
+        "timestamp": 1792528501974
+      },
+      {
+        "executionId": "1e087c01-30d9-4ff8-8c9d-148f47308bc8",
+        "chatSessionId": "sess_1433e8ea-979f-4e6f-a3f1-545cadb41ebb",
+        "timestamp": 1792528704039
       }
     ],
     "13. Executar o experimento e registrar `docs/experimentos/01-fundacao.md`": [
@@ -255,6 +330,26 @@
         "executionId": "4527caa5-b165-4d5d-acd1-a44f4f4bc4a7",
         "chatSessionId": "sess_52674d78-8da0-4441-b893-306a8e61e3fe",
         "timestamp": 1792468559980
+      },
+      {
+        "executionId": "b96ad768-4ede-4b78-96bc-2998c9730d01",
+        "chatSessionId": "sess_eda74afa-da8d-4e96-b400-14916057c653",
+        "timestamp": 1792523497902
+      },
+      {
+        "executionId": "1e087c01-30d9-4ff8-8c9d-148f47308bc8",
+        "chatSessionId": "sess_1433e8ea-979f-4e6f-a3f1-545cadb41ebb",
+        "timestamp": 1792527767391
+      },
+      {
+        "executionId": "1e087c01-30d9-4ff8-8c9d-148f47308bc8",
+        "chatSessionId": "sess_1433e8ea-979f-4e6f-a3f1-545cadb41ebb",
+        "timestamp": 1792528707706
+      },
+      {
+        "executionId": "1e087c01-30d9-4ff8-8c9d-148f47308bc8",
+        "chatSessionId": "sess_1433e8ea-979f-4e6f-a3f1-545cadb41ebb",
+        "timestamp": 1792528826980
       }
     ],
     "14. Atualizar README e docs": [
@@ -267,6 +362,26 @@
         "executionId": "4527caa5-b165-4d5d-acd1-a44f4f4bc4a7",
         "chatSessionId": "sess_52674d78-8da0-4441-b893-306a8e61e3fe",
         "timestamp": 1792468560084
+      },
+      {
+        "executionId": "b96ad768-4ede-4b78-96bc-2998c9730d01",
+        "chatSessionId": "sess_eda74afa-da8d-4e96-b400-14916057c653",
+        "timestamp": 1792523498031
+      },
+      {
+        "executionId": "1e087c01-30d9-4ff8-8c9d-148f47308bc8",
+        "chatSessionId": "sess_1433e8ea-979f-4e6f-a3f1-545cadb41ebb",
+        "timestamp": 1792527767576
+      },
+      {
+        "executionId": "1e087c01-30d9-4ff8-8c9d-148f47308bc8",
+        "chatSessionId": "sess_1433e8ea-979f-4e6f-a3f1-545cadb41ebb",
+        "timestamp": 1792528830513
+      },
+      {
+        "executionId": "1e087c01-30d9-4ff8-8c9d-148f47308bc8",
+        "chatSessionId": "sess_1433e8ea-979f-4e6f-a3f1-545cadb41ebb",
+        "timestamp": 1792529001884
       }
     ],
     "2. Criar projetos `OrderHub.Catalog.{Domain,Application,Infrastructure,Api}` com referências corretas": [
