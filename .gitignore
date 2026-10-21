@@ -52,3 +52,7 @@ appsettings.*.local.json
 
 ## Kiro local settings
 .kiro/settings/
+
+## Temporários de diagnóstico/shell (saídas redirecionadas, scripts ad-hoc)
+*.out
+deploy/run-checks.ps1
