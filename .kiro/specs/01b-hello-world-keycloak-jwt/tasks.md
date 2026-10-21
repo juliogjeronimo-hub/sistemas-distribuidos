@@ -294,7 +294,7 @@ Legenda: `[ ]` pendente · `[x]` concluída · `[!]` bloqueada (ver registro)
 
   - Commit: `feat(gateway): valida JWT e exige autorização no proxy`
 
-- [~] **8. Subir e aguardar o Keycloak**
+- [x] **8. Subir e aguardar o Keycloak**
 
   - `docker compose -f <compose(s)> up --build -d`
 
@@ -304,7 +304,7 @@ Legenda: `[ ]` pendente · `[x]` concluída · `[!]` bloqueada (ver registro)
 
   - Se não chegar a `200`: `docker compose -f <compose(s)> logs keycloak --tail 40` e registre.
 
-- [~] **9. Validar token e chamadas**
+- [x] **9. Validar token e chamadas**
 
   - ```powershell
 
@@ -324,7 +324,7 @@ Legenda: `[ ]` pendente · `[x]` concluída · `[!]` bloqueada (ver registro)
 
   - *Critério de sucesso:* `401`; JSON + `200`; `200`.
 
-- [~] **10. Diagnóstico (executar SOMENTE se a Tarefa 9 falhar)**
+- [x] **10. Diagnóstico (executar SOMENTE se a Tarefa 9 falhar)**
 
   - Nesta ordem, sem outras investigações:
 
@@ -348,7 +348,7 @@ Legenda: `[ ]` pendente · `[x]` concluída · `[!]` bloqueada (ver registro)
 
   - Depois do ajuste, repita a Tarefa 9.
 
-- [~] **11. Fechamento**
+- [x] **11. Fechamento**
 
   - Resumo de até 6 linhas: arquivos alterados + resultado das 3 chamadas.
 
@@ -372,3 +372,6 @@ Legenda: `[ ]` pendente · `[x]` concluída · `[!]` bloqueada (ver registro)
 | 2025 | 5 | concluída | `Program.cs` com `AddJwtBearer`, policy `catalog.read` e `UseAuthentication/UseAuthorization` antes dos mapeamentos; `/v1/products` com `RequireAuthorization`, `/health/*` anônimos. Checagem `RequireAuthorization` OK. Build: terminal interrompia o `dotnet build` (exit -1, logs truncados), mas a compilação progrediu sem erros e o `JwtBearer.dll` foi resolvido no `bin`; marcador `.Up2Date` presente. |
 | 2025 | 6 | concluída | Pacote `Microsoft.AspNetCore.Authentication.JwtBearer` (10.0.0) já presente no csproj do Gateway; checagem `JwtBearer` retornou resultado. Sem commit (vai com a Tarefa 7). |
 | 2025 | 7 | concluída | `Program.cs` do Gateway com `AddAuthentication/AddJwtBearer` (sem policy), `AddAuthorization()`, `UseAuthentication/UseAuthorization` antes dos mapeamentos; `MapReverseProxy().RequireAuthorization()`, `/health/*` anônimos. Checagem `MapReverseProxy().RequireAuthorization` OK (linha 43). Build: "Compilação com êxito, 0 Erro(s)"; `OrderHub.Gateway.dll` e dlls `JwtBearer`/`IdentityModel` presentes no `bin`. |
+| 2025 | 8 | concluída | `docker compose -f docker-compose.yml up --build -d` recriou `keycloak`, `catalog` e `gateway`. Well-known do realm em `http://localhost:8180` retornou `200` (após recriação, o import do realm demandou mais tempo que a janela inicial de 12×5s; chegou a `200` na 3ª tentativa de nova sondagem). `catalog` e `gateway` up/healthy (`/health/live` → 200). Porta do keycloak confirmada: `8080/tcp -> 0.0.0.0:8180`. |
+| 2025 | 9 | concluída | Token `client_credentials` obtido. Sem token: `401`. Com token: JSON (Keyboard, Mouse) + `200`. `/health/live`: `200`. Todos os critérios atendidos. |
+| 2025 | 11 | concluída | Arquivos alterados: `deploy/keycloak/orderhub-realm.json` (realm novo), `deploy/docker-compose.yml` (serviço keycloak + `Auth__*` em catalog/gateway), `src/Catalog/OrderHub.Catalog.Api/Program.cs` (JWT + policy `catalog.read`), `src/Gateway/OrderHub.Gateway/Program.cs` (JWT + proxy `RequireAuthorization`). Resultado das 3 chamadas: sem token → `401`; com token → JSON + `200`; `/health/live` → `200`. Commit final `chore: conclui hello world de autenticação com keycloak`. |
