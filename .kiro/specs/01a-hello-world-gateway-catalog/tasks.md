@@ -96,7 +96,7 @@ Legenda: `[ ]` pendente · `[x]` concluída · `[!]` bloqueada (ver registro)
   - *Checagem:* `Select-String -Path <Dockerfile do Catalog> -Pattern "adduser"` não retorna nada e há `USER $APP_UID`.
   - Commit: `fix(catalog): usa usuário não-root embutido e instala curl no Dockerfile`
 
-- [~] **4. Gateway: pacote, `Program.cs` e `appsettings.json`**
+- [x] **4. Gateway: pacote, `Program.cs` e `appsettings.json`**
   - Pacote: `dotnet add <csproj do Gateway> package Yarp.ReverseProxy`
   - `Program.cs`:
     ```csharp
@@ -192,3 +192,4 @@ Legenda: `[ ]` pendente · `[x]` concluída · `[!]` bloqueada (ver registro)
 | 2025 | 1 | concluída | Já estava correto: `Scan` com `publicOnly: false` + `TryDecorate` (4x), sem `.Decorate(`. `ApplicationAssemblyMarker` já existe. Sem alterações, sem commit. |
 | 2025 | 2 | concluída | `Program.cs` já estava conforme a spec, usando `AddApplicationServices()`, health checks e `/v1/products`. Checagem OK e `dotnet build` com êxito (0 avisos, 0 erros). Sem alteração no arquivo. |
 | 2025 | 3 | concluída | Dockerfile já conforme a spec: estágios `build`/`publish` intactos, estágio final com `curl` via `USER root`, `USER $APP_UID`, `EXPOSE 8080` e entrypoint `OrderHub.Catalog.Api.dll`. Checagem OK: sem `adduser`, sem `chown=appuser`/`ASPNETCORE_URLS`, `USER $APP_UID` presente. Sem alteração no arquivo. |
+| 2025 | 4 | concluída | Tudo já conforme a spec: csproj com `Yarp.ReverseProxy` 2.3.0, `Program.cs` com `AddReverseProxy`/`LoadFromConfig`/`MapReverseProxy`, `appsettings.json` com rota `catalog` e `Logging` preservado. Checagem OK e `dotnet build` com êxito (0 avisos, 0 erros). Sem alteração nos arquivos. |
