@@ -4,8 +4,6 @@ using OrderHub.Catalog.Domain.Common;
 
 namespace OrderHub.Catalog.Application.Decorators;
 
-// ── Source-generated log messages (CA1848-compliant, zero allocation) ─────────
-
 internal static partial class HandlerLog
 {
     [LoggerMessage(Level = LogLevel.Information, Message = "Executing command {CommandName}")]
@@ -25,13 +23,6 @@ internal static partial class HandlerLog
         ILogger logger, string commandName, string errorCode, string errorMessage);
 }
 
-// ── Logging decorators ────────────────────────────────────────────────────────
-
-/// <summary>
-/// Decorator that logs the start and outcome of every void command execution.
-/// Registered via Scrutor; no handler contains logging code.
-/// </summary>
-/// <typeparam name="TCommand">The command being handled.</typeparam>
 internal sealed class LoggingCommandHandlerDecorator<TCommand>(
     ICommandHandler<TCommand> inner,
     ILogger<LoggingCommandHandlerDecorator<TCommand>> logger)
@@ -55,11 +46,6 @@ internal sealed class LoggingCommandHandlerDecorator<TCommand>(
     }
 }
 
-/// <summary>
-/// Decorator that logs the start and outcome of every typed command execution.
-/// </summary>
-/// <typeparam name="TCommand">The command being handled.</typeparam>
-/// <typeparam name="TResponse">The success value type.</typeparam>
 internal sealed class LoggingCommandHandlerDecorator<TCommand, TResponse>(
     ICommandHandler<TCommand, TResponse> inner,
     ILogger<LoggingCommandHandlerDecorator<TCommand, TResponse>> logger)

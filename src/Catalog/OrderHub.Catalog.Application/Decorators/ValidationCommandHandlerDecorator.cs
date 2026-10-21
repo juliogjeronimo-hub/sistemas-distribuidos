@@ -5,12 +5,8 @@ using OrderHub.Catalog.Domain.Common;
 
 namespace OrderHub.Catalog.Application.Decorators;
 
-/// <summary>
-/// Decorator that runs FluentValidation validators (if any are registered for the command)
-/// before delegating to the inner handler. When no validator is registered the command
-/// passes through unchanged — so adding a validator later requires no handler change.
-/// </summary>
-/// <typeparam name="TCommand">The command being validated.</typeparam>
+// When no validator is registered the command passes through unchanged, so a
+// validator can be added later without touching the handler.
 internal sealed class ValidationCommandHandlerDecorator<TCommand>(
     ICommandHandler<TCommand> inner,
     IEnumerable<IValidator<TCommand>> validators,
@@ -48,11 +44,6 @@ internal sealed class ValidationCommandHandlerDecorator<TCommand>(
     }
 }
 
-/// <summary>
-/// Decorator that runs FluentValidation validators before delegating to the typed inner handler.
-/// </summary>
-/// <typeparam name="TCommand">The command being validated.</typeparam>
-/// <typeparam name="TResponse">The success value type.</typeparam>
 internal sealed class ValidationCommandHandlerDecorator<TCommand, TResponse>(
     ICommandHandler<TCommand, TResponse> inner,
     IEnumerable<IValidator<TCommand>> validators,

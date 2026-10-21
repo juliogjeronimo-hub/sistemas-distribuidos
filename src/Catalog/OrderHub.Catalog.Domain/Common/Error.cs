@@ -10,14 +10,12 @@ namespace OrderHub.Catalog.Domain.Common;
     Justification = "Error is the canonical name for this Result-pattern type; renaming would harm readability.")]
 public sealed record Error(string Code, string Message)
 {
-    /// <summary>Sentinel used when no real error is present (should not reach callers).</summary>
+    // Sentinel for a successful Result; it should never reach callers.
     public static readonly Error None = new(string.Empty, string.Empty);
 
-    /// <summary>Creates an error for a resource that could not be found.</summary>
     public static Error NotFound(string entity, string id) =>
         new($"{entity}.NotFound", $"{entity} with id '{id}' was not found.");
 
-    /// <summary>Creates a validation error with an explicit message.</summary>
     public static Error Validation(string field, string message) =>
         new($"Validation.{field}", message);
 

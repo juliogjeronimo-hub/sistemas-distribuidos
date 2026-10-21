@@ -17,10 +17,6 @@ public sealed class ScopeRequirement(string scope) : IAuthorizationRequirement
     public string Scope { get; } = scope;
 }
 
-/// <summary>
-/// Handles <see cref="ScopeRequirement"/> by splitting the "scope" claim on spaces
-/// and checking for the required scope.
-/// </summary>
 internal sealed class ScopeAuthorizationHandler : AuthorizationHandler<ScopeRequirement>
 {
     protected override Task HandleRequirementAsync(

@@ -2,22 +2,10 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace OrderHub.Gateway.Auth;
 
-/// <summary>
-/// Registers JWT bearer authentication for the Gateway.
-///
-/// The Gateway is the first line of defense: requests without a valid token
-/// are rejected with 401 before being proxied (Req. 2). Requests carrying a
-/// valid token from the <c>orderhub</c> realm are forwarded to the destination
-/// service (Req. 3). Each downstream service validates the token again
-/// (defense-in-depth).
-/// </summary>
+// The Gateway is the first line of defense: unauthenticated requests are rejected
+// before being proxied, and each downstream service validates the token again.
 internal static class AuthServiceCollectionExtensions
 {
-    /// <summary>
-    /// Adds JWT bearer auth bound to <see cref="AuthOptions"/> plus a default
-    /// policy that requires an authenticated user for every proxied route.
-    /// Call this from the Gateway composition root.
-    /// </summary>
     public static IServiceCollection AddGatewayAuth(
         this IServiceCollection services,
         IConfiguration configuration)
@@ -38,22 +26,21 @@ internal static class AuthServiceCollectionExtensions
 
                 options.TokenValidationParameters = new()
                 {
-                    // Always validate signature, issuer, audience and expiry.
-                    // These MUST NOT be disabled, even in dev environments.
+                    // These validations MUST NOT be disabled, even in dev.
                     ValidateIssuer = true,
                     ValidateAudience = true,
                     ValidateLifetime = true,
                     ValidateIssuerSigningKey = true,
 
-                    // Clock skew tolerance — keep small to reduce the replay window.
+                    // Keep the skew small to reduce the replay window.
                     ClockSkew = TimeSpan.FromSeconds(30),
                 };
             });
 
         services.AddAuthorization(options =>
         {
-            // Every proxied route requires an authenticated user by default.
-            // Diagnostic endpoints opt out explicitly with AllowAnonymous.
+            // FallbackPolicy makes every route require authentication unless it
+            // opts out with AllowAnonymous (the diagnostic endpoints do).
             options.FallbackPolicy = new Microsoft.AspNetCore.Authorization.AuthorizationPolicyBuilder()
                 .RequireAuthenticatedUser()
                 .Build();
