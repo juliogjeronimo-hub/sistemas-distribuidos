@@ -28,6 +28,11 @@ services:
       context: ..
       dockerfile: src/Catalog/OrderHub.Catalog.Api/Dockerfile
     container_name: orderhub-catalog
+    environment:
+      Auth__MetadataAddress: http://keycloak:8080/realms/orderhub/.well-known/openid-configuration
+      Auth__ValidIssuer: http://localhost:8180/realms/orderhub
+      Auth__Audience: orderhub-api
+      Auth__RequireHttpsMetadata: "false"
     ports:
       - "5001:8080"
     healthcheck:
@@ -46,6 +51,11 @@ services:
       context: ..
       dockerfile: src/Gateway/OrderHub.Gateway/Dockerfile
     container_name: orderhub-gateway
+    environment:
+      Auth__MetadataAddress: http://keycloak:8080/realms/orderhub/.well-known/openid-configuration
+      Auth__ValidIssuer: http://localhost:8180/realms/orderhub
+      Auth__Audience: orderhub-api
+      Auth__RequireHttpsMetadata: "false"
     ports:
       - "5000:8080"
     depends_on:
