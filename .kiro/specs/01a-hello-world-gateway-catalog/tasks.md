@@ -139,7 +139,7 @@ Legenda: `[ ]` pendente · `[x]` concluída · `[!]` bloqueada (ver registro)
   - *Checagem:* `Select-String -Path <Dockerfile do Gateway> -Pattern "APP_UID"` retorna resultado.
   - Commit: `feat(gateway): adiciona Dockerfile multi-stage`
 
-- [~] **6. `.dockerignore` na raiz do repositório**
+- [x] **6. `.dockerignore` na raiz do repositório**
   - Se não existir, crie:
     ```
     **/bin/
@@ -154,7 +154,7 @@ Legenda: `[ ]` pendente · `[x]` concluída · `[!]` bloqueada (ver registro)
   - *Checagem:* `Test-Path .dockerignore`
   - Commit: `chore(infra): adiciona dockerignore`
 
-- [~] **7. Compose (em `deploy/`)**
+- [x] **7. Compose (em `deploy/`)**
   - Deixe **apenas** `catalog` e `gateway` ativos. Comente (não apague) os demais serviços (keycloak, rabbitmq, prometheus, grafana, postgres...).
   - `catalog`: `build.context: ..`, `dockerfile:` com o caminho real, `container_name: orderhub-catalog`, sem `ASPNETCORE_URLS`, `ports: ["5001:8080"]`, healthcheck:
     `test: ["CMD", "curl", "-fsS", "http://localhost:8080/health/live"]`, `interval: 10s`, `timeout: 3s`, `retries: 5`, `start_period: 20s`.
@@ -163,13 +163,13 @@ Legenda: `[ ]` pendente · `[x]` concluída · `[!]` bloqueada (ver registro)
   - *Checagem:* `docker compose -f <compose(s)> config --services` lista apenas `catalog` e `gateway`.
   - Commit: `feat(infra): compose com catalog e gateway`
 
-- [~] **8. Subir o ambiente**
+- [x] **8. Subir o ambiente**
   - `docker compose -f <compose(s)> up --build -d`
   - `docker compose -f <compose(s)> ps`
   - *Critério:* ambos os containers `healthy`.
   - Se falhar: `docker compose -f <compose(s)> logs <servico> --tail 40` (somente do serviço com problema). Nada além disso.
 
-- [~] **9. Validar as chamadas**
+- [x] **9. Validar as chamadas**
   - ```powershell
     curl.exe -s -o NUL -w "%{http_code}`n" http://localhost:5000/health/live
     curl.exe -s http://localhost:5000/catalog/v1/products
@@ -177,7 +177,7 @@ Legenda: `[ ]` pendente · `[x]` concluída · `[!]` bloqueada (ver registro)
     ```
   - *Critério de sucesso:* `200`; JSON com 2 produtos; `200`.
 
-- [~] **10. Fechamento**
+- [x] **10. Fechamento**
   - Resumo de até 6 linhas: arquivos alterados + resultado das 3 chamadas.
   - Commit final, se restar algo: `chore: conclui hello world gateway e catalog`
 
@@ -194,3 +194,8 @@ Legenda: `[ ]` pendente · `[x]` concluída · `[!]` bloqueada (ver registro)
 | 2025 | 3 | concluída | Dockerfile já conforme a spec: estágios `build`/`publish` intactos, estágio final com `curl` via `USER root`, `USER $APP_UID`, `EXPOSE 8080` e entrypoint `OrderHub.Catalog.Api.dll`. Checagem OK: sem `adduser`, sem `chown=appuser`/`ASPNETCORE_URLS`, `USER $APP_UID` presente. Sem alteração no arquivo. |
 | 2025 | 4 | concluída | Tudo já conforme a spec: csproj com `Yarp.ReverseProxy` 2.3.0, `Program.cs` com `AddReverseProxy`/`LoadFromConfig`/`MapReverseProxy`, `appsettings.json` com rota `catalog` e `Logging` preservado. Checagem OK e `dotnet build` com êxito (0 avisos, 0 erros). Sem alteração nos arquivos. |
 | 2025 | 5 | concluída | Dockerfile do Gateway já conforme a spec: multi-stage, `restore` em camada separada copiando só `Directory.Build.props` + `OrderHub.Gateway.csproj` (sem `ProjectReference`), estágio final com `curl`, `USER $APP_UID`, `EXPOSE 8080` e entrypoint `OrderHub.Gateway.dll`. Sem `adduser`/`chown=appuser`/`ASPNETCORE_URLS`. Checagem OK (`USER $APP_UID` na linha 39). Sem alteração no arquivo. |
+| 2025 | 6 | concluída | `.dockerignore` já existe na raiz (versão mais abrangente, cobrindo `**/bin`, `**/obj`, `.vs`, `.git`, `.kiro`, `docs`, `labs`, `*.md`). Checagem `Test-Path .dockerignore` → True. Não modificado (spec manda não alterar se já existir). Sem commit (arquivo não foi criado). |
+| 2025 | 7 | concluída | `deploy/docker-compose.yml` (base) já conforme a spec: apenas `catalog` e `gateway`, `build.context: ..`, dockerfiles corretos, `container_name` `orderhub-catalog`/`orderhub-gateway`, portas `5001:8080`/`5000:8080`, sem `ASPNETCORE_URLS`, healthcheck (`curl -fsS .../health/live`, 10s/3s/5/20s), `gateway depends_on catalog: service_healthy`, rede padrão. **Compose para hello-world (Tarefas 8-9): usar `-f deploy/docker-compose.yml`** (NÃO usar o override auto-aplicado). Checagem: `docker compose -f deploy/docker-compose.yml config --services` → `catalog`, `gateway` (exit 0). Sem alteração, sem commit. |
+| 2025 | 8 | concluída | `docker compose -f deploy/docker-compose.yml up --build -d`: ambas as imagens construídas, rede `orderhub_default` criada, `catalog` ficou healthy e então `gateway` iniciou. `ps`: `orderhub-catalog :: Up (healthy)` e `orderhub-gateway :: Up (healthy)` — critério atendido. Warning de orphan containers (grafana/keycloak/postgres/prometheus/rabbitmq/redis) de sessão anterior, fora deste compose; ignorado. Sem commit. |
+| 2025 | 9 | concluída | As 3 chamadas atenderam o critério. (1) `GET /health/live` → `200`. (2) `GET /catalog/v1/products` → JSON com 2 produtos: `Keyboard` (199.90) e `Mouse` (89.90). (3) `GET /catalog/health/live` (proxied, prefixo `/catalog` removido pelo transform do YARP) → `200`. Sem commit. |
+| 2025 | 10 | concluída | Resumo: alterados `ApplicationServiceCollectionExtensions.cs` (Decorate→TryDecorate), `Gateway/Program.cs` e `appsettings.json` (YARP mínimo), `Gateway/Dockerfile`, `deploy/docker-compose.yml` (só catalog+gateway) e `tasks.md`. Chamadas via Gateway: `/health/live`=200; `/catalog/v1/products`=2 produtos (Keyboard 199.90, Mouse 89.90); `/catalog/health/live`=200. Commit final `chore: conclui hello world gateway e catalog`. |

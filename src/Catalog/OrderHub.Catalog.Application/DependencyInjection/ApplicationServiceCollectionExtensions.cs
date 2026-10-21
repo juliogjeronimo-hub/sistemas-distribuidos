@@ -27,16 +27,16 @@ public static class ApplicationServiceCollectionExtensions
 
         // Scrutor applies decorators in reverse registration order, so the
         // effective call order is Validation -> Logging -> Handler.
-        services.Decorate(typeof(ICommandHandler<>),
+        services.TryDecorate(typeof(ICommandHandler<>),
             typeof(LoggingCommandHandlerDecorator<>));
 
-        services.Decorate(typeof(ICommandHandler<>),
+        services.TryDecorate(typeof(ICommandHandler<>),
             typeof(ValidationCommandHandlerDecorator<>));
 
-        services.Decorate(typeof(ICommandHandler<,>),
+        services.TryDecorate(typeof(ICommandHandler<,>),
             typeof(LoggingCommandHandlerDecorator<,>));
 
-        services.Decorate(typeof(ICommandHandler<,>),
+        services.TryDecorate(typeof(ICommandHandler<,>),
             typeof(ValidationCommandHandlerDecorator<,>));
 
         return services;
