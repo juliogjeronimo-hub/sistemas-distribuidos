@@ -134,7 +134,7 @@ Legenda: `[ ]` pendente · `[x]` concluída · `[!]` bloqueada (ver registro)
   - *Checagem:* `Select-String -Path <csproj do Gateway> -Pattern "Yarp.ReverseProxy"` retorna resultado.
   - Commit: `feat(gateway): configura YARP com rota para o catalog`
 
-- [~] **5. Gateway: Dockerfile**
+- [x] **5. Gateway: Dockerfile**
   - Mesmo padrão do Catalog: multi-stage, `restore` em camada separada copiando só os `.csproj` necessários, estágio final com `curl` + `USER $APP_UID` + `EXPOSE 8080`, apontando para o csproj e a dll do Gateway. Contexto de build = raiz do repositório.
   - *Checagem:* `Select-String -Path <Dockerfile do Gateway> -Pattern "APP_UID"` retorna resultado.
   - Commit: `feat(gateway): adiciona Dockerfile multi-stage`
@@ -193,3 +193,4 @@ Legenda: `[ ]` pendente · `[x]` concluída · `[!]` bloqueada (ver registro)
 | 2025 | 2 | concluída | `Program.cs` já estava conforme a spec, usando `AddApplicationServices()`, health checks e `/v1/products`. Checagem OK e `dotnet build` com êxito (0 avisos, 0 erros). Sem alteração no arquivo. |
 | 2025 | 3 | concluída | Dockerfile já conforme a spec: estágios `build`/`publish` intactos, estágio final com `curl` via `USER root`, `USER $APP_UID`, `EXPOSE 8080` e entrypoint `OrderHub.Catalog.Api.dll`. Checagem OK: sem `adduser`, sem `chown=appuser`/`ASPNETCORE_URLS`, `USER $APP_UID` presente. Sem alteração no arquivo. |
 | 2025 | 4 | concluída | Tudo já conforme a spec: csproj com `Yarp.ReverseProxy` 2.3.0, `Program.cs` com `AddReverseProxy`/`LoadFromConfig`/`MapReverseProxy`, `appsettings.json` com rota `catalog` e `Logging` preservado. Checagem OK e `dotnet build` com êxito (0 avisos, 0 erros). Sem alteração nos arquivos. |
+| 2025 | 5 | concluída | Dockerfile do Gateway já conforme a spec: multi-stage, `restore` em camada separada copiando só `Directory.Build.props` + `OrderHub.Gateway.csproj` (sem `ProjectReference`), estágio final com `curl`, `USER $APP_UID`, `EXPOSE 8080` e entrypoint `OrderHub.Gateway.dll`. Sem `adduser`/`chown=appuser`/`ASPNETCORE_URLS`. Checagem OK (`USER $APP_UID` na linha 39). Sem alteração no arquivo. |
