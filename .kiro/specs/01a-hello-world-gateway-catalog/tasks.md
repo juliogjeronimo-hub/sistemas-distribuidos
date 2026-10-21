@@ -73,7 +73,7 @@ Legenda: `[ ]` pendente · `[x]` concluída · `[!]` bloqueada (ver registro)
   - *Checagem:* `Select-String -Path <Program.cs do Catalog> -Pattern "/v1/products"` retorna resultado.
   - Commit: `feat(catalog): adiciona endpoint de produtos e health checks`
 
-- [~] **3. Catalog: Dockerfile (estágio final)**
+- [x] **3. Catalog: Dockerfile (estágio final)**
   - Mantenha os estágios `build` e `publish`. O estágio final fica:
     ```dockerfile
     FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS final
@@ -191,3 +191,4 @@ Legenda: `[ ]` pendente · `[x]` concluída · `[!]` bloqueada (ver registro)
 |---|---|---|---|
 | 2025 | 1 | concluída | Já estava correto: `Scan` com `publicOnly: false` + `TryDecorate` (4x), sem `.Decorate(`. `ApplicationAssemblyMarker` já existe. Sem alterações, sem commit. |
 | 2025 | 2 | concluída | `Program.cs` já estava conforme a spec, usando `AddApplicationServices()`, health checks e `/v1/products`. Checagem OK e `dotnet build` com êxito (0 avisos, 0 erros). Sem alteração no arquivo. |
+| 2025 | 3 | concluída | Dockerfile já conforme a spec: estágios `build`/`publish` intactos, estágio final com `curl` via `USER root`, `USER $APP_UID`, `EXPOSE 8080` e entrypoint `OrderHub.Catalog.Api.dll`. Checagem OK: sem `adduser`, sem `chown=appuser`/`ASPNETCORE_URLS`, `USER $APP_UID` presente. Sem alteração no arquivo. |
