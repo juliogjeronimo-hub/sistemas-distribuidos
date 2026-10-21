@@ -22,6 +22,7 @@ fileMatchPattern: ["**/*.cs"]
 - Dinheiro: `decimal` + moeda explícita em value object `Money`.
 - Exceptions apenas para situações excepcionais. Falhas de negócio retornam `Result`.
 - Comentários explicam o *porquê*, nunca o *quê*.
+- Decorators via Scrutor: registrar os handlers (`Scan`) **antes** de decorar; usar `TryDecorate` (não `Decorate`) enquanto puder não haver handlers; no `Scan`, usar `publicOnly: false` para encontrar handlers `internal`. Manter um teste que verifica a cadeia de decorators de um handler real.
 
 ## Padrão de caso de uso
 
