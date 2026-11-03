@@ -1,12 +1,39 @@
-# ─── Serviços .NET: Catalog e Gateway (hello world) ───────────────────────────
-# Para subir todo o stack infra + serviços, use docker-compose.services.yml.
-# Este arquivo é para validar o fluxo gateway->catalog sem dependências externas.
+# ─── Plataforma compartilhada de infraestrutura ───────────────────────────────
+# Base com a infra comum a todos os serviços: Keycloak, RabbitMQ, Redis,
+# Prometheus e Grafana. Os serviços .NET (Catalog, Gateway) vivem em
+# docker-compose.services.yml; as portas de host de dev, em
+# docker-compose.override.yml.
+#
+#   docker compose -f docker-compose.yml -f docker-compose.services.yml up
 
 name: orderhub
+
+# ─── Redes ────────────────────────────────────────────────────────────────────
+# edge:     borda pública; só Gateway e Keycloak (login) alcançáveis por ela.
+# internal: comunicação entre serviços e infra de apoio (broker, cache, obs.).
+# data:     reservada para bancos; sem serviço com estado de banco nesta fase.
+networks:
+  edge:
+    driver: bridge
+  internal:
+    driver: bridge
+  data:
+    driver: bridge
+
+# ─── Volumes ────────────────────────────────────────────────────────────────
+# Named volumes keep stateful infra data across container restarts.
+# rabbitmq-data: broker state (queues, exchanges, messages).
+# grafana-data:  dashboards, users and runtime settings.
+volumes:
+  rabbitmq-data:
+  grafana-data:
 
 services:
 
   # ─── Keycloak ─────────────────────────────────────────────────────────────
+  # Identity provider (realm "orderhub"). Reachable from "edge" for the login
+  # flow and from "internal" for JWT validation by the services.
+  # Host ports are declared only in docker-compose.override.yml (dev).
   keycloak:
     image: quay.io/keycloak/keycloak:26.0
     container_name: orderhub-keycloak
@@ -17,56 +44,115 @@ services:
       KC_HOSTNAME: http://localhost:8180      # stable issuer for tokens issued via the host
       KC_HOSTNAME_BACKCHANNEL_DYNAMIC: "true" # containers reach Keycloak as keycloak:8080
       KC_HTTP_ENABLED: "true"
+      KC_HEALTH_ENABLED: "true"               # exposes /health on the management port 9000
     volumes:
       - ./keycloak/orderhub-realm.json:/opt/keycloak/data/import/orderhub-realm.json:ro
-    ports:
-      - "8180:8080"
-
-  # ─── Catalog ────────────────────────────────────────────────────────────────
-  catalog:
-    build:
-      context: ..
-      dockerfile: src/Catalog/OrderHub.Catalog.Api/Dockerfile
-    container_name: orderhub-catalog
-    environment:
-      Auth__MetadataAddress: http://keycloak:8080/realms/orderhub/.well-known/openid-configuration
-      Auth__ValidIssuer: http://localhost:8180/realms/orderhub
-      Auth__Audience: orderhub-api
-      Auth__RequireHttpsMetadata: "false"
-    ports:
-      - "5001:8080"
+    networks:
+      - edge
+      - internal
+    # The Keycloak image ships no curl/wget; probe the management health
+    # endpoint through the JVM's bash /dev/tcp facility instead.
     healthcheck:
-      test: ["CMD", "curl", "-fsS", "http://localhost:8080/health/live"]
-      interval: 10s
-      timeout: 3s
-      retries: 5
-      start_period: 20s
+      test: ["CMD-SHELL", "exec 3<>/dev/tcp/localhost/9000 && echo -e 'GET /health/ready HTTP/1.1\\r\\nHost: localhost\\r\\nConnection: close\\r\\n\\r\\n' >&3 && cat <&3 | grep -q '\"status\": \"UP\"'"]
+      interval: 15s
+      timeout: 5s
+      retries: 10
+      start_period: 40s
+    cpus: "1.0"
+    mem_limit: 512m
+    restart: unless-stopped
+
+  # ─── RabbitMQ ───────────────────────────────────────────────────────────────
+  # Message broker with the management plugin (management UI). New queues default
+  # to the quorum type via the mounted rabbitmq.conf. Reachable only from
+  # "internal"; host ports (15672/5672) live in docker-compose.override.yml (dev).
+  rabbitmq:
+    image: rabbitmq:4.0-management
+    container_name: orderhub-rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: orderhub   # dev only
+      RABBITMQ_DEFAULT_PASS: orderhub   # dev only
+    volumes:
+      - ./rabbitmq/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf:ro
+      - rabbitmq-data:/var/lib/rabbitmq
+    networks:
+      - internal
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
+      interval: 15s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+    cpus: "1.0"
+    mem_limit: 512m
+    restart: unless-stopped
+
+  # ─── Redis ────────────────────────────────────────────────────────────────
+  # In-memory cache. Reachable only from "internal"; the host port (6379) is
+  # declared solely in docker-compose.override.yml (dev).
+  redis:
+    image: redis:7.4-alpine
+    container_name: orderhub-redis
+    networks:
+      - internal
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 15s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
     cpus: "0.5"
     mem_limit: 256m
     restart: unless-stopped
 
-  # ─── Gateway (YARP) ─────────────────────────────────────────────────────────
-  gateway:
-    build:
-      context: ..
-      dockerfile: src/Gateway/OrderHub.Gateway/Dockerfile
-    container_name: orderhub-gateway
-    environment:
-      Auth__MetadataAddress: http://keycloak:8080/realms/orderhub/.well-known/openid-configuration
-      Auth__ValidIssuer: http://localhost:8180/realms/orderhub
-      Auth__Audience: orderhub-api
-      Auth__RequireHttpsMetadata: "false"
-    ports:
-      - "5000:8080"
-    depends_on:
-      catalog:
-        condition: service_healthy
+  # ─── Prometheus ─────────────────────────────────────────────────────────────
+  # Metrics collector. Scrapes the targets declared in prometheus.yml (jobs
+  # "prometheus", "catalog", "gateway"). Reachable only from "internal"; the
+  # host port (9090) is declared solely in docker-compose.override.yml (dev).
+  prometheus:
+    image: prom/prometheus:v3.1.0
+    container_name: orderhub-prometheus
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    networks:
+      - internal
+    # The image ships wget (BussyBox) but no curl; probe the built-in
+    # /-/healthy endpoint.
     healthcheck:
-      test: ["CMD", "curl", "-fsS", "http://localhost:8080/health/live"]
-      interval: 10s
-      timeout: 3s
-      retries: 5
-      start_period: 20s
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:9090/-/healthy"]
+      interval: 15s
+      timeout: 5s
+      retries: 10
+      start_period: 15s
+    cpus: "0.5"
+    mem_limit: 256m
+    restart: unless-stopped
+
+  # ─── Grafana ──────────────────────────────────────────────────────────────
+  # Dashboards UI. Datasource (Prometheus) and dashboards are provisioned
+  # automatically from the mounted ./grafana/provisioning tree. Dashboards live
+  # in the "json" subfolder referenced by dashboards.yml. Reachable only from
+  # "internal"; the host port (3000) is declared solely in
+  # docker-compose.override.yml (dev).
+  grafana:
+    image: grafana/grafana:11.4.0
+    container_name: orderhub-grafana
+    environment:
+      GF_SECURITY_ADMIN_USER: admin        # dev only
+      GF_SECURITY_ADMIN_PASSWORD: admin    # dev only
+    volumes:
+      - ./grafana/provisioning:/etc/grafana/provisioning:ro
+      - grafana-data:/var/lib/grafana
+    networks:
+      - internal
+    # The image ships wget (BusyBox) but no curl; probe the built-in
+    # /api/health endpoint.
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3000/api/health"]
+      interval: 15s
+      timeout: 5s
+      retries: 10
+      start_period: 15s
     cpus: "0.5"
     mem_limit: 256m
     restart: unless-stopped

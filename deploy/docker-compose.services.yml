@@ -1,23 +1,23 @@
 # ─── Serviços .NET ────────────────────────────────────────────────────────────
-# Usar junto com a infra:
+# Overlay dos serviços .NET sobre a plataforma de infra definida no
+# docker-compose.yml. Usar sempre junto com o base:
+#
 #   docker compose -f docker-compose.yml -f docker-compose.services.yml up
 #
 # As imagens são construídas a partir do código-fonte; o build context é a
 # raiz do repositório para que o Directory.Build.props seja alcançável.
+#
+# Redes e volumes são declarados no base (docker-compose.yml); este arquivo
+# apenas acrescenta/ajusta os serviços .NET. As portas de host ficam no
+# docker-compose.override.yml (dev).
 
 name: orderhub
-
-networks:
-  edge:
-    driver: bridge
-  internal:
-    driver: bridge
-  data:
-    driver: bridge
 
 services:
 
   # ─── Gateway (YARP) ───────────────────────────────────────────────────────
+  # Borda pública: fica em "edge" (alcançável de fora) e em "internal" (para
+  # falar com o Catalog e validar JWT no Keycloak).
   gateway:
     build:
       context: ..
@@ -30,6 +30,7 @@ services:
       ReverseProxy__Clusters__catalog__Destinations__catalog__Address: http://catalog:8080
       Auth__Authority: ${AUTH_AUTHORITY:-http://keycloak:8080/realms/orderhub}
       Auth__Audience: ${AUTH_AUDIENCE:-orderhub-api}
+      Auth__RequireHttpsMetadata: "false"
       Telemetry__ServiceName: gateway
       Telemetry__ServiceVersion: "1.0.0"
     networks:
@@ -51,6 +52,9 @@ services:
     restart: unless-stopped
 
   # ─── Catalog ──────────────────────────────────────────────────────────────
+  # Serviço interno: fica apenas em "internal". Valida JWT no Keycloak, por isso
+  # depende dele saudável. O banco próprio do Catalog chega na fase do serviço;
+  # nesta fase ainda não há Postgres no stack.
   catalog:
     build:
       context: ..
@@ -59,17 +63,15 @@ services:
     container_name: orderhub-catalog
     environment:
       ASPNETCORE_ENVIRONMENT: Production
-      ConnectionStrings__Catalog: >-
-        Host=postgres-catalog;Port=5432;Database=catalog;
-        Username=catalog;Password=${POSTGRES_CATALOG_PASSWORD:-changeme_dev}
       Auth__Authority: ${AUTH_AUTHORITY:-http://keycloak:8080/realms/orderhub}
       Auth__Audience: ${AUTH_AUDIENCE:-orderhub-api}
+      Auth__RequireHttpsMetadata: "false"
       Telemetry__ServiceName: catalog
       Telemetry__ServiceVersion: "1.0.0"
     networks:
       - internal
     depends_on:
-      postgres-catalog:
+      keycloak:
         condition: service_healthy
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://localhost:8080/health/ready || exit 1"]

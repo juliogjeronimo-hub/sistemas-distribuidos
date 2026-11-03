@@ -8,9 +8,6 @@
 # Exemplo de uso:
 #   docker compose -f docker-compose.yml -f docker-compose.services.yml up
 #   (este arquivo é incluído automaticamente)
-#
-# Profile "debug": expõe PostgreSQL na porta 5432 para acesso direto
-# (ex.: DBeaver, pgAdmin).
 
 name: orderhub
 
@@ -19,7 +16,7 @@ services:
   # ─── Keycloak ─────────────────────────────────────────────────────────────
   keycloak:
     ports:
-      - "8080:8080"
+      - "8180:8080"   # host 8180 matches KC_HOSTNAME (stable token issuer)
       - "9000:9000"   # Management / health endpoint
 
   # ─── RabbitMQ management ──────────────────────────────────────────────────
@@ -56,12 +53,3 @@ services:
       - "5001:8080"
     environment:
       ASPNETCORE_ENVIRONMENT: Development
-
-  # ─── PostgreSQL (profile debug) ───────────────────────────────────────────
-  # Expõe o banco diretamente ao host somente quando o profile "debug" está
-  # ativo:  docker compose --profile debug up
-  postgres-catalog:
-    profiles:
-      - debug
-    ports:
-      - "5432:5432"
