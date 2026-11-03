@@ -68,3 +68,18 @@ jobs:
           name: test-results
           path: ${{ github.workspace }}/test-results/**/*.trx
           if-no-files-found: warn
+
+  # Valida a composicao do Docker (base + servicos) exigida pelo Requisito 6.
+  compose-config:
+    name: Docker Compose Config
+    # ubuntu-latest ja traz o Docker e o plugin `compose`.
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # `-q` (quiet) faz o comando falhar em qualquer erro de composicao sem imprimir o YAML resolvido.
+      - name: Validate Docker Compose composition
+        working-directory: deploy
+        run: docker compose -f docker-compose.yml -f docker-compose.services.yml config -q
