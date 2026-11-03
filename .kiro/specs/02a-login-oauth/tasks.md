@@ -46,19 +46,19 @@ Legenda: `[ ]` pendente · `[x]` concluída · `[!]` bloqueada (ver registro)
   - *Checagem:* `Select-String -Path src/building-blocks/OrderHub.BuildingBlocks.Auth/*.cs -Pattern "AddOrderHubJwtAuth"` retorna resultado.
   - Commit: `feat(auth): cria BuildingBlocks.Auth com JwtBearer e policies`
 
-- [-] **2. Gateway e Catalog usam o BuildingBlocks.Auth** _(Requisitos: 2, 3)_
+- [x] **2. Gateway e Catalog usam o BuildingBlocks.Auth** _(Requisitos: 2, 3)_
   - Referenciar o projeto; substituir a configuração JwtBearer duplicada por `AddOrderHubJwtAuth(Configuration)`; aplicar `RequireAuthorization` nas policies cabíveis. Atualizar os `COPY` de `.csproj` nos Dockerfiles (descomentar as linhas de building-blocks).
   - *Checagem:* `Select-String -Path <Program.cs do Gateway>,<Program.cs do Catalog> -Pattern "AddOrderHubJwtAuth"` retorna 2 resultados.
   - Commit: `refactor(auth): Gateway e Catalog usam AddOrderHubJwtAuth`
 
-- [~] **3. Realm: roles, usuários, client `orderhub-web`, scopes e mappers** _(Requisitos: 1)_
+- [x] **3. Realm: roles, usuários, client `orderhub-web`, scopes e mappers** _(Requisitos: 1)_
   - Editar `orderhub-realm.json`: roles `customer`/`admin`; `customer` como role padrão; usuários `alice`/`alice123` e `bob`/`bob123` sem troca de senha; auto-cadastro on; access token 300 s.
   - Client público `orderhub-web` (PKCE S256, standard flow on, direct grants off, redirect `http://localhost:5000/app/*`, web origin `http://localhost:5000`, post-logout `http://localhost:5000/app/*`).
   - Client scopes `catalog.read`, `catalog.write`, `inventory.read`, `inventory.write` com audience mapper `orderhub-api`; mapper de realm roles em claim plano `roles`. `orderhub-web` e `orderhub-cli` recebem scopes e mapper como default.
   - *Checagem:* `Select-String -Path <realm> -Pattern "orderhub-web"` e `-Pattern "catalog.write"` retornam resultado.
   - Commit: `feat(auth): adiciona roles, usuarios e client web ao realm`
 
-- [~] **4. Endpoint `GET /me` no Gateway** _(Requisitos: 4)_
+- [x] **4. Endpoint `GET /me` no Gateway** _(Requisitos: 4)_
   - Mapear `/me` exigindo token; devolver `sub`, `preferred_username`, `roles`, `scopes`, `exp`. Garantir que o YARP não captura `/me`.
   - *Checagem:* `Select-String -Path <Program.cs do Gateway> -Pattern "/me"` retorna resultado.
   - Commit: `feat(gateway): adiciona endpoint /me`
