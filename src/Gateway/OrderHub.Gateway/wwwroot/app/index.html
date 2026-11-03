@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OrderHub - OAuth PKCE Demo</title>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        h1 { color: #333; }
+        .section {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        button {
+            background: #0066cc;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 5px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover { background: #0052a3; }
+        button:disabled { background: #ccc; cursor: not-allowed; }
+        pre {
+            background: #1a1a1a;
+            color: #0f0;
+            padding: 15px;
+            border-radius: 4px;
+            overflow-x: auto;
+            font-size: 13px;
+        }
+        .status { color: #666; font-size: 14px; }
+        .token-payload { margin-top: 15px; }
+    </style>
+</head>
+<body>
+    <h1>OrderHub - OAuth 2.0 PKCE Demo</h1>
+
+    <div class="section">
+        <h2>Authentication</h2>
+        <button id="btn-login">Login</button>
+        <button id="btn-logout" disabled>Logout</button>
+        <button id="btn-refresh" disabled>Refresh Token</button>
+        <p class="status" id="auth-status">Not authenticated</p>
+    </div>
+
+    <div class="section">
+        <h2>API Calls</h2>
+        <button id="btn-me" disabled>GET /me</button>
+        <button id="btn-products" disabled>List Products</button>
+        <p class="status" id="api-status">Ready</p>
+    </div>
+
+    <div class="section token-payload">
+        <h3>Access Token Payload</h3>
+        <pre id="token-payload">-- not authenticated --</pre>
+        <p class="status" id="token-status"></p>
+    </div>
+
+    <div class="section">
+        <h3>HTTP Response</h3>
+        <pre id="http-response">-- waiting for request --</pre>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

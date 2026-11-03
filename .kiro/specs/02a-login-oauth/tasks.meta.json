@@ -47,6 +47,11 @@
         "executionId": "d5dfc764-6470-4ae8-8810-3e19756af49e",
         "chatSessionId": "sess_c2bb676e-c655-4633-af08-27f2ee6b4551",
         "timestamp": 1793679503389
+      },
+      {
+        "executionId": "d5dfc764-6470-4ae8-8810-3e19756af49e",
+        "chatSessionId": "sess_c2bb676e-c655-4633-af08-27f2ee6b4551",
+        "timestamp": 1793679933201
       }
     ],
     "**4. Endpoint `GET /me` no Gateway** _(Requisitos: 4)_": [
@@ -54,6 +59,11 @@
         "executionId": "d5dfc764-6470-4ae8-8810-3e19756af49e",
         "chatSessionId": "sess_c2bb676e-c655-4633-af08-27f2ee6b4551",
         "timestamp": 1793679503769
+      },
+      {
+        "executionId": "d5dfc764-6470-4ae8-8810-3e19756af49e",
+        "chatSessionId": "sess_c2bb676e-c655-4633-af08-27f2ee6b4551",
+        "timestamp": 1793680083623
       }
     ],
     "**5. `ICurrentUser` no Catalog** _(Requisitos: 4)_": [
@@ -61,6 +71,11 @@
         "executionId": "d5dfc764-6470-4ae8-8810-3e19756af49e",
         "chatSessionId": "sess_c2bb676e-c655-4633-af08-27f2ee6b4551",
         "timestamp": 1793679504076
+      },
+      {
+        "executionId": "d5dfc764-6470-4ae8-8810-3e19756af49e",
+        "chatSessionId": "sess_c2bb676e-c655-4633-af08-27f2ee6b4551",
+        "timestamp": 1793680176203
       }
     ],
     "**6. Cliente web mínimo em `/app`** _(Requisitos: 1, 5, 6, 7)_": [
@@ -68,6 +83,11 @@
         "executionId": "d5dfc764-6470-4ae8-8810-3e19756af49e",
         "chatSessionId": "sess_c2bb676e-c655-4633-af08-27f2ee6b4551",
         "timestamp": 1793679504376
+      },
+      {
+        "executionId": "d5dfc764-6470-4ae8-8810-3e19756af49e",
+        "chatSessionId": "sess_c2bb676e-c655-4633-af08-27f2ee6b4551",
+        "timestamp": 1793680826138
       }
     ],
     "**7. Subir o ambiente e validar login** _(Requisitos: 1, 6)_": [
