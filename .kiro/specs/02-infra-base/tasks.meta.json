@@ -1,0 +1,286 @@
+{
+  "pbtResults": {},
+  "executionHistory": {
+    "1.1 Declarar redes `edge`, `internal`, `data` _(Req. 2)_": [
+      {
+        "executionId": "339135e2-4aee-4f68-a855-d74773139022",
+        "chatSessionId": "sess_596d39f5-d815-4c7a-8785-ef391d294e45",
+        "timestamp": 1792861609765
+      },
+      {
+        "executionId": "339135e2-4aee-4f68-a855-d74773139022",
+        "chatSessionId": "sess_596d39f5-d815-4c7a-8785-ef391d294e45",
+        "timestamp": 1792861622871
+      },
+      {
+        "executionId": "339135e2-4aee-4f68-a855-d74773139022",
+        "chatSessionId": "sess_596d39f5-d815-4c7a-8785-ef391d294e45",
+        "timestamp": 1792861707896
+      }
+    ],
+    "1.2 Declarar volumes nomeados (`rabbitmq-data`, `grafana-data`) _(Req. 3)_": [
+      {
+        "executionId": "339135e2-4aee-4f68-a855-d74773139022",
+        "chatSessionId": "sess_596d39f5-d815-4c7a-8785-ef391d294e45",
+        "timestamp": 1792861611733
+      },
+      {
+        "executionId": "339135e2-4aee-4f68-a855-d74773139022",
+        "chatSessionId": "sess_596d39f5-d815-4c7a-8785-ef391d294e45",
+        "timestamp": 1792861711375
+      },
+      {
+        "executionId": "339135e2-4aee-4f68-a855-d74773139022",
+        "chatSessionId": "sess_596d39f5-d815-4c7a-8785-ef391d294e45",
+        "timestamp": 1792861773613
+      }
+    ],
+    "1.3 Serviço `keycloak` (migrado do base atual, realm `orderhub`, import no boot) _(Req. 1)_": [
+      {
+        "executionId": "339135e2-4aee-4f68-a855-d74773139022",
+        "chatSessionId": "sess_596d39f5-d815-4c7a-8785-ef391d294e45",
+        "timestamp": 1792861612026
+      },
+      {
+        "executionId": "339135e2-4aee-4f68-a855-d74773139022",
+        "chatSessionId": "sess_596d39f5-d815-4c7a-8785-ef391d294e45",
+        "timestamp": 1792861776849
+      },
+      {
+        "executionId": "339135e2-4aee-4f68-a855-d74773139022",
+        "chatSessionId": "sess_596d39f5-d815-4c7a-8785-ef391d294e45",
+        "timestamp": 1792861855103
+      }
+    ],
+    "1.4 Serviço `rabbitmq` (management UI; filas quorum por padrão; healthcheck; `cpus`/`mem_limit`) _(Req. 1, 4)_": [
+      {
+        "executionId": "339135e2-4aee-4f68-a855-d74773139022",
+        "chatSessionId": "sess_596d39f5-d815-4c7a-8785-ef391d294e45",
+        "timestamp": 1792861612499
+      },
+      {
+        "executionId": "339135e2-4aee-4f68-a855-d74773139022",
+        "chatSessionId": "sess_596d39f5-d815-4c7a-8785-ef391d294e45",
+        "timestamp": 1792861858714
+      },
+      {
+        "executionId": "339135e2-4aee-4f68-a855-d74773139022",
+        "chatSessionId": "sess_596d39f5-d815-4c7a-8785-ef391d294e45",
+        "timestamp": 1792861922019
+      }
+    ],
+    "1.5 Serviço `redis` (healthcheck; `cpus`/`mem_limit`) _(Req. 1, 4)_": [
+      {
+        "executionId": "339135e2-4aee-4f68-a855-d74773139022",
+        "chatSessionId": "sess_596d39f5-d815-4c7a-8785-ef391d294e45",
+        "timestamp": 1792861612823
+      },
+      {
+        "executionId": "339135e2-4aee-4f68-a855-d74773139022",
+        "chatSessionId": "sess_596d39f5-d815-4c7a-8785-ef391d294e45",
+        "timestamp": 1792861925397
+      },
+      {
+        "executionId": "339135e2-4aee-4f68-a855-d74773139022",
+        "chatSessionId": "sess_596d39f5-d815-4c7a-8785-ef391d294e45",
+        "timestamp": 1792861986231
+      }
+    ],
+    "1.6 Serviço `prometheus` (monta `deploy/prometheus/prometheus.yml`) _(Req. 1, 5)_": [
+      {
+        "executionId": "339135e2-4aee-4f68-a855-d74773139022",
+        "chatSessionId": "sess_596d39f5-d815-4c7a-8785-ef391d294e45",
+        "timestamp": 1792861613046
+      },
+      {
+        "executionId": "339135e2-4aee-4f68-a855-d74773139022",
+        "chatSessionId": "sess_596d39f5-d815-4c7a-8785-ef391d294e45",
+        "timestamp": 1792861989576
+      },
+      {
+        "executionId": "339135e2-4aee-4f68-a855-d74773139022",
+        "chatSessionId": "sess_596d39f5-d815-4c7a-8785-ef391d294e45",
+        "timestamp": 1792862053967
+      }
+    ],
+    "1.7 Serviço `grafana` (monta provisionamento existente; volume nomeado) _(Req. 1, 5)_": [
+      {
+        "executionId": "339135e2-4aee-4f68-a855-d74773139022",
+        "chatSessionId": "sess_596d39f5-d815-4c7a-8785-ef391d294e45",
+        "timestamp": 1792861613434
+      },
+      {
+        "executionId": "339135e2-4aee-4f68-a855-d74773139022",
+        "chatSessionId": "sess_596d39f5-d815-4c7a-8785-ef391d294e45",
+        "timestamp": 1792862058332
+      },
+      {
+        "executionId": "339135e2-4aee-4f68-a855-d74773139022",
+        "chatSessionId": "sess_596d39f5-d815-4c7a-8785-ef391d294e45",
+        "timestamp": 1792862132758
+      }
+    ],
+    "2. Revisar `deploy/docker-compose.services.yml` para alinhar redes e `depends_on` à infra do base _(Req. 1, 7)_": [
+      {
+        "executionId": "339135e2-4aee-4f68-a855-d74773139022",
+        "chatSessionId": "sess_596d39f5-d815-4c7a-8785-ef391d294e45",
+        "timestamp": 1792861613841
+      },
+      {
+        "executionId": "339135e2-4aee-4f68-a855-d74773139022",
+        "chatSessionId": "sess_596d39f5-d815-4c7a-8785-ef391d294e45",
+        "timestamp": 1792862137493
+      },
+      {
+        "executionId": "339135e2-4aee-4f68-a855-d74773139022",
+        "chatSessionId": "sess_596d39f5-d815-4c7a-8785-ef391d294e45",
+        "timestamp": 1792862234729
+      }
+    ],
+    "3.1 Validar `docker compose -f docker-compose.yml -f docker-compose.services.yml config` sem erros": [
+      {
+        "executionId": "339135e2-4aee-4f68-a855-d74773139022",
+        "chatSessionId": "sess_596d39f5-d815-4c7a-8785-ef391d294e45",
+        "timestamp": 1792861614232
+      },
+      {
+        "executionId": "339135e2-4aee-4f68-a855-d74773139022",
+        "chatSessionId": "sess_596d39f5-d815-4c7a-8785-ef391d294e45",
+        "timestamp": 1792862239361
+      },
+      {
+        "executionId": "339135e2-4aee-4f68-a855-d74773139022",
+        "chatSessionId": "sess_596d39f5-d815-4c7a-8785-ef391d294e45",
+        "timestamp": 1792862358297
+      }
+    ],
+    "4. Criar `OrderHub.BuildingBlocks.Contracts` com o envelope de evento e adicionar à solution _(Req. 8)_": [
+      {
+        "executionId": "339135e2-4aee-4f68-a855-d74773139022",
+        "chatSessionId": "sess_596d39f5-d815-4c7a-8785-ef391d294e45",
+        "timestamp": 1792861614472
+      },
+      {
+        "executionId": "339135e2-4aee-4f68-a855-d74773139022",
+        "chatSessionId": "sess_596d39f5-d815-4c7a-8785-ef391d294e45",
+        "timestamp": 1792862363964
+      },
+      {
+        "executionId": "339135e2-4aee-4f68-a855-d74773139022",
+        "chatSessionId": "sess_596d39f5-d815-4c7a-8785-ef391d294e45",
+        "timestamp": 1792862478914
+      }
+    ],
+    "5.1 Teste de arquitetura: `BuildingBlocks` não referenciam projeto de serviço _(Req. 8)_": [
+      {
+        "executionId": "339135e2-4aee-4f68-a855-d74773139022",
+        "chatSessionId": "sess_596d39f5-d815-4c7a-8785-ef391d294e45",
+        "timestamp": 1792861614717
+      },
+      {
+        "executionId": "339135e2-4aee-4f68-a855-d74773139022",
+        "chatSessionId": "sess_596d39f5-d815-4c7a-8785-ef391d294e45",
+        "timestamp": 1792862483533
+      },
+      {
+        "executionId": "39c616ba-d31d-44f5-83b8-e13f905018a6",
+        "chatSessionId": "sess_641e268d-f70e-4f82-a826-188727bbe217",
+        "timestamp": 1792862955125
+      }
+    ],
+    "6. Adicionar job de CI com `docker compose config` ao `.github/workflows/ci.yml` _(Req. 6)_": [
+      {
+        "executionId": "339135e2-4aee-4f68-a855-d74773139022",
+        "chatSessionId": "sess_596d39f5-d815-4c7a-8785-ef391d294e45",
+        "timestamp": 1792861614954
+      },
+      {
+        "executionId": "39c616ba-d31d-44f5-83b8-e13f905018a6",
+        "chatSessionId": "sess_641e268d-f70e-4f82-a826-188727bbe217",
+        "timestamp": 1792862962242
+      },
+      {
+        "executionId": "39c616ba-d31d-44f5-83b8-e13f905018a6",
+        "chatSessionId": "sess_641e268d-f70e-4f82-a826-188727bbe217",
+        "timestamp": 1792863262474
+      }
+    ],
+    "7. Verificação ponta a ponta: subir a plataforma e confirmar RabbitMQ UI, Grafana e Prometheus; todos os serviços `healthy` _(Req. 1, 5)_": [
+      {
+        "executionId": "339135e2-4aee-4f68-a855-d74773139022",
+        "chatSessionId": "sess_596d39f5-d815-4c7a-8785-ef391d294e45",
+        "timestamp": 1792861615392
+      },
+      {
+        "executionId": "39c616ba-d31d-44f5-83b8-e13f905018a6",
+        "chatSessionId": "sess_641e268d-f70e-4f82-a826-188727bbe217",
+        "timestamp": 1792863270487
+      },
+      {
+        "executionId": "4cfc87c6-178e-40dd-9da5-2e2d21cb1702",
+        "chatSessionId": "sess_d445f1c6-6c75-4707-a5b8-6485f0bf9d80",
+        "timestamp": 1793034654532
+      }
+    ],
+    "8. Executar experimento (derrubar RabbitMQ; observar `/health/ready` + Prometheus) e registrar `docs/experimentos/02-infra-base.md` _(Req. 7)_": [
+      {
+        "executionId": "339135e2-4aee-4f68-a855-d74773139022",
+        "chatSessionId": "sess_596d39f5-d815-4c7a-8785-ef391d294e45",
+        "timestamp": 1792861615668
+      },
+      {
+        "executionId": "4cfc87c6-178e-40dd-9da5-2e2d21cb1702",
+        "chatSessionId": "sess_d445f1c6-6c75-4707-a5b8-6485f0bf9d80",
+        "timestamp": 1793034658327
+      },
+      {
+        "executionId": "4cfc87c6-178e-40dd-9da5-2e2d21cb1702",
+        "chatSessionId": "sess_d445f1c6-6c75-4707-a5b8-6485f0bf9d80",
+        "timestamp": 1793065050684
+      }
+    ],
+    "9. Atualizar README e docs; abrir ADR se alguma decisão nova surgir": [
+      {
+        "executionId": "339135e2-4aee-4f68-a855-d74773139022",
+        "chatSessionId": "sess_596d39f5-d815-4c7a-8785-ef391d294e45",
+        "timestamp": 1792861616046
+      },
+      {
+        "executionId": "39c616ba-d31d-44f5-83b8-e13f905018a6",
+        "chatSessionId": "sess_641e268d-f70e-4f82-a826-188727bbe217",
+        "timestamp": 1792864101595
+      },
+      {
+        "executionId": "39c616ba-d31d-44f5-83b8-e13f905018a6",
+        "chatSessionId": "sess_641e268d-f70e-4f82-a826-188727bbe217",
+        "timestamp": 1792864300493
+      }
+    ],
+    "1. Reescrever `deploy/docker-compose.yml` como plataforma compartilhada _(Requisitos: 1, 2, 3, 4)_": [
+      {
+        "executionId": "339135e2-4aee-4f68-a855-d74773139022",
+        "chatSessionId": "sess_596d39f5-d815-4c7a-8785-ef391d294e45",
+        "timestamp": 1792862133183
+      }
+    ],
+    "3. Corrigir `deploy/docker-compose.override.yml`: remover overrides órfãos; manter só serviços existentes no base _(Req. 1, 2)_": [
+      {
+        "executionId": "339135e2-4aee-4f68-a855-d74773139022",
+        "chatSessionId": "sess_596d39f5-d815-4c7a-8785-ef391d294e45",
+        "timestamp": 1792862359022
+      }
+    ],
+    "5. Criar `OrderHub.BuildingBlocks.Messaging` com `IEventBus` e abstrações de Outbox/Inbox (sem implementação de broker) _(Req. 8)_": [
+      {
+        "executionId": "39c616ba-d31d-44f5-83b8-e13f905018a6",
+        "chatSessionId": "sess_641e268d-f70e-4f82-a826-188727bbe217",
+        "timestamp": 1792862696362
+      },
+      {
+        "executionId": "39c616ba-d31d-44f5-83b8-e13f905018a6",
+        "chatSessionId": "sess_641e268d-f70e-4f82-a826-188727bbe217",
+        "timestamp": 1792862955392
+      }
+    ]
+  }
+}
