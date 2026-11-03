@@ -12,6 +12,7 @@
     <Folder Name="/src/building-blocks/">
       <Project Path="src/building-blocks/OrderHub.BuildingBlocks.Contracts/OrderHub.BuildingBlocks.Contracts.csproj" />
       <Project Path="src/building-blocks/OrderHub.BuildingBlocks.Messaging/OrderHub.BuildingBlocks.Messaging.csproj" />
+      <Project Path="src/building-blocks/OrderHub.BuildingBlocks.Auth/OrderHub.BuildingBlocks.Auth.csproj" />
     </Folder>
   </Folder>
   <Folder Name="/tests/">

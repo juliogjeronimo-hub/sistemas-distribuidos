@@ -1,0 +1,116 @@
+{
+  "pbtResults": {},
+  "executionHistory": {
+    "**0. Mapear caminhos reais** _(Requisitos: 1)_": [
+      {
+        "executionId": "d5dfc764-6470-4ae8-8810-3e19756af49e",
+        "chatSessionId": "sess_c2bb676e-c655-4633-af08-27f2ee6b4551",
+        "timestamp": 1793679501948
+      },
+      {
+        "executionId": "d5dfc764-6470-4ae8-8810-3e19756af49e",
+        "chatSessionId": "sess_c2bb676e-c655-4633-af08-27f2ee6b4551",
+        "timestamp": 1793679512826
+      },
+      {
+        "executionId": "d5dfc764-6470-4ae8-8810-3e19756af49e",
+        "chatSessionId": "sess_c2bb676e-c655-4633-af08-27f2ee6b4551",
+        "timestamp": 1793679562785
+      }
+    ],
+    "**1. Projeto `OrderHub.BuildingBlocks.Auth`** _(Requisitos: 1, 2, 3)_": [
+      {
+        "executionId": "d5dfc764-6470-4ae8-8810-3e19756af49e",
+        "chatSessionId": "sess_c2bb676e-c655-4633-af08-27f2ee6b4551",
+        "timestamp": 1793679502584
+      },
+      {
+        "executionId": "d5dfc764-6470-4ae8-8810-3e19756af49e",
+        "chatSessionId": "sess_c2bb676e-c655-4633-af08-27f2ee6b4551",
+        "timestamp": 1793679567860
+      }
+    ],
+    "**2. Gateway e Catalog usam o BuildingBlocks.Auth** _(Requisitos: 2, 3)_": [
+      {
+        "executionId": "d5dfc764-6470-4ae8-8810-3e19756af49e",
+        "chatSessionId": "sess_c2bb676e-c655-4633-af08-27f2ee6b4551",
+        "timestamp": 1793679502934
+      },
+      {
+        "executionId": "d5dfc764-6470-4ae8-8810-3e19756af49e",
+        "chatSessionId": "sess_c2bb676e-c655-4633-af08-27f2ee6b4551",
+        "timestamp": 1793679697273
+      }
+    ],
+    "**3. Realm: roles, usuários, client `orderhub-web`, scopes e mappers** _(Requisitos: 1)_": [
+      {
+        "executionId": "d5dfc764-6470-4ae8-8810-3e19756af49e",
+        "chatSessionId": "sess_c2bb676e-c655-4633-af08-27f2ee6b4551",
+        "timestamp": 1793679503389
+      }
+    ],
+    "**4. Endpoint `GET /me` no Gateway** _(Requisitos: 4)_": [
+      {
+        "executionId": "d5dfc764-6470-4ae8-8810-3e19756af49e",
+        "chatSessionId": "sess_c2bb676e-c655-4633-af08-27f2ee6b4551",
+        "timestamp": 1793679503769
+      }
+    ],
+    "**5. `ICurrentUser` no Catalog** _(Requisitos: 4)_": [
+      {
+        "executionId": "d5dfc764-6470-4ae8-8810-3e19756af49e",
+        "chatSessionId": "sess_c2bb676e-c655-4633-af08-27f2ee6b4551",
+        "timestamp": 1793679504076
+      }
+    ],
+    "**6. Cliente web mínimo em `/app`** _(Requisitos: 1, 5, 6, 7)_": [
+      {
+        "executionId": "d5dfc764-6470-4ae8-8810-3e19756af49e",
+        "chatSessionId": "sess_c2bb676e-c655-4633-af08-27f2ee6b4551",
+        "timestamp": 1793679504376
+      }
+    ],
+    "**7. Subir o ambiente e validar login** _(Requisitos: 1, 6)_": [
+      {
+        "executionId": "d5dfc764-6470-4ae8-8810-3e19756af49e",
+        "chatSessionId": "sess_c2bb676e-c655-4633-af08-27f2ee6b4551",
+        "timestamp": 1793679504641
+      }
+    ],
+    "**8. Teste de arquitetura do BuildingBlocks.Auth** _(Requisitos: 1)_": [
+      {
+        "executionId": "d5dfc764-6470-4ae8-8810-3e19756af49e",
+        "chatSessionId": "sess_c2bb676e-c655-4633-af08-27f2ee6b4551",
+        "timestamp": 1793679505127
+      }
+    ],
+    "**9. Matriz de autorização** _(Requisitos: 2, 3)_": [
+      {
+        "executionId": "d5dfc764-6470-4ae8-8810-3e19756af49e",
+        "chatSessionId": "sess_c2bb676e-c655-4633-af08-27f2ee6b4551",
+        "timestamp": 1793679505465
+      }
+    ],
+    "**10. ADR 0006** _(Requisitos: 1)_": [
+      {
+        "executionId": "d5dfc764-6470-4ae8-8810-3e19756af49e",
+        "chatSessionId": "sess_c2bb676e-c655-4633-af08-27f2ee6b4551",
+        "timestamp": 1793679505788
+      }
+    ],
+    "**11. Experimento e relatório** _(Requisitos: 5)_": [
+      {
+        "executionId": "d5dfc764-6470-4ae8-8810-3e19756af49e",
+        "chatSessionId": "sess_c2bb676e-c655-4633-af08-27f2ee6b4551",
+        "timestamp": 1793679506014
+      }
+    ],
+    "**12. Fechamento**": [
+      {
+        "executionId": "d5dfc764-6470-4ae8-8810-3e19756af49e",
+        "chatSessionId": "sess_c2bb676e-c655-4633-af08-27f2ee6b4551",
+        "timestamp": 1793679506288
+      }
+    ]
+  }
+}

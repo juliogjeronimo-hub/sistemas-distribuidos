@@ -4,6 +4,8 @@ WORKDIR /src
 
 COPY Directory.Build.props ./
 
+COPY src/building-blocks/OrderHub.BuildingBlocks.Auth/OrderHub.BuildingBlocks.Auth.csproj \
+     src/building-blocks/OrderHub.BuildingBlocks.Auth/
 COPY src/Catalog/OrderHub.Catalog.Domain/OrderHub.Catalog.Domain.csproj \
      src/Catalog/OrderHub.Catalog.Domain/
 COPY src/Catalog/OrderHub.Catalog.Application/OrderHub.Catalog.Application.csproj \
