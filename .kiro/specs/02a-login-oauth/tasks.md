@@ -68,7 +68,7 @@ Legenda: `[ ]` pendente · `[x]` concluída · `[!]` bloqueada (ver registro)
   - *Checagem:* `Select-String -Path <Application do Catalog>\**\ICurrentUser.cs -Pattern "UserId"` retorna resultado.
   - Commit: `feat(catalog): adiciona porta ICurrentUser`
 
-- [-] **6. Cliente web mínimo em `/app`** _(Requisitos: 1, 5, 6, 7)_
+- [x] **6. Cliente web mínimo em `/app`** _(Requisitos: 1, 5, 6, 7)_
   - `UseStaticFiles` no Gateway servindo `/app` (anônimo): `index.html` + `app.js` sem bibliotecas nem CDN. PKCE S256 via `crypto.subtle`, `state`, troca do code em `http://localhost:8180`, tokens em memória, `sessionStorage` só para verifier/state. Botões: Login, Chamar /me, Listar produtos, Refresh, Logout (`end_session`). Exibe payload do access token decodificado e o status HTTP.
   - *Checagem:* `Test-Path <wwwroot>/app/index.html` e `Select-String -Path <wwwroot>/app/app.js -Pattern "crypto.subtle"` retornam resultado.
   - Commit: `feat(gateway): adiciona cliente web PKCE em /app`
