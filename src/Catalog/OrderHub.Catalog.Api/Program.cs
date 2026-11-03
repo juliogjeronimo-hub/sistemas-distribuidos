@@ -1,12 +1,12 @@
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
-using OrderHub.BuildingBlocks.Auth;
+using OrderHub.Catalog.Api.Auth;
 using OrderHub.Catalog.Application.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddApplicationServices();
 builder.Services.AddHealthChecks();
-builder.Services.AddOrderHubJwtAuth(builder.Configuration);
+builder.Services.AddCatalogAuth(builder.Configuration);
 
 var app = builder.Build();
 
@@ -20,7 +20,7 @@ app.MapGet("/v1/products", () => new[]
 {
     new { Id = Guid.NewGuid(), Name = "Keyboard", Price = 199.90m },
     new { Id = Guid.NewGuid(), Name = "Mouse", Price = 89.90m }
-}).RequireAuthorization(Policies.CatalogRead);
+}).RequireAuthorization(CatalogScopes.Read);
 
 app.Run();
 

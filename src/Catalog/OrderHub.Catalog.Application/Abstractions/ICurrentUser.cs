@@ -4,14 +4,19 @@ namespace OrderHub.Catalog.Application.Abstractions;
 // via HttpContext and stubbable in tests.
 public interface ICurrentUser
 {
-    // JWT subject claim (sub); null when the caller is anonymous.
-    string? Subject { get; }
+    // Mapped from JWT "sub" claim; null when the caller is anonymous.
+    string? UserId { get; }
 
+    // Mapped from JWT "preferred_username" claim.
     string? UserName { get; }
+
+    // Roles from JWT "roles" claim (typically from realm_access.roles).
+    IReadOnlyCollection<string> Roles { get; }
+
+    // Scopes from JWT "scope" claim (space-separated string).
+    IReadOnlyCollection<string> Scopes { get; }
 
     bool IsAuthenticated { get; }
 
-    // The Keycloak "scope" claim is a single space-separated string; implementations
-    // split it before checking for the given scope.
     bool HasScope(string scope);
 }
