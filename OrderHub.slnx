@@ -9,9 +9,14 @@
     <Folder Name="/src/Gateway/">
       <Project Path="src/Gateway/OrderHub.Gateway/OrderHub.Gateway.csproj" />
     </Folder>
+    <Folder Name="/src/building-blocks/">
+      <Project Path="src/building-blocks/OrderHub.BuildingBlocks.Contracts/OrderHub.BuildingBlocks.Contracts.csproj" />
+      <Project Path="src/building-blocks/OrderHub.BuildingBlocks.Messaging/OrderHub.BuildingBlocks.Messaging.csproj" />
+    </Folder>
   </Folder>
   <Folder Name="/tests/">
     <Project Path="tests/OrderHub.Catalog.Architecture.Tests/OrderHub.Catalog.Architecture.Tests.csproj" />
+    <Project Path="tests/OrderHub.BuildingBlocks.Architecture.Tests/OrderHub.BuildingBlocks.Architecture.Tests.csproj" />
     <Folder Name="/tests/catalog/">
       <Project Path="tests/catalog/OrderHub.Catalog.Api.IntegrationTests/OrderHub.Catalog.Api.IntegrationTests.csproj" />
     </Folder>
