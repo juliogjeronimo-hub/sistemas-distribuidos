@@ -18,6 +18,7 @@
   <Folder Name="/tests/">
     <Project Path="tests/OrderHub.Catalog.Architecture.Tests/OrderHub.Catalog.Architecture.Tests.csproj" />
     <Project Path="tests/OrderHub.BuildingBlocks.Architecture.Tests/OrderHub.BuildingBlocks.Architecture.Tests.csproj" />
+    <Project Path="tests/OrderHub.Auth.IntegrationTests/OrderHub.Auth.IntegrationTests.csproj" />
     <Folder Name="/tests/catalog/">
       <Project Path="tests/catalog/OrderHub.Catalog.Api.IntegrationTests/OrderHub.Catalog.Api.IntegrationTests.csproj" />
     </Folder>

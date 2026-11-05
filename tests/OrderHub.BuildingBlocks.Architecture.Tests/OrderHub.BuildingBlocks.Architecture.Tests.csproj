@@ -17,6 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\src\building-blocks\OrderHub.BuildingBlocks.Auth\OrderHub.BuildingBlocks.Auth.csproj" />
     <ProjectReference Include="..\..\src\building-blocks\OrderHub.BuildingBlocks.Contracts\OrderHub.BuildingBlocks.Contracts.csproj" />
     <ProjectReference Include="..\..\src\building-blocks\OrderHub.BuildingBlocks.Messaging\OrderHub.BuildingBlocks.Messaging.csproj" />
   </ItemGroup>
