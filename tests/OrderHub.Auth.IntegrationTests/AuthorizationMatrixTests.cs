@@ -1,8 +1,16 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Net;
+using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.TestHost;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using OrderHub.BuildingBlocks.Auth;
 using Xunit;
 
 namespace OrderHub.Auth.IntegrationTests;
@@ -12,20 +20,22 @@ namespace OrderHub.Auth.IntegrationTests;
 /// and protected endpoints, verifying 401/403/200 status codes as expected.
 ///
 /// Validates Requirements 2 and 3:
-/// - Without valid token: 401
-/// - With valid token but insufficient permissions: 403
-/// - With valid token and sufficient permissions: 200
+/// - Without valid token: 401 Unauthorized
+/// - With valid token but insufficient permissions: 403 Forbidden
+/// - With valid token and sufficient permissions: 200 OK
 ///
-/// NOTE: These tests require the Gateway (5000) and Catalog (5001) services to be running,
-/// along with Keycloak (8180). Run `docker compose up` from the deploy directory before running tests.
+/// Tests use a locally-signed JWT with a custom key to verify authorization
+/// policies work correctly. The test server is created in-process without
+/// requiring external services.
 /// </summary>
 public sealed class AuthorizationMatrixTests
 {
-    private const string TestIssuer = "http://keycloak:8180/realms/orderhub";
+    private const string TestIssuer = "http://test-issuer";
     private const string TestAudience = "orderhub-api";
-    private const string TestSecret = "test-secret-key-for-jwt-signing-only";
+    private const string TestSecret = "this-is-a-test-secret-key-that-is-long-enough-for-hs256-signing";
 
     private static readonly SecurityKey TestKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(TestSecret));
+    private static readonly SigningCredentials TestSigningCredentials = new(TestKey, SecurityAlgorithms.HmacSha256);
 
     // ── Test data: identities ──────────────────────────────────────────────────
 
@@ -66,44 +76,26 @@ public sealed class AuthorizationMatrixTests
         public static string Token => GenerateToken(ClientId, ClientId, Array.Empty<string>(), Scope);
     }
 
-    // ── Expected outcomes ──────────────────────────────────────────────────────
+    // ── Tests: /me endpoint (requires any valid token) ────────────────────────
 
-    private static class GatewayMeEndpoint
-    {
-        public const string Path = "/me";
-        public const string Host = "http://localhost:5000";
-    }
-
-    private static class CatalogProductsEndpoint
-    {
-        public const string Path = "/v1/products";
-        public const string Host = "http://localhost:5001";
-    }
-
-    private static class HealthCheckEndpoint
-    {
-        public const string Path = "/health/live";
-        public const string Host = "http://localhost:5000";
-    }
-
-    // ── Tests: Gateway /me ─────────────────────────────────────────────────────
-
-    [Theory(Skip = "Requires running services (docker compose up)")]
+    [Theory]
     [InlineData("anonymous", HttpStatusCode.Unauthorized)]
     [InlineData("alice", HttpStatusCode.OK)]
     [InlineData("bob", HttpStatusCode.OK)]
     [InlineData("orderhub-cli", HttpStatusCode.OK)]
-    public async Task GatewayMeEndpoint_WithVariousIdentities_ReturnsExpectedStatus(
+    public async Task GetMeEndpoint_WithVariousIdentities_ReturnsExpectedStatus(
         string identity,
         HttpStatusCode expectedStatus)
     {
+        using var server = BuildTestServer();
+        using var client = server.CreateClient();
+
         var token = GetTokenForIdentity(identity);
-        var client = new HttpClient { Timeout = TimeSpan.FromSeconds(10) };
-        var request = new HttpRequestMessage(HttpMethod.Get, $"{GatewayMeEndpoint.Host}{GatewayMeEndpoint.Path}");
+        var request = new HttpRequestMessage(HttpMethod.Get, "/me");
 
         if (token != null)
         {
-            request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
         }
 
         var response = await client.SendAsync(request);
@@ -111,24 +103,26 @@ public sealed class AuthorizationMatrixTests
         Assert.Equal(expectedStatus, response.StatusCode);
     }
 
-    // ── Tests: Catalog /v1/products ────────────────────────────────────────────
+    // ── Tests: /catalog/v1/products (requires catalog.read scope) ──────────────
 
-    [Theory(Skip = "Requires running services (docker compose up)")]
+    [Theory]
     [InlineData("anonymous", HttpStatusCode.Unauthorized)]
     [InlineData("alice", HttpStatusCode.OK)]
     [InlineData("bob", HttpStatusCode.OK)]
     [InlineData("orderhub-cli", HttpStatusCode.OK)]
-    public async Task CatalogProductsEndpoint_WithVariousIdentities_ReturnsExpectedStatus(
+    public async Task GetProductsEndpoint_WithVariousIdentities_ReturnsExpectedStatus(
         string identity,
         HttpStatusCode expectedStatus)
     {
+        using var server = BuildTestServer();
+        using var client = server.CreateClient();
+
         var token = GetTokenForIdentity(identity);
-        var client = new HttpClient { Timeout = TimeSpan.FromSeconds(10) };
-        var request = new HttpRequestMessage(HttpMethod.Get, $"{CatalogProductsEndpoint.Host}{CatalogProductsEndpoint.Path}");
+        var request = new HttpRequestMessage(HttpMethod.Get, "/catalog/v1/products");
 
         if (token != null)
         {
-            request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
         }
 
         var response = await client.SendAsync(request);
@@ -136,33 +130,29 @@ public sealed class AuthorizationMatrixTests
         Assert.Equal(expectedStatus, response.StatusCode);
     }
 
-    // ── Tests: Health check (control) ──────────────────────────────────────────
+    // ── Tests: Health check (should be accessible without token) ──────────────
 
     [Theory]
     [InlineData("anonymous")]
     [InlineData("alice")]
     [InlineData("bob")]
     [InlineData("orderhub-cli")]
-    public async Task HealthCheckEndpoint_IsAccessibleWithoutToken(string identity)
+    public async Task HealthCheckEndpoint_IsAccessibleWithoutAuth(string identity)
     {
+        using var server = BuildTestServer();
+        using var client = server.CreateClient();
+
         var token = GetTokenForIdentity(identity);
-        var client = new HttpClient { Timeout = TimeSpan.FromSeconds(10) };
-        var request = new HttpRequestMessage(HttpMethod.Get, $"{HealthCheckEndpoint.Host}{HealthCheckEndpoint.Path}");
+        var request = new HttpRequestMessage(HttpMethod.Get, "/health/live");
 
         if (token != null)
         {
-            request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
         }
 
-        try
-        {
-            var response = await client.SendAsync(request);
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-        }
-        catch (HttpRequestException)
-        {
-            // Service not running; this is expected in CI environments without docker compose
-        }
+        var response = await client.SendAsync(request);
+
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
     }
 
     // ── Matrix documentation ──────────────────────────────────────────────────
@@ -170,25 +160,29 @@ public sealed class AuthorizationMatrixTests
     [Fact]
     public void AuthorizationMatrix_DocumentsExpectedOutcomes()
     {
-        var matrix = new (string identity, string endpoint, int expectedStatus)[]
+        var matrix = new (string identity, string endpoint, HttpStatusCode expectedStatus)[]
         {
-            ("anonymous", "/me", 401),
-            ("alice (customer)", "/me", 200),
-            ("bob (admin)", "/me", 200),
-            ("orderhub-cli (client)", "/me", 200),
+            // Gateway /me endpoint (requires any valid token)
+            ("anonymous", "/me", HttpStatusCode.Unauthorized),
+            ("alice (customer, catalog.read)", "/me", HttpStatusCode.OK),
+            ("bob (admin, all scopes)", "/me", HttpStatusCode.OK),
+            ("orderhub-cli (service, all scopes)", "/me", HttpStatusCode.OK),
 
-            ("anonymous", "/v1/products", 401),
-            ("alice (customer)", "/v1/products", 200),
-            ("bob (admin)", "/v1/products", 200),
-            ("orderhub-cli (client)", "/v1/products", 200),
+            // Catalog /v1/products (requires catalog.read scope)
+            ("anonymous", "/catalog/v1/products", HttpStatusCode.Unauthorized),
+            ("alice (customer, catalog.read)", "/catalog/v1/products", HttpStatusCode.OK),
+            ("bob (admin, all scopes)", "/catalog/v1/products", HttpStatusCode.OK),
+            ("orderhub-cli (service, all scopes)", "/catalog/v1/products", HttpStatusCode.OK),
 
-            ("anonymous", "/health/live", 200),
-            ("alice (customer)", "/health/live", 200),
-            ("bob (admin)", "/health/live", 200),
-            ("orderhub-cli (client)", "/health/live", 200),
+            // Health endpoint (requires no auth)
+            ("anonymous", "/health/live", HttpStatusCode.OK),
+            ("alice (customer)", "/health/live", HttpStatusCode.OK),
+            ("bob (admin)", "/health/live", HttpStatusCode.OK),
+            ("orderhub-cli (service)", "/health/live", HttpStatusCode.OK),
         };
 
         Assert.NotEmpty(matrix);
+        Assert.All(matrix, item => Assert.False(string.IsNullOrEmpty(item.identity)));
     }
 
     // ── Helpers ────────────────────────────────────────────────────────────────
@@ -201,6 +195,74 @@ public sealed class AuthorizationMatrixTests
         OrderhubCli.Identity => OrderhubCli.Token,
         _ => throw new ArgumentException($"Unknown identity: {identity}")
     };
+
+    private static TestServer BuildTestServer()
+    {
+        var builder = new WebApplicationBuilder();
+
+        // Configure auth to accept our test-signed tokens
+        builder.Services.AddOrderHubJwtAuth(
+            new ConfigurationBuilder()
+                .AddInMemoryCollection(new Dictionary<string, string?>
+                {
+                    ["Auth:Authority"] = TestIssuer,
+                    ["Auth:Audience"] = TestAudience,
+                    ["Auth:RequireHttpsMetadata"] = "false"
+                })
+                .Build());
+
+        builder.Services.AddHealthChecks();
+
+        // Configure JWT bearer to accept our test key
+        builder.Services.Configure<JwtBearerOptions>(JwtBearerDefaults.AuthenticationScheme, options =>
+        {
+            options.Authority = TestIssuer;
+            options.Audience = TestAudience;
+            options.RequireHttpsMetadata = false;
+            options.TokenValidationParameters = new TokenValidationParameters
+            {
+                ValidIssuer = TestIssuer,
+                ValidAudience = TestAudience,
+                IssuerSigningKey = TestKey,
+                ValidateIssuerSigningKey = true,
+                ValidateLifetime = true,
+                ClockSkew = TimeSpan.Zero
+            };
+        });
+
+        var app = builder.Build();
+
+        app.UseAuthentication();
+        app.UseAuthorization();
+
+        app.MapHealthChecks("/health/live");
+
+        // Mimics the /me endpoint from Gateway
+        app.MapGet("/me", (HttpContext context) =>
+        {
+            var user = context.User;
+            var roles = user.FindAll(ClaimTypes.Role).Select(c => c.Value).ToList();
+            var scopeClaim = user.FindFirst("scope")?.Value ?? string.Empty;
+
+            return Results.Ok(new
+            {
+                sub = user.FindFirst(ClaimTypes.NameIdentifier)?.Value,
+                preferred_username = user.FindFirst("preferred_username")?.Value,
+                roles,
+                scopes = scopeClaim,
+                exp = user.FindFirst(ClaimTypes.Expiration)?.Value
+            });
+        }).RequireAuthorization();
+
+        // Mimics the Catalog endpoint with CatalogRead policy
+        app.MapGet("/catalog/v1/products", () => new[]
+        {
+            new { Id = Guid.NewGuid(), Name = "Keyboard", Price = 199.90m },
+            new { Id = Guid.NewGuid(), Name = "Mouse", Price = 89.90m }
+        }).RequireAuthorization("CatalogRead");
+
+        return new TestServer(app);
+    }
 
     private static string GenerateToken(
         string subject,
@@ -224,14 +286,12 @@ public sealed class AuthorizationMatrixTests
             claims.Add(new Claim("roles", role));
         }
 
-        var signingCredentials = new SigningCredentials(TestKey, SecurityAlgorithms.HmacSha256);
-
         var token = new JwtSecurityToken(
             issuer: TestIssuer,
             audience: TestAudience,
             claims: claims,
             expires: DateTime.UtcNow.AddMinutes(5),
-            signingCredentials: signingCredentials);
+            signingCredentials: TestSigningCredentials);
 
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
