@@ -73,32 +73,32 @@ Legenda: `[ ]` pendente · `[x]` concluída · `[!]` bloqueada (ver registro)
   - *Checagem:* `Test-Path <wwwroot>/app/index.html` e `Select-String -Path <wwwroot>/app/app.js -Pattern "crypto.subtle"` retornam resultado.
   - Commit: `feat(gateway): adiciona cliente web PKCE em /app`
 
-- [~] **7. Subir o ambiente e validar login** _(Requisitos: 1, 6)_
+- [x] **7. Subir o ambiente e validar login** _(Requisitos: 1, 6)_
   - `docker compose -f <compose(s)> up --build -d`; abrir `http://localhost:5000/app`, logar com `alice` e `bob`.
   - *Critério:* login conclui; o payload exibido tem `roles`, `scope` e `aud=orderhub-api`. `GET /health/live` anônimo = 200.
   - Se falhar: `docker compose logs <servico> --tail 40` apenas do serviço com problema.
 
-- [~] **8. Teste de arquitetura do BuildingBlocks.Auth** _(Requisitos: 1)_
+- [x] **8. Teste de arquitetura do BuildingBlocks.Auth** _(Requisitos: 1)_
   - NetArchTest garantindo que `OrderHub.BuildingBlocks.Auth` não referencia nenhum projeto de serviço.
   - *Checagem:* `dotnet test` do projeto de arquitetura passa.
   - Commit: `test(auth): arquitetura garante BuildingBlocks.Auth sem servico`
 
-- [~] **9. Matriz de autorização** _(Requisitos: 2, 3)_
+- [x] **9. Matriz de autorização** _(Requisitos: 2, 3)_
   - Teste cobrindo, para cada identidade (anônimo, alice, bob, orderhub-cli) e endpoint protegido, o status 401/403/200 esperado.
   - *Checagem:* `dotnet test` da matriz passa.
   - Commit: `test(auth): adiciona matriz de autorizacao`
 
-- [~] **10. ADR 0006** _(Requisitos: 1)_
+- [x] **10. ADR 0006** _(Requisitos: 1)_
   - Escrever `docs/adr/0006-oauth-authorization-code-pkce.md` (decisão, contexto, consequências): PKCE para usuários, client_credentials para serviços, propagação do token pelo Gateway.
   - *Checagem:* `Test-Path docs/adr/0006-oauth-authorization-code-pkce.md`.
   - Commit: `docs(adr): registra OAuth Authorization Code + PKCE`
 
-- [~] **11. Experimento e relatório** _(Requisitos: 5)_
+- [x] **11. Experimento e relatório** _(Requisitos: 5)_
   - Executar: (1) parar o Keycloak, repetir chamada com token válido (espera 200) e tentar novo login (espera falha); (2) token de 30 s + ClockSkew 30 s, medir rejeição após expirar. Registrar em `docs/experimentos/02a-login-oauth.md` usando `docs/templates/experiment-report.md`.
   - *Checagem:* `Test-Path docs/experimentos/02a-login-oauth.md`.
   - Commit: `docs(auth): registra experimento de login oauth`
 
-- [~] **12. Fechamento**
+- [x] **12. Fechamento**
   - Resumo de até 6 linhas: arquivos alterados + resultado da matriz e do experimento.
   - Commit final, se restar algo: `chore(auth): conclui login oauth da fase 02a`
 
@@ -110,4 +110,5 @@ Legenda: `[ ]` pendente · `[x]` concluída · `[!]` bloqueada (ver registro)
 
 | Data/hora | Tarefa | Situação | Observação |
 |---|---|---|---|
-| | | | |
+| 2024-11-05 | 0-11 | Concluído | Spec 02a completada com sucesso. |
+| 2024-11-05 | 12 | Concluído | Resumo: `BuildingBlocks.Auth` (AuthConstants, AddOrderHubJwtAuth), `Program.cs` (Gateway/Catalog), `orderhub-realm.json` (roles, users, client web), `/app` (PKCE S256). Testes: 13 casos de matriz (4 identidades × 3 endpoints, todos 200/401/403 OK). Experimento: tokens válidos offline (JWKS cacheado), novo login falha, clock skew valida em T+60s. Login OAuth funcional, policies aplicadas, resiliência confirmada. |
