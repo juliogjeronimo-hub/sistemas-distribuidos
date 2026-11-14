@@ -2,6 +2,64 @@
   "realm": "orderhub",
   "enabled": true,
   "sslRequired": "none",
+  "registrationAllowed": true,
+  "registrationEmailAsUsername": false,
+  "accessTokenLifespan": 300,
+  "accessTokenLifespanForImplicitFlow": 300,
+  "ssoSessionIdleTimeout": 600,
+  "ssoSessionMaxLifespan": 3600,
+  "roles": {
+    "realm": [
+      {
+        "name": "admin",
+        "description": "Administrator role with full access"
+      },
+      {
+        "name": "customer",
+        "description": "Default customer role",
+        "composite": false,
+        "clientRole": false
+      }
+    ]
+  },
+  "defaultRole": {
+    "name": "customer",
+    "description": "Default role assigned to new users"
+  },
+  "users": [
+    {
+      "username": "alice",
+      "enabled": true,
+      "emailVerified": false,
+      "email": "alice@orderhub.local",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "alice123",
+          "temporary": false
+        }
+      ],
+      "realmRoles": ["customer"],
+      "clientRoles": {},
+      "groups": []
+    },
+    {
+      "username": "bob",
+      "enabled": true,
+      "emailVerified": false,
+      "email": "bob@orderhub.local",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "bob123",
+          "temporary": false
+        }
+      ],
+      "realmRoles": ["admin"],
+      "clientRoles": {},
+      "groups": []
+    }
+  ],
   "clientScopes": [
     {
       "name": "catalog.read",
@@ -22,6 +80,88 @@
           }
         }
       ]
+    },
+    {
+      "name": "catalog.write",
+      "protocol": "openid-connect",
+      "attributes": {
+        "include.in.token.scope": "true",
+        "display.on.consent.screen": "false"
+      },
+      "protocolMappers": [
+        {
+          "name": "orderhub-api-audience",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-audience-mapper",
+          "config": {
+            "included.custom.audience": "orderhub-api",
+            "access.token.claim": "true",
+            "id.token.claim": "false"
+          }
+        }
+      ]
+    },
+    {
+      "name": "inventory.read",
+      "protocol": "openid-connect",
+      "attributes": {
+        "include.in.token.scope": "true",
+        "display.on.consent.screen": "false"
+      },
+      "protocolMappers": [
+        {
+          "name": "orderhub-api-audience",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-audience-mapper",
+          "config": {
+            "included.custom.audience": "orderhub-api",
+            "access.token.claim": "true",
+            "id.token.claim": "false"
+          }
+        }
+      ]
+    },
+    {
+      "name": "inventory.write",
+      "protocol": "openid-connect",
+      "attributes": {
+        "include.in.token.scope": "true",
+        "display.on.consent.screen": "false"
+      },
+      "protocolMappers": [
+        {
+          "name": "orderhub-api-audience",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-audience-mapper",
+          "config": {
+            "included.custom.audience": "orderhub-api",
+            "access.token.claim": "true",
+            "id.token.claim": "false"
+          }
+        }
+      ]
+    },
+    {
+      "name": "realm-roles",
+      "protocol": "openid-connect",
+      "attributes": {
+        "include.in.token.scope": "true",
+        "display.on.consent.screen": "false"
+      },
+      "protocolMappers": [
+        {
+          "name": "realm-roles-to-claim",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-realm-role-mapper",
+          "config": {
+            "multivalued": "true",
+            "claim.name": "roles",
+            "jsonType.label": "String",
+            "id.token.claim": "true",
+            "access.token.claim": "true"
+          }
+        }
+      ]
     }
   ],
   "clients": [
@@ -34,7 +174,20 @@
       "serviceAccountsEnabled": true,
       "standardFlowEnabled": false,
       "directAccessGrantsEnabled": false,
-      "defaultClientScopes": ["catalog.read"],
+      "defaultClientScopes": ["catalog.read", "catalog.write", "inventory.read", "inventory.write", "realm-roles"],
+      "optionalClientScopes": []
+    },
+    {
+      "clientId": "orderhub-web",
+      "enabled": true,
+      "protocol": "openid-connect",
+      "publicClient": true,
+      "secret": "",
+      "standardFlowEnabled": true,
+      "directAccessGrantsEnabled": false,
+      "redirectUris": ["http://localhost:5000/app/*"],
+      "webOrigins": ["http://localhost:5000"],
+      "defaultClientScopes": ["catalog.read", "catalog.write", "inventory.read", "inventory.write", "realm-roles"],
       "optionalClientScopes": []
     }
   ]

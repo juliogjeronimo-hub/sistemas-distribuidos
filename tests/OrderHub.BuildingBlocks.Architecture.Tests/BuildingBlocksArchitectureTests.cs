@@ -1,5 +1,6 @@
 using System.Reflection;
 using NetArchTest.Rules;
+using OrderHub.BuildingBlocks.Auth;
 using OrderHub.BuildingBlocks.Contracts;
 using OrderHub.BuildingBlocks.Messaging;
 using Xunit;
@@ -16,6 +17,8 @@ public class BuildingBlocksArchitectureTests
     private static readonly Assembly ContractsAssembly = typeof(EventEnvelope).Assembly;
 
     private static readonly Assembly MessagingAssembly = typeof(MessagingAssemblyMarker).Assembly;
+
+    private static readonly Assembly AuthAssembly = typeof(AuthAssemblyMarker).Assembly;
 
     private static readonly string[] ServiceNamespaces =
     [
@@ -54,12 +57,26 @@ public class BuildingBlocksArchitectureTests
     }
 
     [Fact]
+    public void Auth_ShouldNot_DependOnAnyService()
+    {
+        var result = Types.InAssembly(AuthAssembly)
+            .ShouldNot()
+            .HaveDependencyOnAny(ServiceNamespaces)
+            .GetResult();
+
+        Assert.True(result.IsSuccessful,
+            "BuildingBlocks.Auth must not reference any service. " +
+            "Violating types: " + string.Join(", ", result.FailingTypes ?? []));
+    }
+
+    [Fact]
     public void BuildingBlocks_ShouldNot_ReferenceServiceAssemblies()
     {
         foreach (var (name, assembly) in new[]
         {
             (nameof(ContractsAssembly), ContractsAssembly),
             (nameof(MessagingAssembly), MessagingAssembly),
+            (nameof(AuthAssembly), AuthAssembly),
         })
         {
             var foreignReferences = assembly

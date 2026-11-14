@@ -3,8 +3,10 @@
   <ItemGroup>
     <!-- YARP reverse proxy — edge routing to downstream services (Req. 2, 3) -->
     <PackageReference Include="Yarp.ReverseProxy" Version="2.3.0" />
-    <!-- JWT bearer authentication against Keycloak (Req. 2, 3) -->
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\building-blocks\OrderHub.BuildingBlocks.Auth\OrderHub.BuildingBlocks.Auth.csproj" />
   </ItemGroup>
 
   <ItemGroup>

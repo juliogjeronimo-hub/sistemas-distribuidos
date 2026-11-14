@@ -7,8 +7,10 @@
   <ItemGroup>
     <!-- Health check probe for PostgreSQL connectivity (Req. 5, 7) -->
     <PackageReference Include="AspNetCore.HealthChecks.NpgSql" Version="9.0.0" />
-    <!-- JWT bearer authentication against Keycloak (Req. 2, 3) -->
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\src\building-blocks\OrderHub.BuildingBlocks.Auth\OrderHub.BuildingBlocks.Auth.csproj" />
   </ItemGroup>
 
   <ItemGroup>

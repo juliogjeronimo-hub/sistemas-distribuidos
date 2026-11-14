@@ -6,6 +6,8 @@ COPY Directory.Build.props ./
 
 COPY src/Gateway/OrderHub.Gateway/OrderHub.Gateway.csproj \
      src/Gateway/OrderHub.Gateway/
+COPY src/building-blocks/OrderHub.BuildingBlocks.Auth/OrderHub.BuildingBlocks.Auth.csproj \
+     src/building-blocks/OrderHub.BuildingBlocks.Auth/
 
 RUN dotnet restore src/Gateway/OrderHub.Gateway/OrderHub.Gateway.csproj
 

@@ -1,83 +1,77 @@
 # ─── Serviços .NET ────────────────────────────────────────────────────────────
-# Overlay dos serviços .NET sobre a plataforma de infra definida no
-# docker-compose.yml. Usar sempre junto com o base:
+# Gateway (YARP) e Catalog (API). Construídos a partir dos Dockerfiles locais.
+# Integram-se com a infraestrutura base (Keycloak, RabbitMQ, Redis, etc).
 #
-#   docker compose -f docker-compose.yml -f docker-compose.services.yml up
-#
-# As imagens são construídas a partir do código-fonte; o build context é a
-# raiz do repositório para que o Directory.Build.props seja alcançável.
-#
-# Redes e volumes são declarados no base (docker-compose.yml); este arquivo
-# apenas acrescenta/ajusta os serviços .NET. As portas de host ficam no
-# docker-compose.override.yml (dev).
+# As portas e configurações de dev são declaradas em docker-compose.override.yml.
 
 name: orderhub
 
+networks:
+  edge:
+    driver: bridge
+  internal:
+    driver: bridge
+
 services:
 
-  # ─── Gateway (YARP) ───────────────────────────────────────────────────────
-  # Borda pública: fica em "edge" (alcançável de fora) e em "internal" (para
-  # falar com o Catalog e validar JWT no Keycloak).
+  # ─── Gateway ──────────────────────────────────────────────────────────────
+  # YARP (reverse proxy). Ponto de entrada único para a plataforma.
+  # Orquestra rotas para Catalog e futuros serviços, injeta trace headers,
+  # valida JWT (delegado ao JwtBearer middleware).
+  #
+  # Port mapping e ASPNETCORE_ENVIRONMENT: declarados em docker-compose.override.yml.
   gateway:
     build:
-      context: ..
+      context: ../
       dockerfile: src/Gateway/OrderHub.Gateway/Dockerfile
-    image: orderhub/gateway:1.0.0
     container_name: orderhub-gateway
     environment:
-      ASPNETCORE_ENVIRONMENT: Production
-      # Endereços dos serviços de upstream — ajuste conforme a config do YARP.
-      ReverseProxy__Clusters__catalog__Destinations__catalog__Address: http://catalog:8080
-      Auth__Authority: ${AUTH_AUTHORITY:-http://keycloak:8080/realms/orderhub}
-      Auth__Audience: ${AUTH_AUDIENCE:-orderhub-api}
-      Auth__RequireHttpsMetadata: "false"
-      Telemetry__ServiceName: gateway
-      Telemetry__ServiceVersion: "1.0.0"
+      Auth:ValidIssuer: "http://keycloak:8080/realms/orderhub"
+      Auth:Audience: "orderhub-api"
+      Auth:RequireHttpsMetadata: "false"
+      ASPNETCORE_ENVIRONMENT: "Development"
     networks:
       - edge
       - internal
     depends_on:
       keycloak:
         condition: service_healthy
-      catalog:
-        condition: service_healthy
     healthcheck:
-      test: ["CMD-SHELL", "curl -f http://localhost:8080/health/ready || exit 1"]
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health/ready"]
       interval: 15s
       timeout: 5s
-      retries: 5
+      retries: 10
       start_period: 20s
     cpus: "0.5"
     mem_limit: 256m
     restart: unless-stopped
 
   # ─── Catalog ──────────────────────────────────────────────────────────────
-  # Serviço interno: fica apenas em "internal". Valida JWT no Keycloak, por isso
-  # depende dele saudável. O banco próprio do Catalog chega na fase do serviço;
-  # nesta fase ainda não há Postgres no stack.
+  # API de produtos. Esqueleto funcional com autenticação JWT.
+  # Fase 02a: login de usuários e validação de tokens.
+  # Fase 02b: persistência em banco com EF Core.
+  #
+  # Port mapping e ASPNETCORE_ENVIRONMENT: declarados em docker-compose.override.yml.
   catalog:
     build:
-      context: ..
+      context: ../
       dockerfile: src/Catalog/OrderHub.Catalog.Api/Dockerfile
-    image: orderhub/catalog:1.0.0
     container_name: orderhub-catalog
     environment:
-      ASPNETCORE_ENVIRONMENT: Production
-      Auth__Authority: ${AUTH_AUTHORITY:-http://keycloak:8080/realms/orderhub}
-      Auth__Audience: ${AUTH_AUDIENCE:-orderhub-api}
-      Auth__RequireHttpsMetadata: "false"
-      Telemetry__ServiceName: catalog
-      Telemetry__ServiceVersion: "1.0.0"
+      Auth:ValidIssuer: "http://keycloak:8080/realms/orderhub"
+      Auth:Audience: "orderhub-api"
+      Auth:RequireHttpsMetadata: "false"
+      ASPNETCORE_ENVIRONMENT: "Development"
     networks:
       - internal
     depends_on:
       keycloak:
         condition: service_healthy
     healthcheck:
-      test: ["CMD-SHELL", "curl -f http://localhost:8080/health/ready || exit 1"]
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health/ready"]
       interval: 15s
       timeout: 5s
-      retries: 5
+      retries: 10
       start_period: 20s
     cpus: "0.5"
     mem_limit: 256m

@@ -1,6 +1,6 @@
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
-using Microsoft.IdentityModel.Tokens;
+using OrderHub.BuildingBlocks.Auth;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,36 +9,33 @@ builder.Services.AddReverseProxy()
 
 builder.Services.AddHealthChecks();
 
-var auth = builder.Configuration.GetSection("Auth");
-builder.Services
-    .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer(o =>
-    {
-        o.MetadataAddress = auth["MetadataAddress"]!;
-        o.RequireHttpsMetadata = bool.Parse(auth["RequireHttpsMetadata"] ?? "true");
-        o.MapInboundClaims = false;
-        o.TokenValidationParameters = new TokenValidationParameters
-        {
-            ValidIssuer = auth["ValidIssuer"],
-            ValidAudience = auth["Audience"],
-            ValidateIssuer = true,
-            ValidateAudience = true,
-            ValidateLifetime = true,
-            ValidateIssuerSigningKey = true
-        };
-    });
-
-builder.Services.AddAuthorization();
+builder.Services.AddOrderHubJwtAuth(builder.Configuration);
 
 var app = builder.Build();
 
+app.UseStaticFiles();
 app.UseAuthentication();
-
 app.UseAuthorization();
 
 app.MapHealthChecks("/health/live");
-
 app.MapHealthChecks("/health/ready");
+
+// Endpoint /me returns user info from token (excluded from YARP)
+app.MapGet("/me", (HttpContext context) =>
+{
+    var user = context.User;
+    var roles = user.FindAll(ClaimTypes.Role).Select(c => c.Value).ToList();
+    var scopeClaim = user.FindFirst("scope")?.Value ?? string.Empty;
+
+    return Results.Ok(new
+    {
+        sub = user.FindFirst(ClaimTypes.NameIdentifier)?.Value,
+        preferred_username = user.FindFirst("preferred_username")?.Value,
+        roles,
+        scopes = scopeClaim,
+        exp = user.FindFirst(ClaimTypes.Expiration)?.Value
+    });
+}).RequireAuthorization();
 
 app.MapReverseProxy().RequireAuthorization();
 
