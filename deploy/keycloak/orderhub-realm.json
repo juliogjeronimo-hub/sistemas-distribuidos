@@ -187,14 +187,8 @@
       "directAccessGrantsEnabled": false,
       "redirectUris": ["http://localhost:5000/app/*"],
       "webOrigins": ["http://localhost:5000"],
-      "postLogoutRedirectUris": ["http://localhost:5000/app/*"],
-      "pkceCodeChallengeMethod": "S256",
       "defaultClientScopes": ["catalog.read", "catalog.write", "inventory.read", "inventory.write", "realm-roles"],
-      "optionalClientScopes": [],
-      "attributes": {
-        "oidc.ciba.grant.enabled": "false",
-        "oauth2.device.authorization.grant.enabled": "false"
-      }
+      "optionalClientScopes": []
     }
   ]
 }
