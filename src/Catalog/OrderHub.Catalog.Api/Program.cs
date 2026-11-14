@@ -1,17 +1,22 @@
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using OrderHub.BuildingBlocks.Auth;
 using OrderHub.Catalog.Application.DependencyInjection;
+using OrderHub.Catalog.Infrastructure.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddApplicationServices();
-builder.Services.AddHealthChecks();
+builder.Services.AddInfrastructure(builder.Configuration);
+builder.Services.AddHealthChecks()
+    .AddCatalogHealthChecks();
 builder.Services.AddOrderHubJwtAuth(builder.Configuration);
 
 var app = builder.Build();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.ApplyMigrations(app.Environment);
 
 app.MapHealthChecks("/health/live");
 app.MapHealthChecks("/health/ready");
