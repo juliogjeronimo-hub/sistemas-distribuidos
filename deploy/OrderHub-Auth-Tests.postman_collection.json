@@ -225,21 +225,17 @@
           "listen": "test",
           "script": {
             "exec": [
-              "// Decodificar JWT manualmente (só para debug, sem validação de assinatura)",
               "var token = pm.environment.get('access_token');",
               "var parts = token.split('.');",
               "var payload = parts[1];",
               "",
-              "// Adicionar padding base64",
               "while (payload.length % 4) {",
               "    payload += '=';",
               "}",
               "",
-              "// Decodificar",
               "var decoded = atob(payload);",
               "var claims = JSON.parse(decoded);",
               "",
-              "// Salvar claims em variáveis de ambiente para debug",
               "pm.environment.set('jwt_iss', claims.iss);",
               "pm.environment.set('jwt_aud', claims.aud);",
               "pm.environment.set('jwt_sub', claims.sub);",
@@ -264,9 +260,7 @@
               "    pm.expect(claims.exp).to.exist;",
               "    var now = Math.floor(Date.now() / 1000);",
               "    pm.expect(claims.exp).to.be.greaterThan(now);",
-              "});",
-              "",
-              "console.log('JWT Claims:', claims);"
+              "});"
             ]
           }
         }
@@ -281,7 +275,7 @@
           "port": "8180",
           "path": ["realms", "orderhub", ".well-known", "openid-configuration"]
         },
-        "description": "Decodifica o JWT armazenado em `{{access_token}}`.\n\nNota: Isto é **somente para debug**. Em produção, nunca confie em JWT decodificado sem validar a assinatura.\n\nVocê verá os claims:\n- `iss`: issuer (Keycloak)\n- `aud`: audience (orderhub-api)\n- `sub`: subject (client ID)\n- `scope`: permissões\n- `exp`: tempo de expiração\n- `iat`: tempo de emissão"
+        "description": "Decodifica o JWT armazenado em `{{access_token}}`."
       },
       "response": []
     },
@@ -332,7 +326,7 @@
       "script": {
         "type": "text/javascript",
         "exec": [
-          "// Configurar ambiente padrão se necessário"
+          ""
         ]
       }
     },
@@ -384,7 +378,6 @@
     },
     {
       "key": "jwt_exp",
-      "value": "",
       "value": "",
       "type": "string"
     },
