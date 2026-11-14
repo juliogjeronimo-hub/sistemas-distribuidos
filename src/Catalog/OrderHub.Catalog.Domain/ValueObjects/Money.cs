@@ -1,3 +1,5 @@
+using OrderHub.Catalog.Domain.Common;
+
 namespace OrderHub.Catalog.Domain.ValueObjects;
 
 /// <summary>

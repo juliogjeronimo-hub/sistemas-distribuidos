@@ -23,6 +23,18 @@ internal sealed class ProductRepository : IProductRepository
         return await _context.Products.FirstOrDefaultAsync(p => p.Sku == sku, ct);
     }
 
+    public async Task<List<Product>> ListAsync(bool includeInactive, CancellationToken ct)
+    {
+        var query = _context.Products.AsQueryable();
+
+        if (!includeInactive)
+        {
+            query = query.Where(p => p.IsActive);
+        }
+
+        return await query.ToListAsync(ct);
+    }
+
     public async Task AddAsync(Product product, CancellationToken ct)
     {
         await _context.Products.AddAsync(product, ct);

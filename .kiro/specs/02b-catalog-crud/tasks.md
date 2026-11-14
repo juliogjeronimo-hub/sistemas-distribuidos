@@ -48,12 +48,12 @@ Legenda: `[ ]` pendente - `[x]` concluida - `[!]` bloqueada
   - *Checagem:* `docker compose -f <compose(s)> config` lista `postgres-catalog`.
   - Commit: `feat(infra): adiciona postgres-catalog ao compose`
 
-- [~] **4. Casos de uso (handlers + validacao)** _(Requisitos: 1, 2, 3, 4, 5)_
+- [x] **4. Casos de uso (handlers + validacao)** _(Requisitos: 1, 2, 3, 4, 5)_
   - Handlers proprios (sem mediator): `CreateProduct`, `UpdateProduct`, `DeactivateProduct`, `GetProductById`, `ListProducts` (page, pageSize padrao 20 max 50, ordenado por Name; customer so ativos; admin `includeInactive=true`). Validacao FluentValidation via decorator; Result pattern.
   - *Checagem:* `Select-String <Application>\**\*.cs -Pattern `\`CreateProductHandler`\``` retorna resultado.
   - Commit: `feat(catalog): adiciona casos de uso de produto`
 
-- [~] **5. Endpoints v1 + ProblemDetails** _(Requisitos: 1, 2, 3, 4, 5, 6, 8)_
+- [-] **5. Endpoints v1 + ProblemDetails** _(Requisitos: 1, 2, 3, 4, 5, 6, 8)_
   - `GET /v1/products` e `GET /v1/products/{id}` (policy CatalogRead); `POST /v1/products` (201+Location), `PUT /v1/products/{id}`, `POST /v1/products/{id}/deactivate` (policy CatalogWrite). Erros em ProblemDetails (400/404/409). Remove os dados fixos atuais.
   - *Checagem:* `Select-String <Api>\**\*.cs -Pattern `\`/v1/products`\``` retorna resultado e nao ha mais o array fixo.
   - Commit: `feat(catalog): expoe endpoints CRUD de produtos`

@@ -7,4 +7,8 @@ public sealed record UpdateProductCommand(
     string Name,
     string Description,
     decimal Price)
-    : ICommand;
+    : ICommand
+{
+    // Parameterless constructor for binding
+    public UpdateProductCommand() : this(Guid.Empty, string.Empty, string.Empty, 0) { }
+}

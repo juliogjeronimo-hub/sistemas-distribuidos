@@ -41,8 +41,18 @@ internal static class AuthServiceCollectionExtensions
 
         services.AddAuthorization(options =>
         {
-            options.AddScopePolicy(CatalogScopes.Read);
-            options.AddScopePolicy(CatalogScopes.Write);
+            // CatalogRead: any authenticated user with the scope
+            options.AddPolicy(CatalogScopes.Read, policy =>
+                policy
+                    .RequireAuthenticatedUser()
+                    .AddRequirements(new ScopeRequirement(CatalogScopes.Read)));
+
+            // CatalogWrite: admin role AND scope
+            options.AddPolicy(CatalogScopes.Write, policy =>
+                policy
+                    .RequireAuthenticatedUser()
+                    .RequireRole("admin")
+                    .AddRequirements(new ScopeRequirement(CatalogScopes.Write)));
         });
 
         // Required so the authorization middleware can discover and invoke the
@@ -54,17 +64,5 @@ internal static class AuthServiceCollectionExtensions
         services.AddScoped<ICurrentUser, HttpContextCurrentUser>();
 
         return services;
-    }
-
-    private static void AddScopePolicy(
-        this Microsoft.AspNetCore.Authorization.AuthorizationOptions options,
-        string scope)
-    {
-        options.AddPolicy(scope, policy =>
-            policy
-                .RequireAuthenticatedUser()
-                // ScopeRequirement splits the space-separated "scope" claim, which
-                // is how Keycloak encodes scopes in the token.
-                .AddRequirements(new ScopeRequirement(scope)));
     }
 }

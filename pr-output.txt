@@ -1,0 +1,9 @@
+﻿powershell : a pull request for branch "feat/oauth-auth" into branch "main" already exists:
+No linha:1 caractere:1
++ powershell -ExecutionPolicy Bypass -File 'c:\Documents\Repositorios\s ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (a pull request ...already exists::String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+https://github.com/juliogjeronimo-hub/sistemas-distribuidos/pull/1
+PR creation completed

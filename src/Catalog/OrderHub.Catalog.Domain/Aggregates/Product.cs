@@ -1,3 +1,4 @@
+using OrderHub.Catalog.Domain.Common;
 using OrderHub.Catalog.Domain.ValueObjects;
 
 namespace OrderHub.Catalog.Domain.Aggregates;
@@ -109,21 +110,21 @@ public sealed class Product
     {
         if (string.IsNullOrWhiteSpace(sku))
         {
-            return Result.Fail(Error.Validation(
+            return Result.Failure(Error.Validation(
                 nameof(Sku),
                 "SKU cannot be empty."));
         }
 
         if (sku.Length < 3 || sku.Length > 32)
         {
-            return Result.Fail(Error.Validation(
+            return Result.Failure(Error.Validation(
                 nameof(Sku),
                 "SKU must be between 3 and 32 characters."));
         }
 
         if (!IsValidSkuFormat(sku))
         {
-            return Result.Fail(Error.Validation(
+            return Result.Failure(Error.Validation(
                 nameof(Sku),
                 "SKU must contain only alphanumeric characters and hyphens."));
         }
