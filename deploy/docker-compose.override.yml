@@ -13,6 +13,13 @@ name: orderhub
 
 services:
 
+  # ─── PostgreSQL (Catalog) – debug profile ─────────────────────────────────
+  postgres-catalog:
+    profiles:
+      - debug
+    ports:
+      - "5432:5432"
+
   # ─── Keycloak ─────────────────────────────────────────────────────────────
   keycloak:
     ports:
