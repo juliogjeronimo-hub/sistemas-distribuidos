@@ -56,3 +56,8 @@ appsettings.*.local.json
 ## Temporários de diagnóstico/shell (saídas redirecionadas, scripts ad-hoc)
 *.out
 deploy/run-checks.ps1
+
+## Postman (exportações YAML)
+postman/
+.postman/
+deploy/OrderHub\ —\ *
