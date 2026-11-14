@@ -8,14 +8,28 @@ namespace OrderHub.BuildingBlocks.Auth;
 
 /// <summary>
 /// Authentication configuration options for OrderHub services.
+/// Uses the Authority URL from the issuer (ValidIssuer), which automatically resolves
+/// the .well-known/openid-configuration endpoint for metadata discovery.
 /// </summary>
 public class AuthOptions
 {
     public const string SectionName = "Auth";
 
+    /// <summary>
+    /// The issuer URL (e.g., "http://keycloak:8080/realms/orderhub").
+    /// Used as the Authority for automatic metadata discovery.
+    /// </summary>
     public string ValidIssuer { get; set; } = string.Empty;
+    
+    /// <summary>
+    /// The expected audience in the token (e.g., "orderhub-api").
+    /// </summary>
     public string Audience { get; set; } = string.Empty;
-    public string MetadataAddress { get; set; } = string.Empty;
+    
+    /// <summary>
+    /// Whether HTTPS is required for metadata discovery.
+    /// Set to false in development when using HTTP.
+    /// </summary>
     public bool RequireHttpsMetadata { get; set; } = true;
 }
 
@@ -39,7 +53,6 @@ public static class AuthenticationExtensions
             {
                 options.Authority = authOptions.ValidIssuer;
                 options.Audience = authOptions.Audience;
-                options.MetadataAddress = authOptions.MetadataAddress;
                 options.RequireHttpsMetadata = authOptions.RequireHttpsMetadata;
                 options.MapInboundClaims = false;
                 options.TokenValidationParameters.ClockSkew = TimeSpan.FromSeconds(30);
