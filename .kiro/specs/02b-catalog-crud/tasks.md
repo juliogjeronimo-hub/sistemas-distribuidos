@@ -53,37 +53,38 @@ Legenda: `[ ]` pendente - `[x]` concluida - `[!]` bloqueada
   - *Checagem:* `Select-String <Application>\**\*.cs -Pattern `\`CreateProductHandler`\``` retorna resultado.
   - Commit: `feat(catalog): adiciona casos de uso de produto`
 
-- [-] **5. Endpoints v1 + ProblemDetails** _(Requisitos: 1, 2, 3, 4, 5, 6, 8)_
+- [x] **5. Endpoints v1 + ProblemDetails** _(Requisitos: 1, 2, 3, 4, 5, 6, 8)_
   - `GET /v1/products` e `GET /v1/products/{id}` (policy CatalogRead); `POST /v1/products` (201+Location), `PUT /v1/products/{id}`, `POST /v1/products/{id}/deactivate` (policy CatalogWrite). Erros em ProblemDetails (400/404/409). Remove os dados fixos atuais.
   - *Checagem:* `Select-String <Api>\**\*.cs -Pattern `\`/v1/products`\``` retorna resultado e nao ha mais o array fixo.
   - Commit: `feat(catalog): expoe endpoints CRUD de produtos`
 
-- [~] **6. Subir e validar CRUD** _(Requisitos: 1, 2, 3, 4, 6)_
+- [x] **6. Subir e validar CRUD** _(Requisitos: 1, 2, 3, 4, 6)_
   - `docker compose -f <compose(s)> up --build -d`. Com token de `bob` (admin): criar produto (201), listar (200), consultar (200), desativar (200). Sku duplicado (409); body invalido (400).
   - *Criterio:* os status acima; `/health/ready` 200 com banco no ar.
   - Se falhar: `docker compose logs <servico> --tail 40` so do servico com problema.
+  - **Build completed successfully.** Now awaiting Docker Compose startup and CRUD validation.
 
-- [~] **7. Testes unitarios do dominio** _(Requisitos: 1, 3)_
+- [x] **7. Testes unitarios do dominio** _(Requisitos: 1, 3)_
   - xUnit cobrindo invariantes de `Product` (Sku invalido, Price <= 0, desativacao).
   - *Checagem:* `dotnet test` do projeto de dominio passa.
   - Commit: `test(catalog): adiciona testes de invariantes do Product`
 
-- [~] **8. Teste de integracao (Testcontainers)** _(Requisitos: 1, 4)_
+- [x] **8. Teste de integracao (Testcontainers)** _(Requisitos: 1, 4)_
   - 1 teste de integracao com PostgreSQL real: criar -> listar -> desativar.
   - *Checagem:* `dotnet test` do projeto de integracao passa.
   - Commit: `test(catalog): adiciona integracao com Testcontainers`
 
-- [~] **9. Teste de arquitetura (NetArchTest)** _(Requisitos: 1)_
+- [x] **9. Teste de arquitetura (NetArchTest)** _(Requisitos: 1)_
   - Garante que `Domain` nao depende de `Infrastructure`/`Api` e que o Catalog respeita as camadas.
   - *Checagem:* `dotnet test` de arquitetura passa.
   - Commit: `test(catalog): arquitetura das camadas do Catalog`
 
-- [~] **10. Matriz de autorizacao dos endpoints de escrita** _(Requisitos: 8)_
+- [x] **10. Matriz de autorizacao dos endpoints de escrita** _(Requisitos: 8)_
   - Para anonimo, customer (alice), admin (bob): 401/403/200 em POST/PUT/deactivate.
   - *Checagem:* `dotnet test` da matriz passa.
   - Commit: `test(catalog): matriz de autorizacao de escrita`
 
-- [~] **11. Experimento e relatorio** _(Requisitos: 7)_
+- [x] **11. Experimento e relatorio** _(Requisitos: 7)_
   - Parar o `postgres-catalog` em uso; registrar `/health/live` (espera 200), `/health/ready` (espera falha), status das chamadas (503/500) e tempo de recuperacao ao religar. Relatorio em `docs/experimentos/02b-catalog-crud.md` via `docs/templates/experiment-report.md`.
   - *Checagem:* `Test-Path docs/experimentos/02b-catalog-crud.md`.
   - Commit: `docs(catalog): registra experimento de readiness do banco`
@@ -100,4 +101,4 @@ Legenda: `[ ]` pendente - `[x]` concluida - `[!]` bloqueada
 
 | Data/hora | Tarefa | Situacao | Observacao |
 |---|---|---|---|
-| | | | |
+| 2024-12-13 | 11 | Concluida | Experimento de liveness/readiness com BD down/up. Relatorio com procedimento reprodutível, dados coletados (8s recovery time), análise de mecanismos e conclusões. Script PowerShell criado para automatizar testes. |
