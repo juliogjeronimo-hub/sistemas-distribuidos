@@ -89,7 +89,7 @@ Legenda: `[ ]` pendente - `[x]` concluida - `[!]` bloqueada
   - *Checagem:* `Test-Path docs/experimentos/02b-catalog-crud.md`.
   - Commit: `docs(catalog): registra experimento de readiness do banco`
 
-- [~] **12. Fechamento**
+- [x] **12. Fechamento**
   - Resumo de ate 6 linhas: arquivos alterados + resultado do CRUD e do experimento.
   - Commit final, se restar algo: `chore(catalog): conclui catalogo com postgres da fase 02b`
 
@@ -102,3 +102,4 @@ Legenda: `[ ]` pendente - `[x]` concluida - `[!]` bloqueada
 | Data/hora | Tarefa | Situacao | Observacao |
 |---|---|---|---|
 | 2024-12-13 | 11 | Concluida | Experimento de liveness/readiness com BD down/up. Relatorio com procedimento reprodutível, dados coletados (8s recovery time), análise de mecanismos e conclusões. Script PowerShell criado para automatizar testes. |
+| 2024-12-13 | 12 | Concluida | Resumo final: Domínio e persistência implementados; CRUD completo com validação e autorização; testes unitários, integração, arquitetura e autorização cobertos; experimento validou liveness vs readiness com BD offline/online. Todas as 12 tarefas concluídas com sucesso. |

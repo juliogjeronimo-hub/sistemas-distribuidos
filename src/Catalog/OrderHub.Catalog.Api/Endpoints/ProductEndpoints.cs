@@ -1,4 +1,6 @@
 using OrderHub.Catalog.Application.Abstractions.Messaging;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using OrderHub.Catalog.Application.UseCases.Commands;
 using OrderHub.Catalog.Application.UseCases.DTOs;
 using OrderHub.Catalog.Application.UseCases.Queries;
@@ -13,52 +15,51 @@ internal static class ProductEndpoints
     {
         var group = app.MapGroup("/v1/products")
             .WithName("Products")
-            .WithOpenApi()
             .RequireAuthorization(CatalogScopes.Read);
 
         group.MapGet("/", ListProducts)
             .WithName("ListProducts")
             .WithSummary("List all products (paginated)")
             .Produces<PaginatedResponse<ProductResponse>>(StatusCodes.Status200OK)
-            .Produces<ProblemDetails>(StatusCodes.Status401Unauthorized)
-            .Produces<ProblemDetails>(StatusCodes.Status403Forbidden);
+            .Produces(StatusCodes.Status401Unauthorized)
+            .Produces(StatusCodes.Status403Forbidden);
 
         group.MapGet("/{id}", GetProductById)
             .WithName("GetProductById")
             .WithSummary("Get product by ID")
             .Produces<ProductResponse>(StatusCodes.Status200OK)
-            .Produces<ProblemDetails>(StatusCodes.Status401Unauthorized)
-            .Produces<ProblemDetails>(StatusCodes.Status403Forbidden)
-            .Produces<ProblemDetails>(StatusCodes.Status404NotFound);
+            .Produces(StatusCodes.Status401Unauthorized)
+            .Produces(StatusCodes.Status403Forbidden)
+            .Produces(StatusCodes.Status404NotFound);
 
         group.MapPost("/", CreateProduct)
             .WithName("CreateProduct")
             .WithSummary("Create a new product")
             .RequireAuthorization(CatalogScopes.Write)
             .Produces<ProductResponse>(StatusCodes.Status201Created)
-            .Produces<ProblemDetails>(StatusCodes.Status400BadRequest)
-            .Produces<ProblemDetails>(StatusCodes.Status401Unauthorized)
-            .Produces<ProblemDetails>(StatusCodes.Status403Forbidden)
-            .Produces<ProblemDetails>(StatusCodes.Status409Conflict);
+            .Produces(StatusCodes.Status400BadRequest)
+            .Produces(StatusCodes.Status401Unauthorized)
+            .Produces(StatusCodes.Status403Forbidden)
+            .Produces(StatusCodes.Status409Conflict);
 
         group.MapPut("/{id}", UpdateProduct)
             .WithName("UpdateProduct")
             .WithSummary("Update an existing product")
             .RequireAuthorization(CatalogScopes.Write)
             .Produces<ProductResponse>(StatusCodes.Status200OK)
-            .Produces<ProblemDetails>(StatusCodes.Status400BadRequest)
-            .Produces<ProblemDetails>(StatusCodes.Status401Unauthorized)
-            .Produces<ProblemDetails>(StatusCodes.Status403Forbidden)
-            .Produces<ProblemDetails>(StatusCodes.Status404NotFound);
+            .Produces(StatusCodes.Status400BadRequest)
+            .Produces(StatusCodes.Status401Unauthorized)
+            .Produces(StatusCodes.Status403Forbidden)
+            .Produces(StatusCodes.Status404NotFound);
 
         group.MapPost("/{id}/deactivate", DeactivateProduct)
             .WithName("DeactivateProduct")
             .WithSummary("Deactivate a product")
             .RequireAuthorization(CatalogScopes.Write)
             .Produces(StatusCodes.Status204NoContent)
-            .Produces<ProblemDetails>(StatusCodes.Status401Unauthorized)
-            .Produces<ProblemDetails>(StatusCodes.Status403Forbidden)
-            .Produces<ProblemDetails>(StatusCodes.Status404NotFound);
+            .Produces(StatusCodes.Status401Unauthorized)
+            .Produces(StatusCodes.Status403Forbidden)
+            .Produces(StatusCodes.Status404NotFound);
     }
 
     private static async Task<IResult> ListProducts(
@@ -151,7 +152,7 @@ internal static class ProductEndpoints
 
         return error.Code switch
         {
-            var code when code.StartsWith("Validation.") => Results.BadRequest(
+            var code when code.StartsWith("Validation.", StringComparison.Ordinal) => Results.BadRequest(
                 CreateProblemDetails(
                     statusCode: StatusCodes.Status400BadRequest,
                     title: "Validation Error",
@@ -159,7 +160,7 @@ internal static class ProductEndpoints
                     traceId: traceId,
                     errorFieldCode: error.Code.Replace("Validation.", ""))),
 
-            var code when code.EndsWith(".NotFound") => Results.NotFound(
+            var code when code.EndsWith(".NotFound", StringComparison.Ordinal) => Results.NotFound(
                 CreateProblemDetails(
                     statusCode: StatusCodes.Status404NotFound,
                     title: "Not Found",
@@ -184,31 +185,29 @@ internal static class ProductEndpoints
         };
     }
 
-    private static ProblemDetails CreateProblemDetails(
+    private static Dictionary<string, object?> CreateProblemDetails(
         int statusCode,
         string title,
         string detail,
         string traceId,
         string? errorFieldCode = null)
     {
-        var problemDetails = new ProblemDetails
+        var problemDetails = new Dictionary<string, object?>
         {
-            Type = $"https://api.orderhub.example/errors/{GetErrorType(statusCode)}",
-            Title = title,
-            Status = statusCode,
-            Detail = detail,
-            Instance = null
+            { "type", $"https://api.orderhub.example/errors/{GetErrorType(statusCode)}" },
+            { "title", title },
+            { "status", statusCode },
+            { "detail", detail },
+            { "instance", null as string },
+            { "traceId", traceId }
         };
-
-        problemDetails.Extensions["traceId"] = traceId;
 
         if (errorFieldCode is not null)
         {
-            var errors = new Dictionary<string, string[]>
+            problemDetails["errors"] = new Dictionary<string, string[]>
             {
                 { errorFieldCode, [detail] }
             };
-            problemDetails.Extensions["errors"] = errors;
         }
 
         return problemDetails;

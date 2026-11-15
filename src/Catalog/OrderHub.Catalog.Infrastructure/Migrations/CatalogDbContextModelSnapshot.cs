@@ -63,16 +63,8 @@ namespace OrderHub.Catalog.Infrastructure.Migrations
 
             modelBuilder.Entity("OrderHub.Catalog.Domain.Aggregates.Product", b =>
                 {
-                    b.ComplexProperty("Price", "OrderHub.Catalog.Domain.ValueObjects.Money", b1 =>
-                        {
-                            b1.IsRequired();
-
-                            b1.Property<decimal>("Amount")
-                                .HasColumnType("numeric(18,2)")
-                                .HasColumnName("Price");
-                        });
+                    b.ComplexProperty<OrderHub.Catalog.Domain.ValueObjects.Money>("Price", "b1");
                 });
-#pragma warning restore 612, 618
         }
     }
 }

@@ -1,8 +1,7 @@
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
+using Microsoft.EntityFrameworkCore;
 using OrderHub.Catalog.Application.Abstractions;
 using OrderHub.Catalog.Infrastructure.Data;
 using OrderHub.Catalog.Infrastructure.Data.Repositories;
@@ -33,17 +32,5 @@ public static class ServiceCollectionExtensions
     {
         healthChecks.AddDbContextCheck<CatalogDbContext>();
         return healthChecks;
-    }
-
-    public static IApplicationBuilder ApplyMigrations(this IApplicationBuilder app, IHostEnvironment env)
-    {
-        if (env.IsDevelopment())
-        {
-            using var scope = app.ApplicationServices.CreateScope();
-            var dbContext = scope.ServiceProvider.GetRequiredService<CatalogDbContext>();
-            dbContext.Database.Migrate();
-        }
-
-        return app;
     }
 }
