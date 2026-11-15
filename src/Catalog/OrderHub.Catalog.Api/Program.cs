@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using OrderHub.BuildingBlocks.Auth;
+using OrderHub.Catalog.Api.Auth;
 using OrderHub.Catalog.Api.Endpoints;
 using OrderHub.Catalog.Api.Middleware;
 using OrderHub.Catalog.Application.DependencyInjection;
