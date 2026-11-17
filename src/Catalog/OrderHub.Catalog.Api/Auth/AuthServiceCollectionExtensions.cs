@@ -25,11 +25,10 @@ internal static class AuthServiceCollectionExtensions
                     .RequireAuthenticatedUser()
                     .AddRequirements(new ScopeRequirement(CatalogScopes.Read)));
 
-            // CatalogWrite: admin role AND scope
+            // CatalogWrite: scope-based, same as CatalogRead
             options.AddPolicy(CatalogScopes.Write, policy =>
                 policy
                     .RequireAuthenticatedUser()
-                    .RequireRole("admin")
                     .AddRequirements(new ScopeRequirement(CatalogScopes.Write)));
         });
 
