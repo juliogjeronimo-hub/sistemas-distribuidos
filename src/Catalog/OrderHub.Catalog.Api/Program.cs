@@ -23,8 +23,12 @@ app.UseAuthorization();
 
 app.ApplyMigrations(app.Environment);
 
-app.MapHealthChecks("/health/live");
-app.MapHealthChecks("/health/ready");
+app.MapHealthChecks("/health/live", new HealthCheckOptions { Predicate = _ => false });
+app.MapHealthChecks("/health/ready", new HealthCheckOptions
+{
+    Predicate = check => check.Tags.Contains(
+        OrderHub.Catalog.Infrastructure.DependencyInjection.ServiceCollectionExtensions.ReadinessTag),
+});
 
 app.MapProductEndpoints();
 

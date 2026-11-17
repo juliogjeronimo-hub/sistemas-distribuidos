@@ -10,6 +10,8 @@ namespace OrderHub.Catalog.Infrastructure.DependencyInjection;
 
 public static class ServiceCollectionExtensions
 {
+    public const string ReadinessTag = "ready";
+
     public static IServiceCollection AddInfrastructure(
         this IServiceCollection services,
         IConfiguration configuration)
@@ -30,7 +32,8 @@ public static class ServiceCollectionExtensions
 
     public static IHealthChecksBuilder AddCatalogHealthChecks(this IHealthChecksBuilder healthChecks)
     {
-        healthChecks.AddDbContextCheck<CatalogDbContext>();
+        healthChecks.AddDbContextCheck<CatalogDbContext>(tags: [ReadinessTag]);
+        healthChecks.AddCheck<PendingMigrationsHealthCheck>("catalog-migrations", tags: [ReadinessTag]);
         return healthChecks;
     }
 }
