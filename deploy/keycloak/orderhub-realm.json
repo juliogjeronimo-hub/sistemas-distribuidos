@@ -58,14 +58,6 @@
       "realmRoles": ["admin"],
       "clientRoles": {},
       "groups": []
-    },
-    {
-      "username": "service-account-orderhub-cli",
-      "enabled": true,
-      "serviceAccountClientId": "orderhub-cli",
-      "realmRoles": ["admin"],
-      "clientRoles": {},
-      "groups": []
     }
   ],
   "clientScopes": [
