@@ -57,7 +57,5 @@ appsettings.*.local.json
 *.out
 deploy/run-checks.ps1
 
-## Postman (exportações YAML)
-postman/
-.postman/
+## Postman (exportações YAML de ambiente)
 deploy/OrderHub\ —\ *

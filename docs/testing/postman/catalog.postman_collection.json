@@ -1,0 +1,380 @@
+{
+  "info": {
+    "_postman_id": "orderhub-catalog-crud-collection",
+    "name": "OrderHub — Catalog: login e CRUD de produtos",
+    "description": "Sequência de testes do CRUD de produtos do Catalog, passando pelo Gateway.\n\nExecute em ordem pelo Collection Runner, com o environment `OrderHub — Development` (`orderhub.postman_environment.json`) ativo. O primeiro request obtém o token e os seguintes reaproveitam `{{access_token}}`, `{{product_id}}` e `{{product_sku}}`.\n\nLogin: `client_credentials` com o client `orderhub-cli`. Os usuários do realm (alice, bob) só entram por Authorization Code + PKCE no client `orderhub-web`, que não tem a URL de callback do Postman cadastrada e não permite password grant.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      { "key": "token", "value": "{{access_token}}", "type": "string" }
+    ]
+  },
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "pm.request.headers.upsert({ key: 'X-Correlation-Id', value: pm.variables.replaceIn('{{$guid}}') });"
+        ]
+      }
+    }
+  ],
+  "variable": [
+    { "key": "products_url", "value": "{{gateway_base_url}}/catalog/v1/products" },
+    { "key": "product_id", "value": "" },
+    { "key": "product_sku", "value": "" }
+  ],
+  "item": [
+    {
+      "name": "01 Login (client_credentials)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status 200', () => pm.response.to.have.status(200));",
+              "const body = pm.response.json();",
+              "pm.environment.set('access_token', body.access_token);",
+              "pm.environment.set('expires_in', body.expires_in);",
+              "pm.test('Token contém os escopos do Catalog', () => {",
+              "    const payload = JSON.parse(atob(body.access_token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/')));",
+              "    const scopes = (payload.scope || '').split(' ');",
+              "    pm.expect(scopes).to.include('catalog.read');",
+              "    pm.expect(scopes).to.include('catalog.write');",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "auth": { "type": "noauth" },
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/x-www-form-urlencoded" }
+        ],
+        "body": {
+          "mode": "urlencoded",
+          "urlencoded": [
+            { "key": "grant_type", "value": "client_credentials" },
+            { "key": "client_id", "value": "{{client_id}}" },
+            { "key": "client_secret", "value": "{{client_secret}}" }
+          ]
+        },
+        "url": "{{keycloak_base_url}}/realms/{{keycloak_realm}}/protocol/openid-connect/token",
+        "description": "Obtém o access token e salva em `{{access_token}}`. O token vale 300 segundos; se expirar no meio da sequência, rode este request de novo."
+      }
+    },
+    {
+      "name": "02 Listar produtos sem token (401)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status 401', () => pm.response.to.have.status(401));"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "auth": { "type": "noauth" },
+        "method": "GET",
+        "header": [],
+        "url": "{{products_url}}",
+        "description": "O Gateway rejeita requisições sem token antes de encaminhar ao Catalog."
+      }
+    },
+    {
+      "name": "03 Criar produto (201)",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.collectionVariables.set('product_sku', 'SKU-' + Date.now());"
+            ]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status 201', () => pm.response.to.have.status(201));",
+              "const location = pm.response.headers.get('Location');",
+              "pm.test('Header Location presente', () => pm.expect(location).to.be.a('string'));",
+              "if (location) {",
+              "    pm.collectionVariables.set('product_id', location.split('/').pop());",
+              "}"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"sku\": \"{{product_sku}}\",\n  \"name\": \"Teclado mecânico\",\n  \"description\": \"Teclado ABNT2 com switches marrons\",\n  \"price\": 349.90\n}"
+        },
+        "url": "{{products_url}}",
+        "description": "Gera um SKU único a cada execução. A API responde 201 sem corpo; o id do produto vem no header `Location` e é salvo em `{{product_id}}`."
+      }
+    },
+    {
+      "name": "04 Buscar produto por id (200)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status 200', () => pm.response.to.have.status(200));",
+              "const body = pm.response.json();",
+              "pm.test('Dados do produto criado', () => {",
+              "    pm.expect(body.id).to.eql(pm.collectionVariables.get('product_id'));",
+              "    pm.expect(body.sku).to.eql(pm.collectionVariables.get('product_sku'));",
+              "    pm.expect(body.price).to.eql(349.90);",
+              "    pm.expect(body.currency).to.eql('BRL');",
+              "    pm.expect(body.isActive).to.be.true;",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{products_url}}/{{product_id}}"
+      }
+    },
+    {
+      "name": "05 Listar produtos (200)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status 200', () => pm.response.to.have.status(200));",
+              "const body = pm.response.json();",
+              "pm.test('Resposta paginada', () => {",
+              "    pm.expect(body.items).to.be.an('array');",
+              "    pm.expect(body.page).to.eql(1);",
+              "    pm.expect(body.pageSize).to.eql(50);",
+              "    pm.expect(body.totalCount).to.be.at.least(1);",
+              "});",
+              "pm.test('Produto criado aparece na lista', () => {",
+              "    const ids = body.items.map(p => p.id);",
+              "    pm.expect(ids).to.include(pm.collectionVariables.get('product_id'));",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{products_url}}?page=1&pageSize=50",
+        "description": "`pageSize` máximo aceito pela API é 50. Se houver mais de 50 produtos ativos, o produto criado pode não estar na primeira página."
+      }
+    },
+    {
+      "name": "06 Criar produto com SKU duplicado (400/409)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Rejeita SKU duplicado', () => pm.expect(pm.response.code).to.be.oneOf([400, 409]));"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"sku\": \"{{product_sku}}\",\n  \"name\": \"Duplicado\",\n  \"description\": \"Mesmo SKU do produto criado\",\n  \"price\": 10.00\n}"
+        },
+        "url": "{{products_url}}",
+        "description": "O endpoint documenta 409, mas no `MapResultToHttpResponse` o caso `Validation.*` vem antes do caso de conflito, então hoje a resposta tende a ser 400. O teste aceita os dois."
+      }
+    },
+    {
+      "name": "07 Criar produto com preço inválido (400)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status 400', () => pm.response.to.have.status(400));"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"sku\": \"SKU-INVALIDO-1\",\n  \"name\": \"Preço zero\",\n  \"description\": \"Money exige valor maior que zero\",\n  \"price\": 0\n}"
+        },
+        "url": "{{products_url}}"
+      }
+    },
+    {
+      "name": "08 Atualizar produto (204)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status 204', () => pm.response.to.have.status(204));"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "PUT",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Teclado mecânico RGB\",\n  \"description\": \"Teclado ABNT2 com switches marrons e iluminação RGB\",\n  \"price\": 399.90\n}"
+        },
+        "url": "{{products_url}}/{{product_id}}",
+        "description": "O id vem da rota; o SKU não pode ser alterado."
+      }
+    },
+    {
+      "name": "09 Conferir atualização (200)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status 200', () => pm.response.to.have.status(200));",
+              "const body = pm.response.json();",
+              "pm.test('Campos atualizados', () => {",
+              "    pm.expect(body.name).to.eql('Teclado mecânico RGB');",
+              "    pm.expect(body.price).to.eql(399.90);",
+              "    pm.expect(body.sku).to.eql(pm.collectionVariables.get('product_sku'));",
+              "    pm.expect(new Date(body.updatedAt).getTime()).to.be.at.least(new Date(body.createdAt).getTime());",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{products_url}}/{{product_id}}"
+      }
+    },
+    {
+      "name": "10 Desativar produto (204)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status 204', () => pm.response.to.have.status(204));"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": "{{products_url}}/{{product_id}}/deactivate",
+        "description": "A API não tem DELETE: a remoção é lógica, por desativação."
+      }
+    },
+    {
+      "name": "11 Produto desativado some da lista padrão (200)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status 200', () => pm.response.to.have.status(200));",
+              "pm.test('Produto desativado não aparece', () => {",
+              "    const ids = pm.response.json().items.map(p => p.id);",
+              "    pm.expect(ids).to.not.include(pm.collectionVariables.get('product_id'));",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{products_url}}?page=1&pageSize=50"
+      }
+    },
+    {
+      "name": "12 Produto desativado aparece com includeInactive (200)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status 200', () => pm.response.to.have.status(200));",
+              "pm.test('Produto aparece como inativo', () => {",
+              "    const product = pm.response.json().items.find(p => p.id === pm.collectionVariables.get('product_id'));",
+              "    pm.expect(product, 'produto não encontrado na primeira página').to.exist;",
+              "    pm.expect(product.isActive).to.be.false;",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{products_url}}?page=1&pageSize=50&includeInactive=true"
+      }
+    },
+    {
+      "name": "13 Buscar produto inexistente (404)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status 404', () => pm.response.to.have.status(404));"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{products_url}}/00000000-0000-0000-0000-000000000001"
+      }
+    }
+  ]
+}
