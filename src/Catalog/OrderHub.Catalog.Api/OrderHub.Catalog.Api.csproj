@@ -28,6 +28,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\OrderHub.Catalog.Application\OrderHub.Catalog.Application.csproj" />
     <ProjectReference Include="..\OrderHub.Catalog.Infrastructure\OrderHub.Catalog.Infrastructure.csproj" />
   </ItemGroup>

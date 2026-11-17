@@ -1,0 +1,211 @@
+{
+  "pbtResults": {},
+  "executionHistory": {
+    "**0. Mapear caminhos reais** _(Requisitos: 1)_": [
+      {
+        "executionId": "1551ca90-575a-4f4d-98ea-6a0e5e7d5515",
+        "chatSessionId": "sess_b7a7476d-68f4-4f9e-8444-293e9c796e5c",
+        "timestamp": 1794693515982
+      },
+      {
+        "executionId": "1551ca90-575a-4f4d-98ea-6a0e5e7d5515",
+        "chatSessionId": "sess_b7a7476d-68f4-4f9e-8444-293e9c796e5c",
+        "timestamp": 1794693524764
+      },
+      {
+        "executionId": "1551ca90-575a-4f4d-98ea-6a0e5e7d5515",
+        "chatSessionId": "sess_b7a7476d-68f4-4f9e-8444-293e9c796e5c",
+        "timestamp": 1794693569209
+      }
+    ],
+    "**1. Dominio: aggregate Product e Money** _(Requisitos: 1, 3)_": [
+      {
+        "executionId": "1551ca90-575a-4f4d-98ea-6a0e5e7d5515",
+        "chatSessionId": "sess_b7a7476d-68f4-4f9e-8444-293e9c796e5c",
+        "timestamp": 1794693516528
+      },
+      {
+        "executionId": "1551ca90-575a-4f4d-98ea-6a0e5e7d5515",
+        "chatSessionId": "sess_b7a7476d-68f4-4f9e-8444-293e9c796e5c",
+        "timestamp": 1794693592201
+      },
+      {
+        "executionId": "1551ca90-575a-4f4d-98ea-6a0e5e7d5515",
+        "chatSessionId": "sess_b7a7476d-68f4-4f9e-8444-293e9c796e5c",
+        "timestamp": 1794693731756
+      }
+    ],
+    "**2. Infrastructure: EF Core + Npgsql** _(Requisitos: 1, 7)_": [
+      {
+        "executionId": "1551ca90-575a-4f4d-98ea-6a0e5e7d5515",
+        "chatSessionId": "sess_b7a7476d-68f4-4f9e-8444-293e9c796e5c",
+        "timestamp": 1794693516942
+      },
+      {
+        "executionId": "1551ca90-575a-4f4d-98ea-6a0e5e7d5515",
+        "chatSessionId": "sess_b7a7476d-68f4-4f9e-8444-293e9c796e5c",
+        "timestamp": 1794693734048
+      },
+      {
+        "executionId": "1551ca90-575a-4f4d-98ea-6a0e5e7d5515",
+        "chatSessionId": "sess_b7a7476d-68f4-4f9e-8444-293e9c796e5c",
+        "timestamp": 1794693988464
+      }
+    ],
+    "**3. postgres-catalog no compose** _(Requisitos: 7)_": [
+      {
+        "executionId": "1551ca90-575a-4f4d-98ea-6a0e5e7d5515",
+        "chatSessionId": "sess_b7a7476d-68f4-4f9e-8444-293e9c796e5c",
+        "timestamp": 1794693517341
+      },
+      {
+        "executionId": "1551ca90-575a-4f4d-98ea-6a0e5e7d5515",
+        "chatSessionId": "sess_b7a7476d-68f4-4f9e-8444-293e9c796e5c",
+        "timestamp": 1794693990734
+      }
+    ],
+    "**4. Casos de uso (handlers + validacao)** _(Requisitos: 1, 2, 3, 4, 5)_": [
+      {
+        "executionId": "1551ca90-575a-4f4d-98ea-6a0e5e7d5515",
+        "chatSessionId": "sess_b7a7476d-68f4-4f9e-8444-293e9c796e5c",
+        "timestamp": 1794693517555
+      },
+      {
+        "executionId": "1551ca90-575a-4f4d-98ea-6a0e5e7d5515",
+        "chatSessionId": "sess_b7a7476d-68f4-4f9e-8444-293e9c796e5c",
+        "timestamp": 1794694127163
+      },
+      {
+        "executionId": "1551ca90-575a-4f4d-98ea-6a0e5e7d5515",
+        "chatSessionId": "sess_b7a7476d-68f4-4f9e-8444-293e9c796e5c",
+        "timestamp": 1794694365576
+      }
+    ],
+    "**5. Endpoints v1 + ProblemDetails** _(Requisitos: 1, 2, 3, 4, 5, 6, 8)_": [
+      {
+        "executionId": "1551ca90-575a-4f4d-98ea-6a0e5e7d5515",
+        "chatSessionId": "sess_b7a7476d-68f4-4f9e-8444-293e9c796e5c",
+        "timestamp": 1794693517877
+      },
+      {
+        "executionId": "1551ca90-575a-4f4d-98ea-6a0e5e7d5515",
+        "chatSessionId": "sess_b7a7476d-68f4-4f9e-8444-293e9c796e5c",
+        "timestamp": 1794694367916
+      },
+      {
+        "executionId": "1551ca90-575a-4f4d-98ea-6a0e5e7d5515",
+        "chatSessionId": "sess_b7a7476d-68f4-4f9e-8444-293e9c796e5c",
+        "timestamp": 1794694632758
+      }
+    ],
+    "**6. Subir e validar CRUD** _(Requisitos: 1, 2, 3, 4, 6)_": [
+      {
+        "executionId": "1551ca90-575a-4f4d-98ea-6a0e5e7d5515",
+        "chatSessionId": "sess_b7a7476d-68f4-4f9e-8444-293e9c796e5c",
+        "timestamp": 1794693518442
+      },
+      {
+        "executionId": "1551ca90-575a-4f4d-98ea-6a0e5e7d5515",
+        "chatSessionId": "sess_b7a7476d-68f4-4f9e-8444-293e9c796e5c",
+        "timestamp": 1794694635126
+      },
+      {
+        "executionId": "1551ca90-575a-4f4d-98ea-6a0e5e7d5515",
+        "chatSessionId": "sess_b7a7476d-68f4-4f9e-8444-293e9c796e5c",
+        "timestamp": 1794695172128
+      }
+    ],
+    "**7. Testes unitarios do dominio** _(Requisitos: 1, 3)_": [
+      {
+        "executionId": "1551ca90-575a-4f4d-98ea-6a0e5e7d5515",
+        "chatSessionId": "sess_b7a7476d-68f4-4f9e-8444-293e9c796e5c",
+        "timestamp": 1794693518662
+      },
+      {
+        "executionId": "1551ca90-575a-4f4d-98ea-6a0e5e7d5515",
+        "chatSessionId": "sess_b7a7476d-68f4-4f9e-8444-293e9c796e5c",
+        "timestamp": 1794695174535
+      },
+      {
+        "executionId": "1551ca90-575a-4f4d-98ea-6a0e5e7d5515",
+        "chatSessionId": "sess_b7a7476d-68f4-4f9e-8444-293e9c796e5c",
+        "timestamp": 1794695452733
+      }
+    ],
+    "**8. Teste de integracao (Testcontainers)** _(Requisitos: 1, 4)_": [
+      {
+        "executionId": "1551ca90-575a-4f4d-98ea-6a0e5e7d5515",
+        "chatSessionId": "sess_b7a7476d-68f4-4f9e-8444-293e9c796e5c",
+        "timestamp": 1794693518916
+      },
+      {
+        "executionId": "1551ca90-575a-4f4d-98ea-6a0e5e7d5515",
+        "chatSessionId": "sess_b7a7476d-68f4-4f9e-8444-293e9c796e5c",
+        "timestamp": 1794695455254
+      },
+      {
+        "executionId": "1551ca90-575a-4f4d-98ea-6a0e5e7d5515",
+        "chatSessionId": "sess_b7a7476d-68f4-4f9e-8444-293e9c796e5c",
+        "timestamp": 1794710310820
+      }
+    ],
+    "**9. Teste de arquitetura (NetArchTest)** _(Requisitos: 1)_": [
+      {
+        "executionId": "1551ca90-575a-4f4d-98ea-6a0e5e7d5515",
+        "chatSessionId": "sess_b7a7476d-68f4-4f9e-8444-293e9c796e5c",
+        "timestamp": 1794693519235
+      },
+      {
+        "executionId": "1551ca90-575a-4f4d-98ea-6a0e5e7d5515",
+        "chatSessionId": "sess_b7a7476d-68f4-4f9e-8444-293e9c796e5c",
+        "timestamp": 1794710314408
+      },
+      {
+        "executionId": "1551ca90-575a-4f4d-98ea-6a0e5e7d5515",
+        "chatSessionId": "sess_b7a7476d-68f4-4f9e-8444-293e9c796e5c",
+        "timestamp": 1794710798305
+      }
+    ],
+    "**10. Matriz de autorizacao dos endpoints de escrita** _(Requisitos: 8)_": [
+      {
+        "executionId": "1551ca90-575a-4f4d-98ea-6a0e5e7d5515",
+        "chatSessionId": "sess_b7a7476d-68f4-4f9e-8444-293e9c796e5c",
+        "timestamp": 1794693519657
+      },
+      {
+        "executionId": "1551ca90-575a-4f4d-98ea-6a0e5e7d5515",
+        "chatSessionId": "sess_b7a7476d-68f4-4f9e-8444-293e9c796e5c",
+        "timestamp": 1794710801228
+      },
+      {
+        "executionId": "1551ca90-575a-4f4d-98ea-6a0e5e7d5515",
+        "chatSessionId": "sess_b7a7476d-68f4-4f9e-8444-293e9c796e5c",
+        "timestamp": 1794712291352
+      }
+    ],
+    "**11. Experimento e relatorio** _(Requisitos: 7)_": [
+      {
+        "executionId": "1551ca90-575a-4f4d-98ea-6a0e5e7d5515",
+        "chatSessionId": "sess_b7a7476d-68f4-4f9e-8444-293e9c796e5c",
+        "timestamp": 1794693520043
+      },
+      {
+        "executionId": "1551ca90-575a-4f4d-98ea-6a0e5e7d5515",
+        "chatSessionId": "sess_b7a7476d-68f4-4f9e-8444-293e9c796e5c",
+        "timestamp": 1794712293937
+      }
+    ],
+    "**12. Fechamento**": [
+      {
+        "executionId": "1551ca90-575a-4f4d-98ea-6a0e5e7d5515",
+        "chatSessionId": "sess_b7a7476d-68f4-4f9e-8444-293e9c796e5c",
+        "timestamp": 1794693520422
+      },
+      {
+        "executionId": "1551ca90-575a-4f4d-98ea-6a0e5e7d5515",
+        "chatSessionId": "sess_b7a7476d-68f4-4f9e-8444-293e9c796e5c",
+        "timestamp": 1794713320801
+      }
+    ]
+  }
+}

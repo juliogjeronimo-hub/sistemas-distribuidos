@@ -1,0 +1,12 @@
+# Exposes databases to the host for debugging only. Compose profiles disable
+# whole services, so host ports for databases live in this opt-in file instead.
+#
+#   docker compose -f docker-compose.yml -f docker-compose.services.yml \
+#     -f docker-compose.override.yml -f docker-compose.debug.yml up -d
+
+name: orderhub
+
+services:
+  postgres-catalog:
+    ports:
+      - "5432:5432"

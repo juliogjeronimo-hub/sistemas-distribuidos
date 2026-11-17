@@ -1,0 +1,159 @@
+﻿docker :  Image orderhub/gateway:1.0.0 Building 
+No linha:1 caractere:1
++ docker compose -f deploy/docker-compose.yml -f deploy/docker-compose. ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: ( Image orderhub/gateway:1.0.0 Building :String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+ Image orderhub/catalog:1.0.0 Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 1.11kB 0.0s done
+#1 DONE 0.0s
+
+#2 [gateway internal] load build definition from Dockerfile
+#2 transferring dockerfile: 1.74kB 0.1s done
+#2 DONE 0.1s
+
+#3 [catalog internal] load build definition from Dockerfile
+#3 transferring dockerfile: 2.17kB 0.0s done
+#3 DONE 0.1s
+
+#4 [catalog internal] load metadata for mcr.microsoft.com/dotnet/aspnet:10.0
+#4 DONE 0.2s
+
+#5 [gateway internal] load metadata for mcr.microsoft.com/dotnet/sdk:10.0
+#5 DONE 0.2s
+
+#6 [gateway internal] load .dockerignore
+#6 transferring context: 575B 0.0s done
+#6 DONE 0.1s
+
+#7 [gateway internal] load build context
+#7 DONE 0.0s
+
+#8 [catalog internal] load build context
+#8 DONE 0.0s
+
+#9 [catalog final 1/4] FROM mcr.microsoft.com/dotnet/aspnet:10.0@sha256:d5633778c754e89a386882eddf8dbee6942447a8a4b8267c19cf1e1158d0b0ac
+#9 resolve mcr.microsoft.com/dotnet/aspnet:10.0@sha256:d5633778c754e89a386882eddf8dbee6942447a8a4b8267c19cf1e1158d0b0ac
+#9 resolve mcr.microsoft.com/dotnet/aspnet:10.0@sha256:d5633778c754e89a386882eddf8dbee6942447a8a4b8267c19cf1e1158d0b0ac 0.2s done
+#9 resolve mcr.microsoft.com/dotnet/aspnet:10.0@sha256:d5633778c754e89a386882eddf8dbee6942447a8a4b8267c19cf1e1158d0b0ac 0.2s done
+#9 DONE 0.2s
+
+#10 [gateway build 1/8] FROM mcr.microsoft.com/dotnet/sdk:10.0@sha256:0d99ebf1ccad15037b5c98c9fe8979d6b8dbac23812feae2277a0b277b5c5ffa
+#10 resolve mcr.microsoft.com/dotnet/sdk:10.0@sha256:0d99ebf1ccad15037b5c98c9fe8979d6b8dbac23812feae2277a0b277b5c5ffa 0.3s done
+#10 DONE 0.3s
+
+#7 [gateway internal] load build context
+#7 transferring context: 6.49kB 0.1s done
+#7 DONE 0.2s
+
+#8 [catalog internal] load build context
+#8 transferring context: 6.49kB 0.1s done
+#8 DONE 0.3s
+
+#11 [gateway build 8/8] RUN dotnet build src/Gateway/OrderHub.Gateway/OrderHub.Gateway.csproj     --no-restore     --configuration Release
+#11 CACHED
+
+#12 [gateway build 3/8] COPY Directory.Build.props ./
+#12 CACHED
+
+#13 [gateway publish 1/1] RUN dotnet publish src/Gateway/OrderHub.Gateway/OrderHub.Gateway.csproj     --no-build     --configuration Release     --self-contained false     --output /app/publish
+#13 CACHED
+
+#14 [gateway build 6/8] RUN dotnet restore src/Gateway/OrderHub.Gateway/OrderHub.Gateway.csproj
+#14 CACHED
+
+#15 [gateway build 4/8] COPY src/Gateway/OrderHub.Gateway/OrderHub.Gateway.csproj      src/Gateway/OrderHub.Gateway/
+#15 CACHED
+
+#16 [gateway build 7/8] COPY src/ src/
+#16 CACHED
+
+#17 [gateway build 5/8] COPY src/building-blocks/OrderHub.BuildingBlocks.Auth/OrderHub.BuildingBlocks.Auth.csproj      src/building-blocks/OrderHub.BuildingBlocks.Auth/
+#17 CACHED
+
+#18 [gateway final 4/4] COPY --from=publish /app/publish .
+#18 CACHED
+
+#19 [catalog build  9/11] RUN dotnet restore src/Catalog/OrderHub.Catalog.Api/OrderHub.Catalog.Api.csproj
+#19 CACHED
+
+#20 [gateway build 2/8] WORKDIR /src
+#20 CACHED
+
+#21 [catalog build  8/11] COPY src/Catalog/OrderHub.Catalog.Api/OrderHub.Catalog.Api.csproj      src/Catalog/OrderHub.Catalog.Api/
+#21 CACHED
+
+#22 [catalog build 10/11] COPY src/ src/
+#22 CACHED
+
+#23 [catalog build  3/11] COPY Directory.Build.props ./
+#23 CACHED
+
+#24 [gateway final 3/4] WORKDIR /app
+#24 CACHED
+
+#25 [catalog publish 1/1] RUN dotnet publish src/Catalog/OrderHub.Catalog.Api/OrderHub.Catalog.Api.csproj     --no-build     --configuration Release     --self-contained false     --output /app/publish
+#25 CACHED
+
+#26 [catalog build  4/11] COPY src/building-blocks/OrderHub.BuildingBlocks.Auth/OrderHub.BuildingBlocks.Auth.csproj      src/building-blocks/OrderHub.BuildingBlocks.Auth/
+#26 CACHED
+
+#27 [catalog build 11/11] RUN dotnet build src/Catalog/OrderHub.Catalog.Api/OrderHub.Catalog.Api.csproj     --no-restore     --configuration Release
+#27 CACHED
+
+#28 [gateway final 2/4] RUN apt-get update     && apt-get install -y --no-install-recommends curl     && rm -rf /var/lib/apt/lists/*
+#28 CACHED
+
+#29 [catalog build  6/11] COPY src/Catalog/OrderHub.Catalog.Application/OrderHub.Catalog.Application.csproj      src/Catalog/OrderHub.Catalog.Application/
+#29 CACHED
+
+#30 [catalog build  5/11] COPY src/Catalog/OrderHub.Catalog.Domain/OrderHub.Catalog.Domain.csproj      src/Catalog/OrderHub.Catalog.Domain/
+#30 CACHED
+
+#31 [catalog build  7/11] COPY src/Catalog/OrderHub.Catalog.Infrastructure/OrderHub.Catalog.Infrastructure.csproj      src/Catalog/OrderHub.Catalog.Infrastructure/
+#31 CACHED
+
+#32 [catalog final 4/4] COPY --from=publish /app/publish .
+#32 CACHED
+
+#33 [gateway] exporting to image
+#33 exporting layers done
+#33 exporting manifest sha256:1107c559d6b964922cd8728ec86479c1fdbf41dc634a0e24b90d666ffaf7d71b 0.1s done
+#33 exporting config sha256:9a593eb44b2f9861cca6ebb0439cfc7a8e4d931c5bcefd37c399fd7ef7e3ef9e
+#33 exporting config sha256:9a593eb44b2f9861cca6ebb0439cfc7a8e4d931c5bcefd37c399fd7ef7e3ef9e 0.0s done
+#33 exporting attestation manifest sha256:a6f56fb673e10360cd339718ddf35de68469dc4cf89b81b7beeefcbf3957af32
+#33 exporting attestation manifest sha256:a6f56fb673e10360cd339718ddf35de68469dc4cf89b81b7beeefcbf3957af32 0.2s done
+#33 exporting manifest list sha256:d3ee5513fe1504e8e4826aa6f7e915f32c52fbed959de9d53339bd6b50fe18fd
+#33 exporting manifest list sha256:d3ee5513fe1504e8e4826aa6f7e915f32c52fbed959de9d53339bd6b50fe18fd 0.1s done
+#33 naming to docker.io/orderhub/gateway:1.0.0
+#33 naming to docker.io/orderhub/gateway:1.0.0 0.0s done
+#33 unpacking to docker.io/orderhub/gateway:1.0.0 0.1s done
+#33 DONE 1.0s
+
+#34 [catalog] exporting to image
+#34 exporting layers 0.0s done
+#34 exporting manifest sha256:f2ba984a062da7d763bbbffbbb3c99d526d632efcebcd0f0e93f4e50ffa3bdd4 0.0s done
+#34 exporting config sha256:030582a5b9e3e5f90a4504569d75236f4a24493aa95ac65aa44cefea181bb8cc 0.1s done
+#34 exporting attestation manifest sha256:be25a4a90fe3108c587e76b6d4ab9add3c962812d3108d5136503c765eb2ee24 0.2s done
+#34 exporting manifest list sha256:d8b60e79935a594d5d05dc587b6b49285cc6c8062cc003111996869476f34536 0.1s done
+#34 naming to docker.io/orderhub/catalog:1.0.0 0.0s done
+#34 unpacking to docker.io/orderhub/catalog:1.0.0 0.1s done
+#34 DONE 1.0s
+
+#35 [gateway] resolving provenance for metadata file
+#35 DONE 0.2s
+
+#36 [catalog] resolving provenance for metadata file
+#36 DONE 0.2s
+ Image orderhub/catalog:1.0.0 Built 
+ Image orderhub/gateway:1.0.0 Built 
+ Container orderhub-prometheus Running 
+ Container orderhub-grafana Running 
+ Container orderhub-keycloak Running 
+ Container orderhub-rabbitmq Running 
+ Container orderhub-redis Running 
+ Container orderhub-keycloak Waiting 
+ Container orderhub-keycloak Error dependency keycloak failed to start
+dependency failed to start: container orderhub-keycloak is unhealthy

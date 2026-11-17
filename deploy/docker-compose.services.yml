@@ -11,8 +11,38 @@ networks:
     driver: bridge
   internal:
     driver: bridge
+  data:
+    driver: bridge
+
+volumes:
+  postgres-catalog-data:
 
 services:
+
+  # ─── PostgreSQL (Catalog) ──────────────────────────────────────────────────
+  # Dedicated PostgreSQL 17 instance for the Catalog service.
+  # Lives on the "data" network, not exposed to host except in "debug" profile.
+  # Health check ensures the database is ready before the Catalog starts.
+  postgres-catalog:
+    image: postgres:17-alpine
+    container_name: orderhub-postgres-catalog
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-orderhub}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-orderhub}
+      POSTGRES_DB: orderhub_catalog
+    volumes:
+      - postgres-catalog-data:/var/lib/postgresql/data
+    networks:
+      - data
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "orderhub", "-d", "orderhub_catalog"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 15s
+    cpus: "0.5"
+    mem_limit: 256m
+    restart: unless-stopped
 
   # ─── Gateway ──────────────────────────────────────────────────────────────
   # YARP (reverse proxy). Ponto de entrada único para a plataforma.
@@ -62,10 +92,14 @@ services:
       Auth:Audience: "orderhub-api"
       Auth:RequireHttpsMetadata: "false"
       ASPNETCORE_ENVIRONMENT: "Development"
+      ConnectionStrings__Catalog: "Host=postgres-catalog;Port=5432;Username=${POSTGRES_USER:-orderhub};Password=${POSTGRES_PASSWORD:-orderhub};Database=orderhub_catalog;"
     networks:
       - internal
+      - data
     depends_on:
       keycloak:
+        condition: service_healthy
+      postgres-catalog:
         condition: service_healthy
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8080/health/ready"]

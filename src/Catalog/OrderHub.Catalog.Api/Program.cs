@@ -1,26 +1,36 @@
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using OrderHub.BuildingBlocks.Auth;
+using OrderHub.Catalog.Api.Auth;
+using OrderHub.Catalog.Api.Endpoints;
+using OrderHub.Catalog.Api.Middleware;
 using OrderHub.Catalog.Application.DependencyInjection;
+using OrderHub.Catalog.Infrastructure.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddApplicationServices();
-builder.Services.AddHealthChecks();
+builder.Services.AddInfrastructure(builder.Configuration);
+builder.Services.AddHealthChecks()
+    .AddCatalogHealthChecks();
 builder.Services.AddOrderHubJwtAuth(builder.Configuration);
+builder.Services.AddCatalogAuth(builder.Configuration);
 
 var app = builder.Build();
 
+app.UseMiddleware<CorrelationIdMiddleware>();
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapHealthChecks("/health/live");
-app.MapHealthChecks("/health/ready");
+app.ApplyMigrations(app.Environment);
 
-app.MapGet("/v1/products", () => new[]
+app.MapHealthChecks("/health/live", new HealthCheckOptions { Predicate = _ => false });
+app.MapHealthChecks("/health/ready", new HealthCheckOptions
 {
-    new { Id = Guid.NewGuid(), Name = "Keyboard", Price = 199.90m },
-    new { Id = Guid.NewGuid(), Name = "Mouse", Price = 89.90m }
-}).RequireAuthorization();
+    Predicate = check => check.Tags.Contains(
+        OrderHub.Catalog.Infrastructure.DependencyInjection.ServiceCollectionExtensions.ReadinessTag),
+});
+
+app.MapProductEndpoints();
 
 app.Run();
 

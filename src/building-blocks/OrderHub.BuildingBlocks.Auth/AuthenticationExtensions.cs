@@ -55,6 +55,10 @@ public static class AuthenticationExtensions
                 options.Audience = authOptions.Audience;
                 options.RequireHttpsMetadata = authOptions.RequireHttpsMetadata;
                 options.MapInboundClaims = false;
+                // With MapInboundClaims disabled, RequireRole/IsInRole would look for the long
+                // ClaimTypes.Role URI; the realm-roles mapper emits roles in the "roles" claim.
+                options.TokenValidationParameters.RoleClaimType = Claims.Roles;
+                options.TokenValidationParameters.NameClaimType = "preferred_username";
                 options.TokenValidationParameters.ClockSkew = TimeSpan.FromSeconds(30);
             });
 
