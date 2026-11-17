@@ -1,11 +1,16 @@
 using System;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
+using OrderHub.Catalog.Infrastructure.Data;
 
 #nullable disable
 
 namespace OrderHub.Catalog.Infrastructure.Migrations;
 
-/// <inheritdoc />
+// Without these attributes EF Core does not discover the migration, so Migrate() runs
+// without creating the "products" table.
+[DbContext(typeof(CatalogDbContext))]
+[Migration("20250101000000_Initial")]
 public partial class Initial : Migration
 {
     /// <inheritdoc />

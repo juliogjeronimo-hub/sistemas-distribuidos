@@ -33,7 +33,7 @@ namespace OrderHub.Catalog.Infrastructure.Migrations
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasMaxLength(2000)
-                        .HasColumnType("text");
+                        .HasColumnType("character varying(2000)");
 
                     b.Property<bool>("IsActive")
                         .ValueGeneratedOnAdd()
@@ -53,17 +53,21 @@ namespace OrderHub.Catalog.Infrastructure.Migrations
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
+                    b.ComplexProperty<OrderHub.Catalog.Domain.ValueObjects.Money>("Price", "OrderHub.Catalog.Domain.Aggregates.Product.Price#Money", b1 =>
+                        {
+                            b1.IsRequired();
+
+                            b1.Property<decimal>("Amount")
+                                .HasColumnType("numeric(18,2)")
+                                .HasColumnName("Price");
+                        });
+
                     b.HasKey("Id");
 
                     b.HasIndex("Sku")
                         .IsUnique();
 
                     b.ToTable("products", (string)null);
-                });
-
-            modelBuilder.Entity("OrderHub.Catalog.Domain.Aggregates.Product", b =>
-                {
-                    b.ComplexProperty<OrderHub.Catalog.Domain.ValueObjects.Money>("Price", "b1");
                 });
         }
     }
