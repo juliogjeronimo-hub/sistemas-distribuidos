@@ -9,6 +9,15 @@ namespace OrderHub.Catalog.Domain.Aggregates;
 /// </summary>
 public sealed class Product
 {
+    // Used by EF Core: complex properties (Price) cannot be bound to constructor parameters.
+    private Product()
+    {
+        Sku = null!;
+        Name = null!;
+        Description = null!;
+        Price = null!;
+    }
+
     private Product(
         Guid id,
         string sku,
